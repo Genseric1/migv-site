@@ -295,7 +295,114 @@ h1,h2,h3,h4,h5{font-family:inherit}
 @media(prefers-reduced-motion:reduce){
   .couv>img,.couv .fleche::after{animation:none}
 }
+
+/* ===================================================================
+   LE BLOC TELEPHONE EST PLACE EN DERNIER, ET CE N'EST PAS UN HASARD.
+   Une regle @media n'ajoute AUCUNE specificite : a specificite egale,
+   c'est la DERNIERE ecrite qui gagne. Place plus haut, ce bloc etait
+   ecrase par les regles .pil qui le suivaient, et les tuiles ne
+   changeaient pas. Tout ajout mobile doit rester ici, en bas.
+   =================================================================== */
+/* ===================================================================
+   LE TELEPHONE.
+
+   CE QUI N'ALLAIT PAS. La page se reempilait sans jamais s'adapter :
+   les seules regles @media de ce fichier changeaient le nombre de
+   colonnes, rien d'autre. Resultat, sur un ecran de 375 px :
+
+   1. LA CROIX AVAIT DISPARU. La photo fait 2400x1121 (un paysage
+      large), le cadre mobile 396x857 (un portrait haut). Avec
+      object-fit:cover, le navigateur n'en montre que 22 % de la
+      largeur. Mesure sur l'image : la croix occupe de 74 % a 92 %,
+      alors que le cadrage « 64% 46% » n'affichait que 53 % a 75 %.
+      Elle tombait juste a cote.
+
+   2. LES BOUTONS PASSAIENT SOUS LA LIGNE DE FLOTTAISON. Le heros
+      mesurait 857 px de haut pour un ecran de 812, dont il faut
+      encore retirer la barre d'adresse du navigateur. Il fallait
+      defiler pour les voir.
+
+   3. UNE TUILE PAR ECRAN. Les quatre piliers s'empilaient en
+      colonne, illustration de 188 px en haut, texte centre dessous.
+      Quatre ecrans entiers pour quatre phrases.
+   =================================================================== */
+@media(max-width:620px){
+
+  /* --- le heros ----------------------------------------------------
+     dvh et non svh : svh est la hauteur quand la barre d'adresse est
+     DEPLOYEE, donc la plus petite. Un heros en 100svh laisse une
+     bande vide des que la barre se retracte. dvh suit la hauteur
+     reelle. On plafonne a 680 px pour que le heros ne devienne pas
+     une tour sur les grands telephones.                            */
+  .couv{min-height:min(100dvh,680px)}
+
+  /* Le cadrage remonte sur la croix : 84 % ± 11 %, soit de 73 % a
+     95 %. Elle y tient entierement. 34 % en vertical pour la placer
+     dans le tiers haut, au-dessus du texte.                       */
+  .couv>img{object-position:84% 34%}
+
+  /* Le voile etait horizontal, opaque a gauche : logique quand le
+     texte occupe la moitie gauche d'un ecran large. Sur telephone le
+     texte prend toute la largeur, il faut donc un voile VERTICAL,
+     opaque en bas sous le texte et transparent en haut sur la croix. */
+  .couv::after{
+    background:linear-gradient(180deg,
+      rgba(255,249,243,.34) 0%,
+      rgba(255,249,243,.10) 26%,
+      rgba(255,249,243,.72) 52%,
+      rgba(255,249,243,.97) 70%,
+      rgba(255,249,243,1) 100%)}
+
+  /* Le titre tombait a 2,8rem (44,8 px), son minimum de clamp, cale
+     pour un ecran de bureau. A 2,15rem il tient en deux lignes au
+     lieu de trois, et le heros respire.                           */
+  .couv .t1{font-size:2.15rem;line-height:1.08;max-width:none}
+  .couv .sous{margin:16px 0 26px;font-size:1rem;line-height:1.55}
+  .couv .dedans{padding-bottom:clamp(30px,7vw,46px)}
+
+  /* Le surtitre passait sur deux lignes avec son tiret orphelin. */
+  .sur{font-size:.7rem;letter-spacing:.11em}
+
+  /* Deux boutons de largeurs differentes, empiles, donnaient un bord
+     droit en escalier. Pleine largeur, ils forment un bloc net.   */
+  .couv .choix{flex-direction:column;gap:10px}
+  .couv .choix .bt{width:100%;justify-content:center;padding:15px 22px}
+
+  /* La fleche de defilement n'a plus de place : le bas de l'ecran
+     est deja occupe par les boutons. */
+  .couv .fleche{display:none}
+
+  /* --- les titres de section --------------------------------------- */
+  .t2{font-size:1.75rem;line-height:1.15}
+  .txt{font-size:1rem;line-height:1.6}
+
+  /* --- les quatre piliers ------------------------------------------
+     L'illustration passe a gauche, en 76 px, et le texte a droite :
+     une tuile tient desormais dans un quart d'ecran au lieu d'un
+     ecran entier. Le texte repasse a gauche, parce qu'un paragraphe
+     centre sur une colonne etroite se lit mal.
+     La tuile a TROIS enfants (le dessin, le titre, le texte) pour
+     deux colonnes. Sans placement explicite, la grille les range dans
+     l'ordre : dessin en (1,1), titre en (1,2), et le paragraphe
+     retombe en (2,1), c'est-a-dire dans la colonne de 76 px, un mot
+     par ligne. Chacun est donc place a la main.                   */
+  .pil{display:grid;grid-template-columns:76px minmax(0,1fr);
+    column-gap:16px;row-gap:3px;align-items:start;
+    text-align:left;padding:18px 14px}
+  .pil .emb{grid-column:1;grid-row:1 / span 2;
+    width:76px;height:76px;max-width:none;margin:0}
+  .pil h3{grid-column:2;grid-row:1;font-size:1.1rem;margin:0}
+  .pil p{grid-column:2;grid-row:2;font-size:.97rem;line-height:1.5}
+  .quatre{gap:6px}
+  .piliers{padding:clamp(48px,11vw,70px) 0}
+  .piliers .tete-sec{margin-bottom:28px}
+}
 </style>
+<!-- EN DERNIER, ET C'EST VOLONTAIRE : une regle @media n'ajoute
+     aucune specificite, donc le bloc mobile doit venir APRES les
+     regles qu'il corrige, sans quoi il est ignore. -->
+<link rel="stylesheet" href="mobile.css?v=2">
+
 </head>
 <body>
 
@@ -539,7 +646,8 @@ carteCI(document.querySelector('#ass'));
   var pied = document.querySelector('.pied-neuf');
 
   addEventListener('scroll', function(){
-    var h = couv.offsetHeight - 90;
+    /* hauteur reelle de l'entete : 108 px au bureau, 68 au telephone */
+    var h = couv.offsetHeight - tete.offsetHeight;
     tete.classList.toggle('clair', scrollY < h);
     tete.classList.toggle('pose',  scrollY >= h);
   }, {passive:true});

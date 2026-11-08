@@ -1,0 +1,125 @@
+/* ===================================================================
+   LE TELEPHONE ET LA TABLETTE.
+
+   POURQUOI CE FICHIER EXISTE, ET POURQUOI IL EST CHARGE EN DERNIER.
+
+   Le site se reempilait sur petit ecran, mais ne s'adaptait pas : les
+   seules regles @media ecrites jusqu'ici changeaient le nombre de
+   colonnes. Les tailles et les espacements restaient ceux du bureau,
+   parce que les clamp() bornaient leur minimum sur des valeurs
+   pensees pour un grand ecran. D'ou l'impression de « tout plaque ».
+
+   UNE REGLE @media N'AJOUTE AUCUNE SPECIFICITE. A specificite egale,
+   c'est la derniere regle ecrite qui gagne. Un bloc mobile place
+   avant les regles qu'il doit corriger ne sert donc a rien. C'est
+   pour cela que ce fichier se charge APRES style.css, APRES
+   refonte.css et APRES le <style> de chaque page :
+
+       <link rel="stylesheet" href="style.css">
+       <link rel="stylesheet" href="refonte.css">
+       <style> ... propre a la page ... </style>
+       <link rel="stylesheet" href="mobile.css">   <- en dernier
+
+   Ce qui est propre a une page (le heros de l'accueil, par exemple)
+   reste dans cette page. Ce qui est commun est ici.
+   =================================================================== */
+
+
+/* ===================================================================
+   1. JUSQU'A 900 px : TELEPHONE ET TABLETTE EN PORTRAIT
+   =================================================================== */
+@media(max-width:900px){
+
+  /* --- l'entete fixe -------------------------------------------------
+     Elle mesurait 108 px, soit 13 % d'un ecran de telephone occupes en
+     permanence par un logo et un bouton. A 68 px elle fait son travail
+     et rend 40 px a la lecture, sur chaque page et a chaque instant.
+
+     Attention : la hauteur de .bar est ECRITE EN DUR (height:108px)
+     dans chaque page refondue. Changer le padding ne suffit donc pas,
+     il faut reprendre la hauteur elle-meme.                        */
+  .bar{height:68px}
+  #entete .bar{padding:0 clamp(16px,4vw,24px);gap:14px}
+  .tete .logo img,.tete .logo svg{width:36px;height:36px}
+  .tete .logo b{font-size:1rem}
+  .burger{width:40px;height:40px}
+
+  /* Le panneau du menu s'ouvrait a 108 px du haut, valeur ecrite en
+     dur dans style.css pour l'ancienne entete. Il laissait donc une
+     bande vide sous une entete devenue plus courte. */
+  nav{inset:68px 0 auto !important;padding-top:14px;padding-bottom:26px}
+  nav a{font-size:1.22rem;padding:11px 0}
+}
+
+
+/* ===================================================================
+   2. JUSQU'A 620 px : LE TELEPHONE
+   =================================================================== */
+@media(max-width:620px){
+
+  /* --- l'en-tete de page ---------------------------------------------
+     padding-top valait 96 px, cale sur une entete de 108 px : le haut
+     de la banniere passait DESSOUS. Il vaut maintenant 86 px, pour une
+     entete de 72 : la banniere commence 14 px sous elle, visible en
+     entier.
+
+     padding-top / padding-bottom separes, jamais le raccourci : .haut
+     n'est pas sur le meme element que .wrap ici, mais la regle vaut
+     comme garde-fou, et elle dit ce qu'elle change.                 */
+  .haut{padding-top:82px;padding-bottom:26px}
+
+  /* La banniere passait 176 px, soit un cinquieme de l'ecran avant le
+     premier mot. En 2,4 elle en fait 143 et montre la meme chose. */
+  .banniere{aspect-ratio:2.4;margin-bottom:18px;border-radius:10px}
+
+  /* Le fil d'Ariane, l'accroche et l'introduction se resserrent : ce
+     sont trois niveaux de texte avant le contenu, ils ne doivent pas
+     prendre un demi-ecran a eux seuls. */
+  .fil{font-size:.82rem;margin-bottom:10px}
+  .haut .accroche{margin-top:7px;font-size:1.02rem;line-height:1.45}
+  .haut .intro{margin-top:12px;font-size:.98rem;line-height:1.55}
+  .pastille{margin-top:14px;padding:8px 15px;font-size:.82rem}
+
+  /* --- les blocs ------------------------------------------------------
+     padding-top seul : .bloc se pose sur le meme element que .wrap, et
+     le raccourci annulerait son padding lateral. */
+  .bloc{padding-top:34px}
+  h2.t2{font-size:1.3rem}
+  .bloc .quoi{margin-bottom:16px;font-size:.97rem}
+
+  /* --- les cartes en eventail -----------------------------------------
+     Elles sont deja redressees sur telephone. Elles perdent ici leur
+     hauteur minimale, calculee pour une rangee de quatre : seule, une
+     carte n'a pas besoin de 238 px pour trois lignes.               */
+  .fan{gap:10px}
+  .fc{min-height:0;padding:16px 15px;gap:7px}
+  .fc .n{font-size:2rem}
+  .fc h3{margin-top:2px}
+
+  /* --- le pied --------------------------------------------------------
+     Il faisait defiler longtemps avant d'arriver au bout. */
+  .pied-neuf{padding-top:40px;padding-bottom:22px}
+  .appel{margin-bottom:30px;padding:16px 18px;gap:14px}
+  .appel p{font-size:.94rem}
+  .corps{gap:30px;padding-bottom:28px}
+  .colonnes a{padding:6px 0;font-size:.92rem}
+  .lettre p{font-size:.92rem;margin-bottom:12px}
+  .reseaux{gap:10px;margin-bottom:14px}
+
+  /* --- l'etat vide ----------------------------------------------------- */
+  .vide-net{padding:26px 20px}
+  .vide-net h3{font-size:1.08rem}
+}
+
+
+/* ===================================================================
+   3. JUSQU'A 420 px : LES PETITS TELEPHONES
+   Un iPhone SE fait 375 px, un Galaxy A 360. En dessous de 420, les
+   titres doivent ceder quelques points pour ne pas se briser en
+   quatre lignes.
+   =================================================================== */
+@media(max-width:420px){
+  .haut h1{font-size:1.65rem;line-height:1.18}
+  h2.t2{font-size:1.22rem}
+  .fc{padding:15px 14px}
+}

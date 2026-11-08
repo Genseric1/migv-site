@@ -111,6 +111,11 @@
   letter-spacing:.06em;text-transform:uppercase;color:var(--vert)}
 .meta{margin-top:20px;font-size:.86rem;color:var(--plomb)}
 </style>
+<!-- EN DERNIER, ET C'EST VOLONTAIRE : une regle @media n'ajoute
+     aucune specificite, donc le bloc mobile doit venir APRES les
+     regles qu'il corrige, sans quoi il est ignore. -->
+<link rel="stylesheet" href="mobile.css?v=2">
+
 </head>
 <body>
 
@@ -146,7 +151,7 @@
 <footer class="pied-neuf"></footer>
 
 <script src="commun.js?v=19"></script>
-<script src="refonte.js?v=2"></script>
+<script src="refonte.js?v=3"></script>
 <script>
 /* ===================================================================
    LE CALENDRIER.

@@ -102,7 +102,11 @@ function piedRefonte(){
   const haut = document.querySelector('.haut');
   if(tete && haut){
     const poser = function(){
-      const seuil = haut.offsetHeight - 90;
+      /* La hauteur de l'entete n'est plus la meme partout : 108 px
+         sur un ecran de bureau, 68 sur un telephone. Un seuil fige a
+         90 faisait donc basculer l'entete trop tot sur l'un et trop
+         tard sur l'autre. On lit la hauteur reelle. */
+      const seuil = haut.offsetHeight - tete.offsetHeight;
       tete.classList.toggle('clair', scrollY <  seuil);
       tete.classList.toggle('pose',  scrollY >= seuil);
     };
