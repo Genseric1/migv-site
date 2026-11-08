@@ -49,6 +49,48 @@
      bande vide sous une entete devenue plus courte. */
   nav{inset:68px 0 auto !important;padding-top:14px;padding-bottom:26px}
   nav a{font-size:1.22rem;padding:11px 0}
+
+  nav.ouvert{box-shadow:0 18px 32px rgba(12,20,40,.18)}
+}
+
+
+/* ===================================================================
+   1 bis. JUSQU'A 1000 px : LE MENU DEROULANT
+
+   SEUIL A 1000 ET NON A 900. C'est style.css qui decide quand le
+   menu cesse d'etre une rangee pour devenir un panneau, et il le
+   fait a 1000 px (« @media(max-width:1000px){ .burger{display:grid} »).
+   Un correctif ecrit a 900 laissait donc une bande de 100 px, entre
+   901 et 1000, ou le panneau existait deja mais n'etait pas corrige.
+   Les deux seuils doivent suivre celui qui cree le panneau.
+   =================================================================== */
+@media(max-width:1000px){
+
+  /* --- LE MENU ETAIT INVISIBLE UNE FOIS LA PAGE DEFILEE -------------
+     Sur un ecran large, le menu est une rangee de liens POSEE SUR la
+     barre d'entete. Quand celle-ci devient sombre au defilement, les
+     liens doivent passer au blanc pour rester lisibles : c'est ce que
+     fait « .tete.pose nav a{color:var(--craie)} » dans la page.
+
+     Sous 1000 px, ce meme menu n'est plus une rangee sur la barre :
+     c'est un PANNEAU DEROULANT, et son fond est blanc. La regle
+     continuait pourtant de s'appliquer. Resultat, des qu'on avait
+     defile de quelques centaines de pixels, le panneau s'ouvrait
+     avec huit liens BLANCS SUR FOND BLANC. Contraste mesure : 1:1.
+     Le menu etait bien la, on ne pouvait simplement pas le voir.
+     En haut de page l'entete est claire, les liens etaient fonces :
+     d'ou l'impression qu'il fallait remonter pour que le menu
+     « revienne ».
+
+     Les trois etats sont donc remis a l'encre. Le selecteur reprend
+     « .tete.pose nav a » a l'identique : meme specificite, mais
+     ecrit plus tard, donc il gagne.                                */
+  .tete nav a,
+  .tete.clair nav a,
+  .tete.pose nav a{color:var(--encre2)}
+
+  /* Le panneau se detache de l'entete, sombre ou claire. */
+  nav.ouvert{box-shadow:0 18px 32px rgba(12,20,40,.18)}
 }
 
 

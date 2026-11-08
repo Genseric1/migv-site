@@ -13,6 +13,20 @@ A lancer apres toute modification de CSS :   python verif-css.py
 """
 import io, glob, sys
 
+def sans_commentaires(texte):
+    """Retire les /* ... */ pour ne compter que les accolades du code."""
+    sortie, i = [], 0
+    while i < len(texte):
+        if texte[i:i+2] == '/*':
+            fin = texte.find('*/', i + 2)
+            if fin < 0:
+                break               # commentaire non ferme : signale ailleurs
+            i = fin + 2
+            continue
+        sortie.append(texte[i]); i += 1
+    return ''.join(sortie)
+
+
 def analyser(texte, decalage_ligne=0):
     """Retourne (commentaires_non_fermes, [lignes des */ orphelins])."""
     profondeur, i, orphelins = 0, 0, []
@@ -57,8 +71,11 @@ for chemin in sorted(glob.glob('*.css') + glob.glob('*.html')):
             print('%-24s ligne %d : « */ » orphelin, la regle suivante est ignoree'
                   % (chemin, ligne)); soucis += 1
 
-    # les accolades, tant qu'on y est
-    total = ''.join(t for t, _ in morceaux)
+    # Les accolades, une fois les COMMENTAIRES RETIRES. Sans cela, une
+    # accolade citee dans un commentaire explicatif (« @media(...){ ... »)
+    # est comptee comme du code et declenche une fausse alerte. C'est
+    # arrive des le premier usage de ce script.
+    total = sans_commentaires(''.join(t for t, _ in morceaux))
     if total.count('{') != total.count('}'):
         print('%-24s accolades desequilibrees : %d ouvertes, %d fermees'
               % (chemin, total.count('{'), total.count('}'))); soucis += 1
