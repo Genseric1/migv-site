@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<!-- Maquette en relecture. robots.txt demande aux moteurs de ne pas
+     parcourir le site ; cette balise leur demande en plus de ne pas
+     indexer la page, meme s'ils l'atteignent par un lien. A retirer
+     le jour de la vraie mise en ligne. -->
+<title>Toutes les vidéos · MIGV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=18">
+<style>
+/* ===================================================================
+   LA LISTE COMPLETE DES VIDEOS, SUR SA PROPRE PAGE.
+
+   C'est le principe observe sur la reference : la page d'accueil des
+   videos ne liste jamais tout. Elle met une video en avant, montre deux
+   rangees courtes et un mur de themes, puis renvoie ici par un seul
+   lien. C'est ici, et seulement ici, qu'on trouve tout, avec un tri et
+   un affichage par paquets.
+
+   Le bloc est enferme dans la page, comme sur index.html et videos.html :
+   style.css n'est pas touchee, les autres pages ne bougent pas.
+   =================================================================== */
+:root{
+  /* --dom est la couleur dominante de style.css. Sans valeur, elle
+     retombe sur #0024D8, le bleu electrique d'origine. Il ne se
+     voyait plus qu'a trois endroits, mais il s'y voyait bien :
+     le trait sous le lien actif du menu, la bordure basse du
+     menu mobile ouvert, et les boutons de la carte sous 820 px.
+     Une seule ligne les ramene tous les trois dans la palette. */
+  --dom:#264D54;
+
+  --encre:#0C1428; --encre2:#1B1B1B;
+  --parche:#F6EEE2; --craie:#FFFFFF; --craie2:#FFF9F3;
+  --brume:#EBF3F2; --sable:#EADCC0; --gris-chaud:#EDECEB;
+  --vert:#264D54; --vert-vif:#3A7781; --terre:#72573A;
+  --or:#93CDDD; --plomb:#5B5B5B;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --max:1240px;
+}
+body{background:var(--craie);color:var(--encre2);
+  font-family:Inter,system-ui,sans-serif;font-weight:400;line-height:1.65}
+/* style.css met Playfair sur les titres et TOUS les h3 en capitales
+   (ligne 94) : on neutralise les deux ici. */
+h1,h2,h3,h4,h5{font-family:inherit;text-transform:none;
+  font-weight:600;letter-spacing:-.022em;line-height:1.2}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 clamp(20px,4vw,54px)}
+
+.sur{font:600 .82rem/1 Inter,sans-serif;letter-spacing:.17em;
+  text-transform:uppercase;color:var(--vert);display:flex;align-items:center;gap:12px}
+.sur::before{content:'';width:26px;height:2px;background:currentColor;flex:none}
+.ttl{margin:0;color:var(--encre)}
+.t1{font-size:clamp(1.9rem,3.4vw,2.5rem)}   /* 40 px, l'echelle du catalogue */
+
+/* ---- l'entete de page ------------------------------------------- */
+.hautpage{background:var(--parche);padding:clamp(96px,10vw,128px) 0 clamp(30px,3.4vw,44px)}
+.hautpage .ttl{margin-top:14px}
+.fil-ariane{margin:0 0 0;font-size:.9rem;color:var(--plomb)}
+.fil-ariane a{color:var(--vert)}
+.fil-ariane a:hover{color:var(--encre)}
+
+/* ---- la barre de tri -------------------------------------------- */
+.barre{display:flex;align-items:center;justify-content:space-between;gap:18px;
+  flex-wrap:wrap;margin:clamp(26px,3vw,36px) 0 clamp(20px,2.4vw,28px);
+  padding-bottom:16px;border-bottom:1px solid var(--gris-chaud)}
+.barre .cpt{font-size:.92rem;color:var(--plomb)}
+.barre label{font:500 .88rem/1 Inter,sans-serif;color:var(--plomb);margin-right:9px}
+.barre select{font:400 .92rem/1 Inter,sans-serif;color:var(--encre);
+  background:var(--craie);border:1px solid var(--gris-chaud);border-radius:7px;
+  padding:10px 13px;cursor:pointer}
+.barre select:focus-visible{outline:2px solid var(--vert);outline-offset:2px}
+/* la pastille du theme, quand on arrive depuis le mur des themes */
+.pastille{display:inline-flex;align-items:center;gap:9px;background:var(--brume);
+  color:var(--vert);border-radius:999px;padding:7px 9px 7px 15px;
+  font:500 .86rem/1 Inter,sans-serif;margin-left:12px}
+.pastille button{border:0;background:rgba(38,77,84,.14);color:var(--vert);
+  width:19px;height:19px;border-radius:50%;cursor:pointer;line-height:1;
+  font-size:.82rem;display:grid;place-items:center;padding:0}
+.pastille button:hover{background:var(--vert);color:var(--craie)}
+.pastille[hidden]{display:none}
+
+/* ---- la grille --------------------------------------------------- */
+.liste{padding:0 0 clamp(54px,6vw,84px)}
+.grille-toutes{display:grid;grid-template-columns:repeat(auto-fill,minmax(204px,1fr));
+  gap:clamp(18px,2.2vw,28px) clamp(12px,1.5vw,18px)}
+
+/* la carte, a l'identique de la page d'accueil des videos :
+   vignette 16/9, duree posee dessus, titre de 14 px sur deux lignes. */
+.vd{display:block;color:inherit}
+.vd .cadre{position:relative;display:block;border-radius:10px;overflow:hidden;
+  aspect-ratio:16/9;background:var(--gris-chaud)}
+.vd img{width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .55s var(--ease)}
+.vd:hover img{transform:scale(1.05)}
+.vd .duree{position:absolute;right:8px;bottom:8px;
+  background:rgba(12,20,40,.82);color:#fff;border-radius:4px;
+  padding:3px 7px;font:500 .74rem/1 Inter,sans-serif;letter-spacing:.02em}
+.vd .lire{position:absolute;inset:0;display:grid;place-items:center;opacity:0;
+  background:rgba(12,20,40,.3);transition:opacity .3s var(--ease)}
+.vd:hover .lire,.vd:focus-visible .lire{opacity:1}
+.vd .lire i{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;
+  background:rgba(255,255,255,.95)}
+.vd .lire svg{width:17px;height:17px;fill:var(--vert);margin-left:2px}
+.vd h3{margin:10px 0 0;font-size:.875rem;font-weight:600;line-height:1.35;
+  letter-spacing:-.008em;color:var(--encre);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.vd:hover h3{color:var(--vert)}
+.rien{margin:40px 0;color:var(--plomb)}
+
+.encore{display:block;margin:clamp(30px,3.4vw,42px) auto 0;
+  background:transparent;border:1px solid var(--vert);color:var(--vert);
+  border-radius:999px;padding:14px 30px;cursor:pointer;
+  font:500 .93rem/1 Inter,sans-serif;transition:background .25s,color .25s}
+.encore:hover{background:var(--vert);color:var(--craie)}
+.encore[hidden]{display:none}
+
+/* ---- le lecteur -------------------------------------------------- */
+.lecteur{position:fixed;inset:0;z-index:90;background:rgba(12,20,40,.9);
+  display:none;place-items:center;padding:clamp(16px,4vw,40px)}
+.lecteur.on{display:grid}
+.lecteur .boite{width:min(1000px,100%)}
+.lecteur .rap{position:relative;aspect-ratio:16/9;background:#000;
+  border-radius:10px;overflow:hidden}
+.lecteur iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.lecteur .tt{display:flex;align-items:center;justify-content:space-between;
+  gap:18px;flex-wrap:wrap;margin-top:14px}
+.lecteur h3{margin:0;color:#fff;font-size:1.04rem;font-weight:600}
+.ferme{background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:999px;
+  padding:11px 20px;cursor:pointer;font:500 .88rem/1 Inter,sans-serif;
+  transition:background .25s}
+.ferme:hover{background:rgba(255,255,255,.26)}
+
+/* ---- l'en-tete et le pied, comme sur l'accueil ------------------ */
+/* L'entete n'est JAMAIS transparente ici : .haut est un aplat de
+   parche avec du texte fonce, et ce texte passait sous le logo et
+   les liens du menu en defilant. Deux etats pleins, pas d'entre-deux. */
+.tete{background:var(--parche)}
+.tete.pose{background:#17223E;border-bottom:1px solid rgba(255,255,255,.16);
+  box-shadow:0 10px 28px rgba(0,0,0,.28)}
+.tete.pose a,.tete.pose b,.tete.pose nav a{color:var(--craie)}
+.tete.pose .logo b span{color:rgba(255,255,255,.62)}
+.tete.pose .burger span,
+.tete.pose .burger span::before,
+.tete.pose .burger span::after{background:var(--craie)}
+.tete{transition:background .4s var(--ease),opacity .35s var(--ease),transform .35s var(--ease)}
+.tete.efface{opacity:0;transform:translateY(-100%);pointer-events:none}
+
+.bt{display:inline-flex;align-items:center;gap:10px;border-radius:999px;
+  padding:15px 26px;font:500 .95rem/1 Inter,sans-serif;white-space:nowrap;
+  transition:transform .3s var(--ease),background .25s,color .25s}
+.bt span{transition:transform .3s var(--ease)}
+.bt:hover span{transform:translateX(4px)}
+.bt-clair{background:var(--craie);color:var(--encre)}
+
+.pied-neuf{background:var(--encre);color:var(--craie);padding:clamp(56px,6vw,88px) 0 30px}
+.appel{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  background:rgba(255,255,255,.07);border-radius:10px;
+  padding:clamp(16px,1.8vw,22px) clamp(18px,2.2vw,28px);margin-bottom:clamp(40px,5vw,66px)}
+.appel p{margin:0;font-size:.98rem;color:rgba(255,255,255,.88);max-width:62ch}
+.appel .bt{padding:13px 22px;font-size:.9rem}
+.corps{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.92fr);
+  gap:clamp(30px,5vw,80px);padding-bottom:clamp(36px,4vw,56px)}
+@media(max-width:860px){.corps{grid-template-columns:1fr}}
+.colonnes{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(20px,3vw,46px)}
+@media(max-width:460px){.colonnes{grid-template-columns:1fr}}
+.colonnes a{display:block;padding:7px 0;font-size:.95rem;color:rgba(255,255,255,.72);
+  transition:color .25s,transform .25s var(--ease)}
+.colonnes a:hover{color:var(--craie);transform:translateX(4px)}
+.lettre p{margin:0 0 16px;font-size:.95rem;line-height:1.6;color:rgba(255,255,255,.76);max-width:44ch}
+.lettre form{display:flex;flex-direction:column;gap:10px;max-width:420px}
+.lettre input{background:rgba(255,255,255,.07);color:var(--craie);
+  border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:15px 18px;
+  font:400 .95rem/1 Inter,sans-serif;outline:0;transition:border-color .3s}
+.lettre input::placeholder{color:rgba(255,255,255,.45)}
+.lettre input:focus{border-color:rgba(255,255,255,.55)}
+.lettre button{border:0;border-radius:6px;padding:15px 18px;cursor:pointer;
+  background:rgba(255,255,255,.14);color:var(--craie);
+  font:500 .95rem/1 Inter,sans-serif;transition:background .25s}
+.lettre button:hover{background:rgba(255,255,255,.24)}
+.lettre .note{margin:12px 0 0;font-size:.79rem;color:rgba(255,255,255,.45)}
+.pied-neuf .bas{padding-top:26px;border-top:1px solid rgba(255,255,255,.14)}
+.reseaux{list-style:none;margin:0 0 20px;padding:0;display:flex;flex-wrap:wrap;gap:18px}
+.reseaux a{display:grid;place-items:center;width:44px;height:44px;
+  margin:-9px;
+  color:rgba(255,255,255,.55);transition:color .25s,transform .25s var(--ease)}
+.reseaux a:hover{color:var(--craie);transform:translateY(-2px)}
+.reseaux svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;
+  stroke-linecap:round;stroke-linejoin:round}
+.droits{margin:0;font-size:.82rem;color:rgba(255,255,255,.45)}
+
+@media(prefers-reduced-motion:reduce){.vd img{transition:none}}
+</style>
+</head>
+<body>
+
+<header class="tete clair" id="entete"></header>
+
+<section class="hautpage">
+  <div class="wrap">
+    <p class="fil-ariane"><a href="videos.html">Vidéos</a></p>
+    <h1 class="ttl t1">Toutes les vidéos</h1>
+  </div>
+</section>
+
+<section class="liste">
+  <div class="wrap">
+    <div class="barre">
+      <div>
+        <span class="cpt" id="cpt"></span>
+        <span class="pastille" id="pastille" hidden>
+          <span id="pastille-t"></span>
+          <button type="button" id="pastille-x" aria-label="Retirer le filtre">&times;</button>
+        </span>
+      </div>
+      <div>
+        <label for="tri">Classer par</label>
+        <select id="tri">
+          <option value="recent">Plus récentes d'abord</option>
+          <option value="ancien">Plus anciennes d'abord</option>
+          <option value="az">Titre de A à Z</option>
+          <option value="za">Titre de Z à A</option>
+          <option value="long">Durée, la plus longue</option>
+          <option value="court">Durée, la plus courte</option>
+        </select>
+      </div>
+    </div>
+    <div class="grille-toutes" id="grille"></div>
+    <button class="encore" id="encore" hidden>Afficher plus de vidéos</button>
+  </div>
+</section>
+
+<footer class="pied-neuf">
+  <div class="wrap">
+
+    <div class="appel">
+      <p>Tout ce que le ministère publie est en accès libre, et le restera.</p>
+      <a class="bt bt-clair" href="soutenir.html">Soutenir le MIGV <span>&rarr;</span></a>
+    </div>
+
+    <div class="corps">
+      <div class="colonnes">
+        <div>
+        <a href="enseignements.html">Enseignements</a>
+        <a href="traites.html">Traités</a>
+        <a href="livres.html">Livres</a>
+        <a href="collections.html">Collections</a>
+        <a href="dimanche.html">Le dimanche</a>
+        <a href="videos.html">Les vidéos</a>
+        </div>
+        <div>
+        <a href="actualites.html">Actualités</a>
+        <a href="histoire.html">Notre histoire</a>
+        <a href="biographie.html">Le fondateur</a>
+        <a href="contact.html">Nos assemblées</a>
+        <a href="soutenir.html">Nous soutenir</a>
+        <a href="contact.html">Nous écrire</a>
+        </div>
+      </div>
+      <div class="lettre">
+        <p>Recevez le résumé de la prédication du dimanche et son visuel,
+        une fois par semaine. Rien d'autre.</p>
+        <form onsubmit="return inscrire(event)">
+          <input id="courriel" type="email" placeholder="Adresse e-mail" required
+                 aria-label="Votre adresse e-mail">
+          <button type="submit">Abonnez-vous</button>
+        </form>
+        <p class="note" id="note">Formulaire de maquette : rien n'est encore envoyé.</p>
+      </div>
+    </div>
+
+    <div class="bas">
+      <ul class="reseaux">
+      <li><a href="#" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3Z"/><path d="M10 9.2 15 12l-5 2.8Z"/></svg></a></li>
+      <li><a href="#" aria-label="Facebook" title="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 21v-8h2.7l.5-3h-3.2V8.2c0-.9.3-1.5 1.6-1.5h1.7V4a22 22 0 0 0-2.5-.1c-2.5 0-4.2 1.5-4.2 4.3V10H8v3h3.1v8Z"/></svg></a></li>
+      <li><a href="#" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.1" cy="6.9" r=".9" fill="currentColor" stroke="none"/></svg></a></li>
+      <li><a href="#" aria-label="WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 0 0-7.3 12.8L3.5 20.5l4.4-1.1A8.5 8.5 0 1 0 12 3.5Z"/><path d="M9 9.4c.3-.7.6-.7.9-.7.3 0 .6.1.8.6l.5 1.2-.7.8c.5 1 1.3 1.8 2.3 2.3l.8-.7 1.2.5c.5.2.6.5.6.8 0 .3 0 .6-.7.9-.8.3-2 .2-3.5-.8a9 9 0 0 1-2.6-3c-.5-1-.4-1.5-.3-1.9Z"/></svg></a></li>
+      <li><a href="#" aria-label="TikTok" title="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.3 3.2v10.9a3.4 3.4 0 1 1-2.9-3.4"/><path d="M14.3 3.2a4.6 4.6 0 0 0 4.4 4.3"/></svg></a></li>
+      <li><a href="#" aria-label="Podcast" title="Podcast"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9.2" y="2.8" width="5.6" height="10.4" rx="2.8"/><path d="M5.6 11.2a6.4 6.4 0 0 0 12.8 0M12 17.6V21"/></svg></a></li>
+      </ul>
+      <p class="droits">&copy; 2026 Ministère International Grâce et Vérité. Tous droits réservés.</p>
+    </div>
+
+  </div>
+</footer>
+
+<div class="lecteur" id="lecteur"><div class="boite">
+  <div class="rap" id="rap"></div>
+  <div class="tt"><h3 id="ltit"></h3><button class="ferme" id="lferme">Fermer</button></div>
+</div></div>
+
+<script src="ressources.js?v=1"></script>
+<script src="commun.js?v=19"></script>
+<script>
+
+
+/* les donnees et les outils viennent de ressources.js */
+const lien=lienVideo;
+const vignette=vignetteVideo;
+const minutes=minutesVideo;
+const ech=echapper;
+
+function carte(v){
+  return '<a class="vd" href="#" data-i="'+VIDS.indexOf(v)+'">'
+   +'<span class="cadre">'
+     +'<img loading="lazy" decoding="async" src="'+vignette(v)+'" alt="">'
+     +'<span class="lire"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></i></span>'
+     +'<span class="duree">'+ech(v.d)+'</span>'
+   +'</span>'
+   +'<h3>'+ech(v.t)+'</h3></a>';
+}
+
+/* le theme arrive dans l'adresse, pose par le mur des themes */
+var PAQUET=12, montre=PAQUET;
+var filtre=new URLSearchParams(location.search).get('t');
+if(filtre && !VIDS.some(function(v){return v.s===filtre})) filtre=null;
+
+function triees(){
+  var l=VIDS.slice();
+  if(filtre) l=l.filter(function(v){return v.s===filtre});
+  var m=document.getElementById('tri').value;
+  if(m==='ancien') l.reverse();
+  else if(m==='az') l.sort(function(a,b){return a.t.localeCompare(b.t,'fr')});
+  else if(m==='za') l.sort(function(a,b){return b.t.localeCompare(a.t,'fr')});
+  else if(m==='long') l.sort(function(a,b){return minutes(b)-minutes(a)});
+  else if(m==='court') l.sort(function(a,b){return minutes(a)-minutes(b)});
+  return l;
+}
+
+function rendre(){
+  var l=triees();
+  document.getElementById('cpt').textContent=l.length+(l.length>1?' vidéos':' vidéo');
+  var p=document.getElementById('pastille');
+  p.hidden=!filtre;
+  if(filtre) document.getElementById('pastille-t').textContent=filtre;
+  document.getElementById('grille').innerHTML=
+    l.length ? l.slice(0,montre).map(carte).join('')
+             : '<p class="rien">Aucune vidéo pour ce thème pour le moment.</p>';
+  var b=document.getElementById('encore');
+  b.hidden = montre>=l.length;
+  b.textContent='Afficher plus de vidéos ('+(l.length-montre)+')';
+  brancher();
+}
+
+document.getElementById('tri').onchange=function(){montre=PAQUET;rendre()};
+document.getElementById('encore').onclick=function(){montre+=PAQUET;rendre()};
+document.getElementById('pastille-x').onclick=function(){
+  filtre=null; montre=PAQUET; rendre();
+  history.replaceState(null,'','videos-toutes.html');
+};
+
+/* ---- le lecteur -------------------------------------------------- */
+function ouvrir(i){
+  var v=VIDS[i];
+  document.getElementById('rap').innerHTML=
+    '<iframe src="'+lien(v)+'" allow="autoplay; encrypted-media" allowfullscreen'
+    +' title="'+ech(v.t)+'"></iframe>';
+  document.getElementById('ltit').textContent=v.t;
+  document.getElementById('lecteur').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+function brancher(){
+  document.querySelectorAll('[data-i]').forEach(function(a){
+    a.onclick=function(e){e.preventDefault();ouvrir(+a.dataset.i)};
+  });
+}
+function fermer(){
+  document.getElementById('lecteur').classList.remove('on');
+  document.getElementById('rap').innerHTML='';
+  document.body.style.overflow='';
+}
+document.getElementById('lferme').onclick=fermer;
+document.getElementById('lecteur').onclick=function(e){if(e.target.id==='lecteur')fermer()};
+addEventListener('keydown',function(e){if(e.key==='Escape')fermer()});
+
+rendre();
+
+/* commun.js saute volontairement un entete marque "clair" : la page
+   decide elle-meme quand il se pose. */
+var tete=document.querySelector('.tete'),
+    pied=document.querySelector('.pied-neuf'),
+    haut=document.querySelector('.hautpage');
+function poser(){
+  var h=haut.offsetHeight-90;
+  tete.classList.toggle('clair', scrollY < h);
+  tete.classList.toggle('pose',  scrollY >= h);
+}
+addEventListener('scroll', poser, {passive:true});
+addEventListener('resize', poser, {passive:true});
+poser();
+
+new IntersectionObserver(function(es){
+  tete.classList.toggle('efface', es[0].isIntersecting);
+},{rootMargin:'0px 0px -88% 0px'}).observe(pied);
+
+function inscrire(e){
+  e.preventDefault();
+  document.getElementById('note').textContent=
+    'Merci. Le formulaire sera relié dès la mise en ligne.';
+  return false;
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<!-- Maquette en relecture. robots.txt demande aux moteurs de ne pas
+     parcourir le site ; cette balise leur demande en plus de ne pas
+     indexer la page, meme s'ils l'atteignent par un lien. A retirer
+     le jour de la vraie mise en ligne. -->
+<title>Enseignements · MIGV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=18">
+<style>
+/* ===================================================================
+   LA PAGE ENSEIGNEMENTS, DANS LE SYSTEME DE L'ACCUEIL.
+
+   Tout est enferme dans ce bloc, comme sur index.html et videos.html :
+   style.css n'est pas touchee, les autres pages ne bougent pas.
+
+   Option A retenue : Enseignements est le CONTENANT. Il mene aux deux
+   formes, traites et livres. Les 24 textes restent listes ici tant
+   qu'on ne sait pas lesquels sont des traites et lesquels sont des
+   livres ; le jour ou on le saura, chaque ligne partira dans sa carte
+   et seule son etiquette changera.
+
+   Tout ce qui fait marcher la page est conserve : recherche, filtres,
+   lecteur, versets au survol, lecture a voix haute, partage.
+   =================================================================== */
+:root{
+  /* --dom est la couleur dominante de style.css. Sans valeur, elle
+     retombe sur #0024D8, le bleu electrique d'origine. Il ne se
+     voyait plus qu'a trois endroits, mais il s'y voyait bien :
+     le trait sous le lien actif du menu, la bordure basse du
+     menu mobile ouvert, et les boutons de la carte sous 820 px.
+     Une seule ligne les ramene tous les trois dans la palette. */
+  --dom:#264D54;
+
+  --encre:#0C1428; --encre2:#1B1B1B;
+  --parche:#F6EEE2; --craie:#FFFFFF; --craie2:#FFF9F3;
+  --brume:#EBF3F2; --sable:#EADCC0; --gris-chaud:#EDECEB;
+  --vert:#264D54; --vert-vif:#3A7781; --terre:#72573A;
+  --or:#93CDDD; --plomb:#5B5B5B;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --max:1100px;
+}
+body{background:var(--craie);color:var(--encre2);
+  font-family:Inter,system-ui,sans-serif;font-weight:400;line-height:1.65}
+/* style.css met Playfair sur les titres et TOUS les h3 en capitales
+   (ligne 94). On neutralise les deux ici. */
+h1,h2,h3,h4,h5{font-family:inherit;text-transform:none;
+  font-weight:600;letter-spacing:-.022em;line-height:1.2}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 clamp(20px,4vw,48px)}
+
+.sur{font:600 .8rem/1 Inter,sans-serif;letter-spacing:.17em;text-transform:uppercase;
+  color:var(--vert);display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.sur::before{content:'';width:26px;height:2px;background:currentColor;flex:none}
+
+/* ---- l'image du haut, une seule, ratio 1,70 ---------------------- */
+.banniere{width:100%;aspect-ratio:2.7;border-radius:12px;overflow:hidden;
+  /* les navigateurs donnent 40 px de marge laterale a un <figure> :
+     sans ce 0, l'image deborde de la page. */
+  margin:0 0 clamp(22px,2.6vw,32px);background:var(--gris-chaud)}
+.banniere img{width:100%;height:100%;object-fit:cover;display:block}
+@media(max-width:860px){.banniere{aspect-ratio:2.2}}
+@media(max-width:620px){.banniere{aspect-ratio:1.9}}
+
+.haut{background:var(--parche);padding:clamp(96px,10vw,128px) 0 clamp(36px,4.4vw,52px)}
+.haut h1{margin:0;font-size:clamp(1.9rem,3.4vw,2.5rem);color:var(--encre)}
+.haut .accroche{margin:9px 0 0;font-size:1.1rem;color:var(--terre)}
+.haut .intro{margin:16px 0 0;max-width:62ch;color:var(--plomb)}
+
+h2.t2{margin:0 0 4px;font-size:1.5rem;color:var(--encre)}
+.bloc{padding:clamp(38px,4.6vw,58px) 0 0}
+.bloc .quoi{margin:0 0 clamp(18px,2.2vw,26px);color:var(--plomb);max-width:62ch}
+
+/* ---- les deux cartes de forme ------------------------------------ */
+.cartes{display:grid;grid-template-columns:repeat(auto-fill,minmax(212px,1fr));
+  gap:clamp(14px,1.7vw,22px)}
+.ct{display:flex;flex-direction:column;justify-content:space-between;
+  min-height:246px;border-radius:12px;padding:22px 20px;color:inherit;
+  transition:transform .35s var(--ease)}
+.ct:hover{transform:translateY(-4px)}
+.ct h3{margin:0 0 9px;font-size:1.18rem;line-height:1.25;color:var(--encre)}
+.ct p{margin:0;font-size:.92rem;line-height:1.55;color:var(--plomb)}
+.ct .cpt{margin-top:18px;font:500 .78rem/1 Inter,sans-serif;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--terre)}
+.ct.b{background:var(--sable)}
+.ct.d{background:#F0E7DC}
+
+/* ---- la barre de recherche et les filtres ------------------------ */
+.barre{display:flex;align-items:center;gap:clamp(12px,1.6vw,20px);flex-wrap:wrap;
+  margin:clamp(20px,2.4vw,28px) 0 clamp(16px,2vw,22px)}
+.rech{display:flex;align-items:center;gap:10px;flex:1 1 260px;
+  background:var(--craie);border:1px solid var(--gris-chaud);border-radius:999px;
+  padding:11px 18px;transition:border-color .25s}
+.rech:focus-within{border-color:var(--vert)}
+.rech svg{flex:none}
+.rech input{flex:1;min-width:0;border:0;outline:0;background:transparent;
+  font:400 .97rem/1.4 Inter,sans-serif;color:var(--encre)}
+.rech input::placeholder{color:var(--plomb)}
+.fil{display:flex;gap:8px;flex-wrap:wrap}
+.f{border:1px solid var(--gris-chaud);background:var(--craie);color:var(--plomb);
+  border-radius:999px;padding:8px 15px;cursor:pointer;
+  font:500 .84rem/1 Inter,sans-serif;transition:.25s var(--ease)}
+.f:hover{border-color:var(--vert);color:var(--vert)}
+/* Au doigt, une pastille de 31 px de haut se rate une fois sur deux.
+   Les recommandations tactiles demandent 44 px ; sous 760 px on y
+   vient par le padding, sans changer la taille du texte.          */
+/* 900 px et non 760 : une tablette en portrait fait 768 px de
+   large et se touche au doigt comme un telephone. */
+@media(max-width:900px){.f{padding:13px 17px}}
+.f[aria-pressed="true"]{background:var(--vert);border-color:var(--vert);color:var(--craie)}
+.nb{font:500 .8rem/1 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--plomb);white-space:nowrap}
+
+/* ---- la liste des textes : etiquette Type - Poids ---------------- */
+.liste{border-top:1px solid var(--gris-chaud);margin-bottom:clamp(44px,5vw,70px)}
+.ligne{display:flex;align-items:center;justify-content:space-between;gap:18px;
+  width:100%;text-align:left;background:transparent;border:0;cursor:pointer;
+  padding:14px 4px;border-bottom:1px solid var(--gris-chaud);
+  transition:background .25s;font-family:inherit}
+.ligne:hover{background:var(--brume)}
+.ligne .etq{display:block;font:500 .73rem/1 Inter,sans-serif;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--terre);margin-bottom:5px}
+.ligne h3{margin:0;font-size:1rem;color:var(--encre);line-height:1.35}
+.ligne mark{background:var(--sable);color:inherit;border-radius:3px;padding:0 2px}
+.ligne .tag{flex:none;font:500 .76rem/1 Inter,sans-serif;color:var(--plomb);
+  background:var(--brume);border-radius:999px;padding:6px 12px}
+.ligne:hover .tag{background:var(--craie)}
+@media(max-width:560px){.ligne .tag{display:none}}
+.rien{padding:38px 4px;color:var(--plomb)}
+
+/* ---- le lecteur -------------------------------------------------- */
+.jauge{position:fixed;top:0;left:0;height:3px;width:0;z-index:120;
+  background:var(--vert);transition:width .15s linear}
+.lect{position:fixed;inset:0;z-index:100;background:var(--craie2);
+  overflow-y:auto;display:none}
+.lect.on{display:block}
+.lbar{position:sticky;top:0;z-index:2;background:var(--craie2);
+  border-bottom:1px solid var(--gris-chaud)}
+.lbar .in{max-width:var(--max);margin:0 auto;padding:14px clamp(20px,4vw,48px);
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.lbar .ti{flex:1;min-width:0;font-weight:600;color:var(--encre);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bt2{border:1px solid var(--vert);background:transparent;color:var(--vert);
+  border-radius:999px;padding:9px 17px;cursor:pointer;
+  font:500 .86rem/1 Inter,sans-serif;transition:background .25s,color .25s}
+.bt2:hover{background:var(--vert);color:var(--craie)}
+.zoom{display:flex;gap:6px}
+.zoom button{border:1px solid var(--gris-chaud);background:var(--craie);
+  color:var(--plomb);border-radius:7px;width:36px;height:36px;cursor:pointer;
+  font:500 .86rem/1 Inter,sans-serif}
+.zoom button:hover{border-color:var(--vert);color:var(--vert)}
+.art{--tp:1.22rem;max-width:68ch;margin:0 auto;
+  padding:clamp(30px,4vw,54px) clamp(20px,4vw,48px) clamp(70px,8vw,110px)}
+.art .th{font:500 .78rem/1 Inter,sans-serif;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--terre);margin-bottom:12px}
+.art h2{margin:0;font-size:clamp(1.6rem,3vw,2.1rem);color:var(--encre)}
+.art .sous{margin:10px 0 30px;font-size:.9rem;color:var(--plomb);
+  padding-bottom:22px;border-bottom:1px solid var(--gris-chaud)}
+.art p{font-size:var(--tp);line-height:1.75;margin:0 0 1.15em;color:var(--encre2)}
+.art p.cit{padding-left:20px;border-left:3px solid var(--sable);color:var(--vert)}
+.vr{color:var(--vert);border-bottom:1px dashed var(--vert-vif);cursor:help}
+.vc{position:fixed;z-index:110;max-width:380px;background:var(--encre);color:#fff;
+  border-radius:10px;padding:15px 17px;display:none;
+  box-shadow:0 14px 34px rgba(12,20,40,.3)}
+.vc.on{display:block}
+.vc b{display:block;font-size:.82rem;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--or);margin-bottom:7px}
+.vc i{display:block;font-style:italic;font-size:.95rem;line-height:1.55}
+.vc small{display:block;margin-top:9px;font-size:.74rem;color:rgba(255,255,255,.5)}
+.part{position:fixed;z-index:115;display:none;gap:8px}
+.part.on{display:flex}
+.part button{background:var(--encre);color:#fff;border:0;border-radius:999px;
+  padding:10px 17px;cursor:pointer;font:500 .84rem/1 Inter,sans-serif;
+  box-shadow:0 8px 22px rgba(12,20,40,.28)}
+.part button:hover{background:var(--vert)}
+
+/* ---- l'en-tete et le pied, comme sur l'accueil ------------------ */
+/* L'entete n'est JAMAIS transparente ici : .haut est un aplat de
+   parche avec du texte fonce, et ce texte passait sous le logo et
+   les liens du menu en defilant. Deux etats pleins, pas d'entre-deux. */
+.tete{background:var(--parche)}
+.tete.pose{background:#17223E;border-bottom:1px solid rgba(255,255,255,.16);
+  box-shadow:0 10px 28px rgba(0,0,0,.28)}
+.tete.pose a,.tete.pose b,.tete.pose nav a{color:var(--craie)}
+.tete.pose .logo b span{color:rgba(255,255,255,.62)}
+.tete.pose .burger span,
+.tete.pose .burger span::before,
+.tete.pose .burger span::after{background:var(--craie)}
+.tete{transition:background .4s var(--ease),opacity .35s var(--ease),transform .35s var(--ease)}
+.tete.efface{opacity:0;transform:translateY(-100%);pointer-events:none}
+
+.bt{display:inline-flex;align-items:center;gap:10px;border-radius:999px;
+  padding:15px 26px;font:500 .95rem/1 Inter,sans-serif;white-space:nowrap;
+  transition:transform .3s var(--ease),background .25s,color .25s}
+.bt span{transition:transform .3s var(--ease)}
+.bt:hover span{transform:translateX(4px)}
+.bt-clair{background:var(--craie);color:var(--encre)}
+
+.pied-neuf{background:var(--encre);color:var(--craie);padding:clamp(56px,6vw,88px) 0 30px}
+.appel{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  background:rgba(255,255,255,.07);border-radius:10px;
+  padding:clamp(16px,1.8vw,22px) clamp(18px,2.2vw,28px);margin-bottom:clamp(40px,5vw,66px)}
+.appel p{margin:0;font-size:.98rem;color:rgba(255,255,255,.88);max-width:62ch}
+.appel .bt{padding:13px 22px;font-size:.9rem}
+.corps{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.92fr);
+  gap:clamp(30px,5vw,80px);padding-bottom:clamp(36px,4vw,56px)}
+@media(max-width:860px){.corps{grid-template-columns:1fr}}
+.colonnes{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(20px,3vw,46px)}
+@media(max-width:460px){.colonnes{grid-template-columns:1fr}}
+.colonnes a{display:block;padding:7px 0;font-size:.95rem;color:rgba(255,255,255,.72);
+  transition:color .25s,transform .25s var(--ease)}
+.colonnes a:hover{color:var(--craie);transform:translateX(4px)}
+.lettre p{margin:0 0 16px;font-size:.95rem;line-height:1.6;color:rgba(255,255,255,.76);max-width:44ch}
+.lettre form{display:flex;flex-direction:column;gap:10px;max-width:420px}
+.lettre input{background:rgba(255,255,255,.07);color:var(--craie);
+  border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:15px 18px;
+  font:400 .95rem/1 Inter,sans-serif;outline:0;transition:border-color .3s}
+.lettre input::placeholder{color:rgba(255,255,255,.45)}
+.lettre input:focus{border-color:rgba(255,255,255,.55)}
+.lettre button{border:0;border-radius:6px;padding:15px 18px;cursor:pointer;
+  background:rgba(255,255,255,.14);color:var(--craie);
+  font:500 .95rem/1 Inter,sans-serif;transition:background .25s}
+.lettre button:hover{background:rgba(255,255,255,.24)}
+.lettre .note{margin:12px 0 0;font-size:.79rem;color:rgba(255,255,255,.45)}
+.pied-neuf .bas{padding-top:26px;border-top:1px solid rgba(255,255,255,.14)}
+.reseaux{list-style:none;margin:0 0 20px;padding:0;display:flex;flex-wrap:wrap;gap:18px}
+.reseaux a{display:grid;place-items:center;width:44px;height:44px;
+  margin:-9px;
+  color:rgba(255,255,255,.55);transition:color .25s,transform .25s var(--ease)}
+.reseaux a:hover{color:var(--craie);transform:translateY(-2px)}
+.reseaux svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;
+  stroke-linecap:round;stroke-linejoin:round}
+.droits{margin:0;font-size:.82rem;color:rgba(255,255,255,.45)}
+</style>
+</head>
+<body>
+
+<div class="jauge" id="jauge"></div>
+<header class="tete clair" id="entete"></header>
+
+<section class="haut">
+  <div class="wrap">
+    <figure class="banniere">
+      <img src="images/h-rayonnage.jpg" alt="Un rayonnage d'ouvrages rangés">
+    </figure>
+    <div class="sur">Le socle doctrinal</div>
+    <h1>Enseignements</h1>
+    <p class="accroche">Ce que le ministère a écrit, et que l'on garde.</p>
+    <p class="intro">Les enseignements du ministère sont ses écrits. Ils se présentent sous
+    deux formes : le livre, qui traite une question sur toute son étendue, et le traité,
+    qui en reprend un point sous une forme plus courte.</p>
+  </div>
+</section>
+
+<div class="wrap">
+
+  <section class="bloc">
+    <h2 class="t2">Par forme</h2>
+    <p class="quoi">Deux manières d'entrer dans le même corpus, selon le temps dont vous disposez.</p>
+    <div class="cartes">
+      <a class="ct b" href="traites.html">
+        <div>
+          <h3>Traités</h3>
+          <p>Une brochure courte sur un thème précis, reprise d'un livre sous une forme
+          plus simple à lire et à faire circuler.</p>
+        </div>
+        <span class="cpt" id="cpt-tr"></span>
+      </a>
+      <a class="ct d" href="livres.html">
+        <div>
+          <h3>Livres</h3>
+          <p>Une question de fond traitée sur toute son étendue : plusieurs parties,
+          les textes cités et expliqués un par un.</p>
+        </div>
+        <span class="cpt" id="cpt-lv"></span>
+      </a>
+    </div>
+  </section>
+
+  <section class="bloc">
+    <h2 class="t2">Les textes du ministère</h2>
+    <p class="quoi">Vingt-quatre textes retrouvés sur l'ancien site. Cinq correspondent à
+    un traité de la liste officielle et portent son numéro ; les dix-neuf autres n'y figurent
+    pas encore, le ministère reste à les classer. Cherchez par mot, ou filtrez par sujet.</p>
+
+    <div class="barre">
+      <label class="rech">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--vert)" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>
+        <input id="q" type="search" placeholder="Peut-on perdre le salut ?" autocomplete="off"
+               aria-label="Chercher dans les textes">
+      </label>
+      <div class="fil" id="fil"></div>
+      <span class="nb" id="nb"></span>
+    </div>
+    <div class="liste" id="liste"></div>
+  </section>
+
+</div>
+
+<footer class="pied-neuf">
+  <div class="wrap">
+
+    <div class="appel">
+      <p>Tout ce que le ministère publie est en accès libre, et le restera.</p>
+      <a class="bt bt-clair" href="soutenir.html">Soutenir le MIGV <span>&rarr;</span></a>
+    </div>
+
+    <div class="corps">
+      <div class="colonnes">
+        <div>
+        <a href="enseignements.html">Enseignements</a>
+        <a href="traites.html">Traités</a>
+        <a href="livres.html">Livres</a>
+        <a href="collections.html">Collections</a>
+        <a href="dimanche.html">Le dimanche</a>
+        <a href="videos.html">Les vidéos</a>
+        </div>
+        <div>
+        <a href="actualites.html">Actualités</a>
+        <a href="histoire.html">Notre histoire</a>
+        <a href="biographie.html">Le fondateur</a>
+        <a href="contact.html">Nos assemblées</a>
+        <a href="soutenir.html">Nous soutenir</a>
+        <a href="contact.html">Nous écrire</a>
+        </div>
+      </div>
+      <div class="lettre">
+        <p>Recevez le résumé de la prédication du dimanche et son visuel,
+        une fois par semaine. Rien d'autre.</p>
+        <form onsubmit="return inscrire(event)">
+          <input id="courriel" type="email" placeholder="Adresse e-mail" required
+                 aria-label="Votre adresse e-mail">
+          <button type="submit">Abonnez-vous</button>
+        </form>
+        <p class="note" id="note">Formulaire de maquette : rien n'est encore envoyé.</p>
+      </div>
+    </div>
+
+    <div class="bas">
+      <ul class="reseaux">
+      <li><a href="#" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3Z"/><path d="M10 9.2 15 12l-5 2.8Z"/></svg></a></li>
+      <li><a href="#" aria-label="Facebook" title="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 21v-8h2.7l.5-3h-3.2V8.2c0-.9.3-1.5 1.6-1.5h1.7V4a22 22 0 0 0-2.5-.1c-2.5 0-4.2 1.5-4.2 4.3V10H8v3h3.1v8Z"/></svg></a></li>
+      <li><a href="#" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.1" cy="6.9" r=".9" fill="currentColor" stroke="none"/></svg></a></li>
+      <li><a href="#" aria-label="WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 0 0-7.3 12.8L3.5 20.5l4.4-1.1A8.5 8.5 0 1 0 12 3.5Z"/><path d="M9 9.4c.3-.7.6-.7.9-.7.3 0 .6.1.8.6l.5 1.2-.7.8c.5 1 1.3 1.8 2.3 2.3l.8-.7 1.2.5c.5.2.6.5.6.8 0 .3 0 .6-.7.9-.8.3-2 .2-3.5-.8a9 9 0 0 1-2.6-3c-.5-1-.4-1.5-.3-1.9Z"/></svg></a></li>
+      <li><a href="#" aria-label="TikTok" title="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.3 3.2v10.9a3.4 3.4 0 1 1-2.9-3.4"/><path d="M14.3 3.2a4.6 4.6 0 0 0 4.4 4.3"/></svg></a></li>
+      <li><a href="#" aria-label="Podcast" title="Podcast"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9.2" y="2.8" width="5.6" height="10.4" rx="2.8"/><path d="M5.6 11.2a6.4 6.4 0 0 0 12.8 0M12 17.6V21"/></svg></a></li>
+      </ul>
+      <p class="droits">&copy; 2026 Ministère International Grâce et Vérité. Tous droits réservés.</p>
+    </div>
+
+  </div>
+</footer>
+
+<div class="lect" id="lect">
+  <div class="lbar"><div class="in">
+    <button class="bt2" id="fermer">&larr; Retour</button>
+    <span class="ti" id="lti"></span>
+    <div class="zoom"><button id="moins" aria-label="Réduire le texte">A&minus;</button><button id="plus" aria-label="Agrandir le texte">A+</button></div>
+    <button class="bt2" id="voix">Écouter</button>
+  </div></div>
+  <article class="art" id="lart"></article>
+</div>
+<div class="vc" id="vc"></div>
+<div class="part" id="part"><button id="pimg">Créer un visuel</button><button id="pcop">Copier</button></div>
+
+<script src="donnees.js?v=17"></script>
+<script src="ressources.js?v=2"></script>
+<script src="commun.js?v=19"></script>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+let DATA=DATA_ENSEIGNEMENTS,VERSETS=DATA_VERSETS,fam='Tous',taille=1.22;
+const THEMES=[...new Set(DATA.map(x=>x.theme))].sort();
+const mn=d=>Math.max(1,Math.round(d.mots/200));
+
+function filtres(){
+  $('#fil').innerHTML=['Tous',...THEMES].map(t=>`<button class="f" data-t="${t}" aria-pressed="${t===fam}">${t}</button>`).join('');
+  $$('.f').forEach(b=>b.onclick=()=>{fam=b.dataset.t;filtres();rendre()});
+}
+const norm=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+function surl(t,q){if(!q||q.length<2)return t;let o=t;
+  q.split(/\s+/).filter(m=>m.length>2).forEach(m=>{o=o.replace(new RegExp('('+m.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<mark>$1</mark>')});return o}
+const REF=/((?:[1-3]\s?)?(?:Gn|Ex|Lv|Nb|Dt|Jos|Jg|Rt|Sam|Rois|Ch|Esd|Ne|Est|Jb|Ps|Pr|Ec|Ct|Es|Jr|Lm|Ez|Dan|Os|Jl|Am|Ab|Jon|Mi|Na|Ha|So|Ag|Za|Ml|Mt|Mc|Lc|Jn|Ac|Rom|Cor|Gal|Ep|Ph|Col|Th|Tim|Tit|Phm|Hb|Jc|Pi|Jude|Ap|Hé|Héb)\.?\s?\d{1,3}\s?[:.]\s?\d{1,3}(?:\s?-\s?\d{1,3})?)/g;
+
+function rendre(){
+  const q=norm($('#q').value.trim());
+  let r=DATA.filter(d=>fam==='Tous'||d.theme===fam);
+  if(q.length>1){const mots=q.split(/\s+/).filter(m=>m.length>2);
+    r=r.map(d=>{const h=norm(d.titre+' '+d.theme+' '+d.paras.join(' '));let sc=0;
+      mots.forEach(m=>{if(norm(d.titre).includes(m))sc+=14;sc+=h.split(m).length-1});return{...d,sc}})
+      .filter(d=>d.sc>0).sort((a,b)=>b.sc-a.sc)}
+  $('#nb').textContent=r.length+(r.length>1?' textes':' texte');
+  const L=$('#liste');
+  if(!r.length){L.innerHTML='<div class="rien">Aucun texte ne répond à cette question. Essayez « salut », « alliance » ou « royaume ».</div>';return}
+  /* L'ETIQUETTE : le type, puis le poids. C'est elle qui remplace les
+     paragraphes qui definissaient ce qu'est un traite ou un livre. */
+  L.innerHTML=r.map(d=>{
+    /* Si ce texte est l'un des traites de la liste du pasteur, c'est son
+       numero qui s'affiche : l'etiquette dit alors ce que l'objet EST,
+       et non la rubrique ou il se trouve. */
+    const tr=(typeof TRAITES!=='undefined') ? TRAITES.find(t=>t.txt===d.id) : null;
+    const etq=tr ? 'Traité n° '+tr.n+' &middot; '+mn(d)+' min de lecture'
+                 : 'Texte &middot; '+mn(d)+' min de lecture';
+    return `<button class="ligne" data-id="${d.id}">
+    <span><span class="etq">${etq}</span>
+    <h3>${surl(d.titre,q)}</h3></span>
+    <span class="tag">${d.theme}</span></button>`}).join('');
+  $$('.ligne').forEach(b=>b.onclick=()=>ouvrir(b.dataset.id));
+}
+$('#q').addEventListener('input',rendre);
+
+function ouvrir(id){
+  const d=DATA.find(x=>x.id===id);if(!d)return;
+  $('#lti').textContent=d.titre;
+  $('#lart').innerHTML=`<div class="th">Enseignement &middot; ${mn(d)} min de lecture</div><h2>${d.titre}</h2>
+    <div class="sous">Docteur Théodore Nettaud GUEU. ${d.mots} mots. Sujet : ${d.theme}.</div>
+    ${d.paras.map(p=>`<p class="${/^[«"\u201c]/.test(p.trim())?'cit':''}">${p.replace(REF,'<span class="vr" data-r="$1">$1</span>')}</p>`).join('')}`;
+  $('#lect').classList.add('on');$('#lect').scrollTop=0;document.body.style.overflow='hidden';
+  brancher();
+}
+$('#fermer').onclick=()=>{$('#lect').classList.remove('on');document.body.style.overflow='';
+  speechSynthesis.cancel();parle=false;$('#voix').textContent='Écouter';$('#jauge').style.width='0'};
+$('#lect').addEventListener('scroll',e=>{const el=e.target,h=el.scrollHeight-el.clientHeight;
+  $('#jauge').style.width=(h>0?el.scrollTop/h*100:0)+'%'});
+
+$('#plus').onclick=()=>{taille=Math.min(1.7,taille+.11);$('#lart').style.setProperty('--tp',taille+'rem')};
+$('#moins').onclick=()=>{taille=Math.max(.98,taille-.11);$('#lart').style.setProperty('--tp',taille+'rem')};
+
+function brancher(){
+  $$('.vr').forEach(el=>{
+    const show=()=>{const k=el.dataset.r.replace(/\s+/g,' ').trim();let t=VERSETS[k];
+      if(!t){const n=k.replace(/[.\s]/g,'').toLowerCase();
+        for(const key in VERSETS)if(key.replace(/[.\s]/g,'').toLowerCase()===n){t=VERSETS[key];break}}
+      const c=$('#vc');
+      c.innerHTML=`<b>${el.dataset.r}</b><i>${t?('« '+t+' »'):'Verset absent du corpus récupéré.'}</i><small>Louis Segond 1910, domaine public</small>`;
+      c.classList.add('on');const r=el.getBoundingClientRect();
+      c.style.left=Math.max(14,Math.min(r.left,innerWidth-396))+'px';c.style.top=(r.bottom+12)+'px'};
+    el.onmouseenter=show;el.onclick=ev=>{ev.stopPropagation();show()};
+    el.onmouseleave=()=>$('#vc').classList.remove('on');
+  });
+}
+document.addEventListener('click',e=>{if(!e.target.closest('.vr'))$('#vc').classList.remove('on')});
+
+let sel='';
+document.addEventListener('selectionchange',()=>{
+  const s=getSelection(),t=s.toString().trim(),p=$('#part');
+  if(t.length>18&&t.length<340&&$('#lect').classList.contains('on')){
+    sel=t;const r=s.getRangeAt(0).getBoundingClientRect();
+    p.style.left=Math.max(14,Math.min(r.left+r.width/2-110,innerWidth-240))+'px';
+    p.style.top=Math.max(14,r.top-58)+'px';p.classList.add('on');
+  }else p.classList.remove('on');
+});
+$('#pcop').onclick=()=>{navigator.clipboard?.writeText(sel+' (Dr Théodore Nettaud GUEU, MIGV)');$('#part').classList.remove('on')};
+$('#pimg').onclick=()=>{alert('Génération du visuel PNG à la charte MIGV');$('#part').classList.remove('on')};
+
+let parle=false;
+$('#voix').onclick=()=>{
+  if(parle){speechSynthesis.cancel();parle=false;$('#voix').textContent='Écouter';return}
+  const u=new SpeechSynthesisUtterance($('#lart').innerText);u.lang='fr-FR';u.rate=.95;
+  u.onend=()=>{parle=false;$('#voix').textContent='Écouter'};
+  speechSynthesis.speak(u);parle=true;$('#voix').textContent='Arrêter';
+};
+
+/* les comptes des deux cartes sont calcules, jamais ecrits a la main */
+document.getElementById('cpt-tr').textContent=TRAITES.length+' traités';
+document.getElementById('cpt-lv').textContent=LIVRES.length+' livres';
+
+filtres(); rendre();
+
+/* commun.js saute volontairement un entete marque "clair" : la page
+   decide elle-meme quand il se pose. */
+var tete=document.querySelector('.tete'),
+    pied=document.querySelector('.pied-neuf'),
+    haut=document.querySelector('.haut');
+function poser(){
+  var h=haut.offsetHeight-90;
+  tete.classList.toggle('clair', scrollY < h);
+  tete.classList.toggle('pose',  scrollY >= h);
+}
+addEventListener('scroll', poser, {passive:true});
+addEventListener('resize', poser, {passive:true});
+poser();
+new IntersectionObserver(function(es){
+  tete.classList.toggle('efface', es[0].isIntersecting);
+},{rootMargin:'0px 0px -88% 0px'}).observe(pied);
+
+function inscrire(e){
+  e.preventDefault();
+  document.getElementById('note').textContent=
+    'Merci. Le formulaire sera relié dès la mise en ligne.';
+  return false;
+}
+
+window.__ens={get n(){return $$('.ligne').length},ouvrir};
+</script>
+</body>
+</html>

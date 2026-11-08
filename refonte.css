@@ -1,0 +1,249 @@
+/* ===================================================================
+   LE SYSTEME DE LA REFONTE.
+
+   Les pages refondues partageaient jusqu'ici le meme bloc de CSS,
+   recopie dans chacune. Il avait deja commence a diverger d'une page a
+   l'autre (46 lignes ici, 35 la). Il n'existe plus qu'ici.
+
+   Une page refondue charge, dans cet ordre :
+       style.css      le site d'origine (grilles, entete, pied #pied)
+       refonte.css    ce fichier : les regles communes a la refonte
+       <style>        ce qui n'appartient qu'a cette page-la
+
+   L'ordre compte : refonte.css neutralise plusieurs regles de
+   style.css (les titres en capitales, la famille serif).
+   =================================================================== */
+
+/* --- 1. les couleurs et les mesures --------------------------------
+   Nommees par la matiere, pas par l'usage : "parche" reste parche
+   quel que soit l'endroit ou on la pose.                            */
+:root{
+  /* --dom est la couleur dominante de style.css. Sans valeur, elle
+     retombe sur #0024D8, le bleu electrique d'origine. Il ne se
+     voyait plus qu'a trois endroits, mais il s'y voyait bien :
+     le trait sous le lien actif du menu, la bordure basse du
+     menu mobile ouvert, et les boutons de la carte sous 820 px.
+     Une seule ligne les ramene tous les trois dans la palette. */
+  --dom:#264D54;
+
+  --encre:#0C1428;        /* le bleu profond des titres et du pied   */
+  --encre2:#1B1B1B;       /* le noir du texte courant                */
+  --parche:#F6EEE2;       /* le fond chaud des en-tetes de page      */
+  --craie:#FFFFFF;
+  --craie2:#FFF9F3;
+  --brume:#EBF3F2;        /* le fond des cartes au repos             */
+  --sable:#EADCC0;        /* le fond des cartes actives              */
+  --gris-chaud:#EDECEB;
+  --vert:#264D54;         /* la couleur d'action                     */
+  --vert-vif:#3A7781;
+  --terre:#72573A;        /* les surtitres et les etiquettes         */
+  --or:#93CDDD;
+  --plomb:#5B5B5B;        /* le texte secondaire                     */
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --max:1100px;
+
+  /* Cinq teintes d'accent, pour que des series de cartes ne se
+     ressemblent pas toutes. Elles remplacent les --t1..--t5 de
+     style.css, qui etaient bleu, indigo et bleu nuit.
+     Toutes assez foncees pour porter du texte blanc ET pour etre
+     lisibles en texte sur fond blanc.                            */
+  --a1:#264D54;   /* vert profond  */
+  --a2:#72573A;   /* terre         */
+  --a3:#8A5E00;   /* or fonce      */
+  --a4:#7A3B2E;   /* terre cuite   */
+  --a5:#2F6670;   /* sarcelle      */
+}
+
+/* --- 2. la base ----------------------------------------------------
+   style.css impose une serif et des capitales sur h3/h4 pour tout le
+   site. Les deux sont annules ici, sinon ils reviennent par surprise
+   sur le titre d'une carte.                                         */
+body{background:var(--craie);color:var(--encre2);
+  font-family:Inter,system-ui,sans-serif;font-weight:400;line-height:1.65}
+h1,h2,h3,h4,h5{font-family:inherit;text-transform:none;
+  font-weight:600;letter-spacing:-.022em;line-height:1.2}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 clamp(20px,4vw,48px)}
+
+/* --- 3. l'en-tete de page ------------------------------------------
+   .banniere : figure a une marge laterale de 40px par defaut dans les
+   navigateurs. Elle est remise a zero ici, sinon la photo deborde la
+   page de 80px.
+
+   La hauteur : une banniere en 1,7 faisait 647 px de haut sur un
+   ecran de bureau, soit les deux tiers de la fenetre avant le premier
+   mot. En 2,7 elle fait 400 px : elle pose le sujet sans retarder la
+   lecture. Sur telephone, ou la largeur est petite, un cadre trop
+   plat ne montrerait plus rien : il se redresse a 1,9.           */
+.banniere{width:100%;aspect-ratio:2.7;border-radius:12px;overflow:hidden;
+  margin:0 0 clamp(22px,2.6vw,32px);background:var(--gris-chaud)}
+.banniere img{width:100%;height:100%;object-fit:cover;display:block}
+@media(max-width:860px){.banniere{aspect-ratio:2.2}}
+@media(max-width:620px){.banniere{aspect-ratio:1.9}}
+
+.haut{background:var(--parche);padding:clamp(96px,10vw,128px) 0 clamp(34px,4.2vw,50px)}
+.fil{margin:0 0 13px;font-size:.88rem;color:var(--plomb)}
+.fil a{color:var(--vert)}
+.haut h1{margin:0;font-size:clamp(1.9rem,3.4vw,2.5rem);color:var(--encre)}
+.haut .accroche{margin:9px 0 0;font-size:1.1rem;color:var(--terre)}
+.haut .intro{margin:16px 0 0;max-width:62ch;color:var(--plomb)}
+
+/* --- 4. les blocs de la page --------------------------------------- */
+h2.t2{margin:0 0 4px;font-size:1.5rem;color:var(--encre)}
+
+/* ATTENTION, PIEGE. .bloc se pose souvent sur le MEME element que
+   .wrap : <div class="wrap bloc">. Ecrire ici « padding: 36px 0 0 »
+   remettrait a ZERO le padding lateral de .wrap, et tout le bloc
+   viendrait se coller au bord de la fenetre, decale d'une
+   quarantaine de pixels par rapport au titre de la page juste
+   au-dessus. C'est exactement le defaut qui avait ete signale.
+   D'ou padding-top, qui ne touche qu'un seul cote.               */
+.bloc{padding-top:clamp(36px,4.4vw,56px)}
+.bloc .quoi{margin:0 0 clamp(18px,2.2vw,26px);color:var(--plomb);max-width:64ch}
+.pastille{display:inline-flex;align-items:center;gap:9px;margin-top:18px;
+  background:var(--vert);color:var(--craie);border-radius:999px;
+  padding:9px 18px;font:500 .86rem/1 Inter,sans-serif}
+
+/* --- 5. l'entete fixe ----------------------------------------------
+   JAMAIS TRANSPARENTE SUR CES PAGES.
+
+   Elle l'etait, et c'etait un defaut : .haut est un aplat de parche
+   avec du texte fonce dessus. En defilant, ce texte passait SOUS une
+   entete transparente, et le logo et les liens du menu se melaient
+   aux phrases. Illisible.
+
+   Sur l'accueil cela fonctionne, parce que l'entete y repose sur une
+   photographie plein cadre ; index.html garde donc ses propres
+   regles. Ici, deux etats pleins et aucun entre-deux :
+     par defaut   parche, la couleur meme de .haut : on ne la voit pas
+     .pose        encre, une fois .haut depassee.
+   commun.js ne pose pas une entete marquee "clair" : c'est poser(),
+   dans refonte.js, qui s'en charge.                               */
+.tete{background:var(--parche)}
+.tete.pose{background:var(--encre);border-bottom:1px solid rgba(255,255,255,.16);
+  box-shadow:0 10px 28px rgba(0,0,0,.28)}
+.tete.pose a,.tete.pose b,.tete.pose nav a{color:var(--craie)}
+.tete.pose .logo b span{color:rgba(255,255,255,.62)}
+.tete.pose .burger span,
+.tete.pose .burger span::before,
+.tete.pose .burger span::after{background:var(--craie)}
+.tete{transition:background .4s var(--ease),opacity .35s var(--ease),transform .35s var(--ease)}
+.tete.efface{opacity:0;transform:translateY(-100%);pointer-events:none}
+
+/* --- 6. les boutons ------------------------------------------------ */
+.bt{display:inline-flex;align-items:center;gap:10px;border-radius:999px;
+  padding:14px 24px;font:500 .93rem/1 Inter,sans-serif;white-space:nowrap;
+  transition:transform .3s var(--ease),background .25s,color .25s}
+.bt span{transition:transform .3s var(--ease)}
+.bt:hover span{transform:translateX(4px)}
+.bt-clair{background:var(--craie);color:var(--encre)}
+.bt-plein{background:var(--vert);color:var(--craie)}
+.bt-plein:hover{background:var(--vert-vif)}
+.bt-vide{border:1px solid var(--vert);color:var(--vert)}
+.bt-vide:hover{background:var(--vert);color:var(--craie)}
+
+/* --- 6 bis. les cartes en eventail ----------------------------------
+   Reprises de l'ancienne page Contact, qui etait plus vivante que ce
+   qui l'avait remplacee : chaque carte porte sa propre teinte, elle
+   est legerement inclinee, et elle se redresse en se remplissant au
+   survol. Au clic (ou au doigt), elle s'enfonce : --actif donne la
+   reponse tactile que .bt n'a pas.
+
+   La teinte et l'inclinaison viennent de deux variables posees sur
+   la carte elle-meme, --c et --r : le CSS ne connait pas le nombre
+   de cartes et n'a pas a le connaitre.
+
+   UNE GRILLE, PAS UN FLEX. En flex, des que la derniere carte ne
+   tient plus sur la ligne, elle part seule en dessous et s'etire sur
+   toute la largeur : l'eventail se casse. La grille repartit les
+   cartes en colonnes egales et la derniere ligne reste alignee sur
+   les precedentes.                                                 */
+.fan{display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));
+  gap:clamp(10px,1.4vw,18px)}
+.fc{min-height:238px;display:flex;flex-direction:column;gap:10px;
+  background:var(--craie2);border:2px solid var(--c,var(--a1));border-radius:12px;
+  padding:clamp(18px,2vw,24px);color:inherit;
+  transform:rotate(var(--r,0deg)) translateY(var(--y,0px));
+  transform-origin:bottom center;
+  transition:transform .45s var(--ease),background .35s var(--ease),
+             color .35s var(--ease),box-shadow .35s var(--ease)}
+.fc:hover,.fc:focus-visible{transform:rotate(0deg) translateY(-12px);
+  background:var(--c,var(--a1));color:var(--craie);z-index:3;
+  box-shadow:0 16px 34px rgba(12,20,40,.18);outline:0}
+.fc:active{transform:rotate(0deg) translateY(-2px) scale(.985);
+  box-shadow:0 6px 14px rgba(12,20,40,.2)}
+.fc .n{font:700 2.6rem/.8 Inter,sans-serif;letter-spacing:-.05em;
+  color:transparent;-webkit-text-stroke:2px var(--c,var(--a1));
+  transition:-webkit-text-stroke-color .35s}
+.fc:hover .n{-webkit-text-stroke-color:rgba(255,255,255,.85)}
+.fc .ic{font:500 .72rem/1 Inter,sans-serif;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--c,var(--a1));transition:color .35s}
+.fc:hover .ic{color:rgba(255,255,255,.8)}
+.fc h3{margin:auto 0 0;font-size:1.05rem;color:var(--encre);transition:color .35s}
+.fc:hover h3{color:var(--craie)}
+.fc p{margin:0;font-size:.93rem;color:var(--plomb);transition:color .35s}
+.fc:hover p{color:rgba(255,255,255,.82)}
+.fc .go{font:600 .85rem/1 Inter,sans-serif;color:var(--c,var(--a1));
+  display:inline-flex;align-items:center;gap:8px;transition:color .35s}
+.fc:hover .go{color:var(--craie)}
+.fc .go span{transition:transform .35s var(--ease)}
+.fc:hover .go span{transform:translateX(6px)}
+
+/* Un ecran tactile n'a pas de survol : l'inclinaison resterait
+   figee et la carte ne repondrait jamais. Sous 620 px on les
+   redresse toutes. */
+@media(max-width:620px){
+  .fc{transform:none;min-height:0}
+  .fc:hover{transform:translateY(-4px)}
+}
+/* Et pour qui demande moins de mouvement, aucune inclinaison. */
+@media(prefers-reduced-motion:reduce){
+  .fc,.fc:hover,.fc:active{transform:none}
+}
+
+/* --- 7. le pied ----------------------------------------------------
+   Le balisage est ecrit par refonte.js, pas recopie dans chaque page. */
+.pied-neuf{background:var(--encre);color:var(--craie);padding:clamp(56px,6vw,88px) 0 30px}
+.appel{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  background:rgba(255,255,255,.07);border-radius:10px;
+  padding:clamp(16px,1.8vw,22px) clamp(18px,2.2vw,28px);margin-bottom:clamp(40px,5vw,66px)}
+.appel p{margin:0;font-size:.98rem;color:rgba(255,255,255,.88);max-width:62ch}
+.appel .bt{padding:13px 22px;font-size:.9rem}
+.corps{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.92fr);
+  gap:clamp(30px,5vw,80px);padding-bottom:clamp(36px,4vw,56px)}
+@media(max-width:860px){.corps{grid-template-columns:1fr}}
+.colonnes{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(20px,3vw,46px)}
+@media(max-width:460px){.colonnes{grid-template-columns:1fr}}
+.colonnes a{display:block;padding:7px 0;font-size:.95rem;color:rgba(255,255,255,.72);
+  transition:color .25s,transform .25s var(--ease)}
+.colonnes a:hover{color:var(--craie);transform:translateX(4px)}
+.lettre p{margin:0 0 16px;font-size:.95rem;line-height:1.6;color:rgba(255,255,255,.76);max-width:44ch}
+.lettre form{display:flex;flex-direction:column;gap:10px;max-width:420px}
+.lettre input{background:rgba(255,255,255,.07);color:var(--craie);
+  border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:15px 18px;
+  font:400 .95rem/1 Inter,sans-serif;outline:0;transition:border-color .3s}
+.lettre input::placeholder{color:rgba(255,255,255,.45)}
+.lettre input:focus{border-color:rgba(255,255,255,.55)}
+.lettre button{border:0;border-radius:6px;padding:15px 18px;cursor:pointer;
+  background:rgba(255,255,255,.14);color:var(--craie);
+  font:500 .95rem/1 Inter,sans-serif;transition:background .25s}
+.lettre button:hover{background:rgba(255,255,255,.24)}
+.lettre .note{margin:12px 0 0;font-size:.79rem;color:rgba(255,255,255,.45)}
+.pied-neuf .bas{padding-top:26px;border-top:1px solid rgba(255,255,255,.14)}
+.reseaux{list-style:none;margin:0 0 20px;padding:0;display:flex;flex-wrap:wrap;gap:18px}
+.reseaux a{display:grid;place-items:center;width:44px;height:44px;
+  margin:-9px;
+  color:rgba(255,255,255,.55);transition:color .25s,transform .25s var(--ease)}
+.reseaux a:hover{color:var(--craie);transform:translateY(-2px)}
+.reseaux svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;
+  stroke-linecap:round;stroke-linejoin:round}
+.droits{margin:0;font-size:.82rem;color:rgba(255,255,255,.45)}
+
+/* --- 8. un etat vide honnete ---------------------------------------
+   Quand une rubrique n'a pas encore de contenu, elle le dit, au lieu
+   d'afficher des exemples inventes qu'un visiteur prendrait pour des
+   faits.                                                            */
+.vide-net{background:var(--brume);border-radius:12px;
+  padding:clamp(32px,4vw,52px) clamp(24px,3vw,44px);max-width:64ch}
+.vide-net h3{margin:0 0 10px;font-size:1.18rem;color:var(--encre)}
+.vide-net p{margin:0 0 12px;color:var(--plomb)}
+.vide-net p:last-child{margin-bottom:0}

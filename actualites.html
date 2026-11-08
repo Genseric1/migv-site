@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<!-- Maquette en relecture. robots.txt demande aux moteurs de ne pas
+     parcourir le site ; cette balise leur demande en plus de ne pas
+     indexer la page, meme s'ils l'atteignent par un lien. A retirer
+     le jour de la vraie mise en ligne. -->
+<title>Actualités · MIGV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=18">
+<link rel="stylesheet" href="refonte.css?v=5">
+<style>
+/* ===================================================================
+   ACTUALITES.
+
+   ATTENTION, LECTURE IMPORTANTE.
+
+   Cette page contenait six actualites datees et situees : un seminaire
+   a Bouake, l'ouverture d'une assemblee a Senoufla, une retraite a
+   Yamoussoukro, des baptemes a Danane... Aucune ne venait du
+   ministere. Elles avaient ete ecrites pour remplir la page.
+
+   Un visiteur n'a aucun moyen de distinguer un exemple d'un fait. Une
+   fausse date de bapteme sur le site d'une eglise, c'est une fausse
+   nouvelle signee du ministere. Elles ont donc ete retirees.
+
+   La mecanique, elle, est restee : des que le ministere transmettra
+   de vraies actualites, il suffira de remplir le tableau EVT plus bas
+   et la page se construira toute seule.
+
+   Le fond degrade bleu electrique (#0024D8) dessine au canvas a lui
+   aussi disparu : il n'appartenait a aucune palette du site.
+   =================================================================== */
+
+/* --- les filtres par genre ----------------------------------------- */
+.genres{display:flex;flex-wrap:wrap;gap:9px;margin:clamp(28px,3.4vw,42px) 0 clamp(22px,2.6vw,32px)}
+.g{border:1px solid rgba(12,20,40,.16);background:var(--craie);color:var(--encre2);
+  border-radius:999px;padding:9px 17px;cursor:pointer;
+  font:500 .86rem/1 Inter,sans-serif;transition:background .25s,color .25s,border-color .25s}
+.g:hover{border-color:var(--vert)}
+.g[aria-pressed="true"]{background:var(--encre);color:var(--craie);border-color:var(--encre)}
+
+/* --- l'actualite mise en avant -------------------------------------- */
+.une{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:clamp(22px,3vw,44px);align-items:center;
+  background:var(--brume);border-radius:12px;overflow:hidden;
+  margin-bottom:clamp(30px,3.6vw,46px)}
+@media(max-width:820px){.une{grid-template-columns:1fr}}
+.une .im{aspect-ratio:1.3;background:var(--gris-chaud)}
+.une .im img{width:100%;height:100%;object-fit:cover;display:block}
+.une .tx{padding:clamp(22px,3vw,38px);padding-left:0}
+@media(max-width:820px){.une .tx{padding-left:clamp(22px,3vw,38px)}}
+.tag{display:inline-block;font:500 .73rem/1 Inter,sans-serif;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--terre);margin-bottom:9px}
+.une h2{margin:0;font-size:clamp(1.3rem,2.2vw,1.65rem);color:var(--encre)}
+.dt{margin-top:9px;font-size:.88rem;color:var(--plomb)}
+.une p{margin:14px 0 18px;color:var(--plomb);max-width:52ch}
+
+/* --- le fil ---------------------------------------------------------
+   Une ligne par evenement. La date a gauche, le titre au milieu, le
+   lieu a droite : on balaie la colonne des dates sans lire le reste. */
+.fil-actu{border-top:1px solid rgba(12,20,40,.12);
+  margin-bottom:clamp(50px,6vw,90px)}
+.ev{display:grid;grid-template-columns:150px minmax(0,1fr) auto;
+  gap:18px;align-items:baseline;padding:20px 0;
+  border-bottom:1px solid rgba(12,20,40,.12);color:inherit}
+@media(max-width:700px){.ev{grid-template-columns:1fr;gap:5px}}
+.ev .qd{font:500 .78rem/1.4 Inter,sans-serif;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--terre)}
+.ev h3{margin:0;font-size:1.04rem;color:var(--encre)}
+.ev .ou{font-size:.86rem;color:var(--plomb);white-space:nowrap}
+.ev p{margin:6px 0 0;grid-column:2;color:var(--plomb);font-size:.95rem;max-width:62ch}
+@media(max-width:700px){.ev p{grid-column:1}}
+
+/* --- ce qui est publie en attendant --------------------------------- */
+.ailleurs{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:clamp(14px,1.8vw,22px);margin-top:clamp(24px,3vw,36px)}
+.al{display:block;background:var(--sable);border-radius:12px;padding:22px 21px;
+  color:inherit;transition:transform .35s var(--ease)}
+.al:hover{transform:translateY(-4px)}
+.al b{display:block;font-weight:600;font-size:1.05rem;color:var(--encre);margin-bottom:6px}
+.al span{font-size:.93rem;color:var(--terre)}
+</style>
+</head>
+<body>
+
+<header class="tete clair" id="entete"></header>
+
+<section class="haut">
+  <div class="wrap">
+    <figure class="banniere">
+      <img src="images/h-lumiere.jpg" width="615" height="540"
+           alt="La lumière d'une fenêtre posée sur un sol carrelé">
+    </figure>
+    <p class="fil"><a href="index.html">Accueil</a> &rsaquo; Actualités</p>
+    <h1>Actualités</h1>
+    <p class="accroche">La vie du ministère, mois après mois.</p>
+    <p class="intro">Séminaires, conférences, retraites, baptêmes, visites dans les
+    assemblées : ce que le Ministère International Grâce et Vérité vit sur le terrain.</p>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="genres" id="genres"></div>
+  <div id="une"></div>
+  <div class="fil-actu" id="fil"></div>
+</div>
+
+<footer class="pied-neuf"></footer>
+
+<script src="ressources.js?v=2"></script>
+<script src="commun.js?v=19"></script>
+<script src="refonte.js?v=2"></script>
+<script>
+/* ===================================================================
+   LES ACTUALITES.
+
+   EVT est vide, et c'est voulu : le ministere ne nous a transmis
+   aucune actualite a ce jour. Tant qu'il est vide, la page affiche un
+   etat d'attente qui le dit clairement.
+
+   POUR PUBLIER UNE ACTUALITE, ajouter une ligne dans EVT. La plus
+   recente se met en haut. Les champs :
+
+     d   : la date, au format AAAA-MM-JJ
+     t   : le titre
+     g   : le genre. Il alimente les filtres tout seul : un genre
+           nouveau cree son bouton sans qu'on touche au code.
+     l   : le lieu
+     r   : le compte rendu, en deux ou trois phrases
+     img : une photographie (facultatif). Sans elle, la mise en avant
+           s'affiche sans image plutot qu'avec un fond invente.
+     une : true pour la mettre en avant en haut de page
+
+   Exemple de ligne, a decommenter et a corriger avec de VRAIES
+   informations :
+
+     {d:'2026-07-19', t:"Séminaire sur l'alliance à Bouaké",
+      g:'Séminaire', l:'Bouaké',
+      r:"Trois jours d'enseignement sur les deux testaments.",
+      une:true}
+   =================================================================== */
+const EVT = [];
+
+const joli = function(s){
+  const d = new Date(s+'T00:00:00Z');
+  return d.getUTCDate()+' '+MOIS[d.getUTCMonth()].toLowerCase()+' '+d.getUTCFullYear();
+};
+
+let genre = 'Tout';
+
+function genres(){
+  const boite = document.querySelector('#genres');
+  if(!EVT.length){ boite.innerHTML=''; return }
+  /* Set supprime les doublons : chaque genre n'apparait qu'une fois,
+     quel que soit le nombre d'evenements qui le portent. */
+  const g = ['Tout', ...new Set(EVT.map(e=>e.g))];
+  boite.innerHTML = g.map(function(t){
+    return '<button class="g" data-g="'+t+'" aria-pressed="'+(t===genre)+'">'+t+'</button>';
+  }).join('');
+  document.querySelectorAll('.g').forEach(function(b){
+    b.onclick = function(){ genre=b.dataset.g; genres(); rendre() };
+  });
+}
+
+function attente(){
+  return '<div class="vide-net">'
+    + '<h3>Aucune actualité publiée pour l\'instant</h3>'
+    + '<p>Cette page attend les comptes rendus du ministère : les séminaires, les '
+    + 'conférences, les retraites, les baptêmes et les visites dans les assemblées. '
+    + 'Elle restera vide tant qu\'ils ne nous auront pas été transmis.</p>'
+    + '<p>Nous préférons une page vide à des exemples inventés, qu\'un visiteur '
+    + 'prendrait pour des faits.</p>'
+    + '</div>'
+    + '<div class="ailleurs">'
+    + '<a class="al" href="dimanche.html"><b>Le dimanche</b>'
+    +   '<span>Le résumé de la prédication de la semaine &rarr;</span></a>'
+    + '<a class="al" href="videos.html"><b>Les vidéos</b>'
+    +   '<span>Les enseignements filmés &rarr;</span></a>'
+    + '<a class="al" href="enseignements.html"><b>Les enseignements</b>'
+    +   '<span>Les traités et les livres &rarr;</span></a>'
+    + '</div>';
+}
+
+function rendre(){
+  const U = document.querySelector('#une'), F = document.querySelector('#fil');
+
+  if(!EVT.length){ U.innerHTML = attente(); F.innerHTML=''; return }
+
+  const liste = EVT.filter(e => genre==='Tout' || e.g===genre);
+  if(!liste.length){
+    U.innerHTML = '<div class="vide-net"><h3>Rien dans cette catégorie</h3>'
+                + '<p>Choisissez un autre genre ci-dessus.</p></div>';
+    F.innerHTML=''; return;
+  }
+
+  const une = liste.find(e=>e.une) || liste[0];
+  U.innerHTML = '<div class="une">'
+    + (une.img ? '<div class="im"><img src="'+une.img+'" alt=""></div>' : '')
+    + '<div class="tx"'+(une.img?'':' style="padding-left:clamp(22px,3vw,38px)"')+'>'
+    +   '<span class="tag">'+echapper(une.g)+'</span>'
+    +   '<h2>'+echapper(une.t)+'</h2>'
+    +   '<div class="dt">'+joli(une.d)+' &middot; '+echapper(une.l)+'</div>'
+    +   '<p>'+echapper(une.r)+'</p>'
+    + '</div></div>';
+
+  /* le reste du fil : tout sauf celle qui est deja en haut */
+  F.innerHTML = liste.filter(e=>e!==une).map(function(e){
+    return '<div class="ev">'
+      + '<div class="qd">'+joli(e.d)+'</div>'
+      + '<h3>'+echapper(e.t)+'</h3>'
+      + '<div class="ou">'+echapper(e.l)+'</div>'
+      + '<p>'+echapper(e.r)+'</p>'
+      + '</div>';
+  }).join('');
+}
+
+genres(); rendre();
+</script>
+</body>
+</html>

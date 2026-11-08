@@ -1,0 +1,13 @@
+# Maquette du site du Ministere International Grace et Verite.
+#
+# Cette version n'est pas le site definitif. Elle est en ligne pour
+# etre relue, pas pour etre trouvee : plusieurs informations restent
+# a confirmer par le ministere, et elles ne doivent pas remonter dans
+# un moteur de recherche au nom du MIGV avant de l'avoir ete.
+#
+# Le jour de la vraie mise en ligne, remplacer les deux lignes
+# ci-dessous par :   User-agent: *
+#                    Allow: /
+
+User-agent: *
+Disallow: /

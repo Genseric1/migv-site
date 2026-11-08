@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<!-- Maquette en relecture. robots.txt demande aux moteurs de ne pas
+     parcourir le site ; cette balise leur demande en plus de ne pas
+     indexer la page, meme s'ils l'atteignent par un lien. A retirer
+     le jour de la vraie mise en ligne. -->
+<title>Collection · MIGV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=18">
+<style>
+/* ===================================================================
+   UNE COLLECTION : UN SUJET, ET TOUT CE QUI LE PORTE.
+
+   Le sujet arrive dans l'adresse : collection.html?t=Le%20salut
+
+   DEUX AFFICHAGES, UN SEUL CODE.
+   Si le sujet possede un champ "parties" dans ressources.js, la page
+   deroule ces parties, et dans chaque partie les types se melangent :
+   des textes, puis une video, puis d'autres textes. C'est le parcours.
+   Tant que ce champ n'existe pas, la page se rabat sur un regroupement
+   par type, qui reste utile et qui ne ment pas. Rien a reecrire le jour
+   ou les parties arriveront : il suffira de les ajouter aux donnees.
+   =================================================================== */
+:root{
+  /* --dom est la couleur dominante de style.css. Sans valeur, elle
+     retombe sur #0024D8, le bleu electrique d'origine. Il ne se
+     voyait plus qu'a trois endroits, mais il s'y voyait bien :
+     le trait sous le lien actif du menu, la bordure basse du
+     menu mobile ouvert, et les boutons de la carte sous 820 px.
+     Une seule ligne les ramene tous les trois dans la palette. */
+  --dom:#264D54;
+
+  --encre:#0C1428; --encre2:#1B1B1B;
+  --parche:#F6EEE2; --craie:#FFFFFF; --craie2:#FFF9F3;
+  --brume:#EBF3F2; --sable:#EADCC0; --gris-chaud:#EDECEB;
+  --vert:#264D54; --vert-vif:#3A7781; --terre:#72573A;
+  --or:#93CDDD; --plomb:#5B5B5B;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --max:900px;
+}
+body{background:var(--craie);color:var(--encre2);
+  font-family:Inter,system-ui,sans-serif;font-weight:400;line-height:1.65}
+h1,h2,h3,h4,h5{font-family:inherit;text-transform:none;
+  font-weight:600;letter-spacing:-.022em;line-height:1.2}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 clamp(20px,4vw,44px)}
+
+.bande{display:flex;gap:8px;height:clamp(110px,13vw,180px);overflow:hidden;
+  margin-bottom:clamp(24px,3vw,34px)}
+.bande img{height:100%;width:auto;display:block;border-radius:9px;
+  object-fit:cover;flex:none}
+@media(max-width:560px){.bande{height:92px}}
+
+.haut{background:var(--parche);padding:clamp(96px,10vw,124px) 0 clamp(30px,3.6vw,44px)}
+.fil{margin:0 0 13px;font-size:.88rem;color:var(--plomb)}
+.fil a{color:var(--vert)}
+.haut h1{margin:0;font-size:clamp(1.9rem,3.4vw,2.5rem);color:var(--encre)}
+.haut .accroche{margin:8px 0 0;font-size:1.05rem;color:var(--terre)}
+
+h2.t2{margin:0 0 10px;font-size:1.5rem;color:var(--encre)}
+h3.sous{margin:0 0 6px;font-size:1.02rem;color:var(--encre)}
+.idee{padding:clamp(32px,4vw,48px) 0 0}
+.intro{margin:0;max-width:64ch;color:var(--plomb)}
+.aec{color:var(--plomb);font-style:italic}
+
+.partie{margin-top:clamp(34px,4.2vw,54px);padding-top:clamp(24px,2.8vw,34px);
+  border-top:2px solid var(--sable)}
+.num{display:block;font:600 .76rem/1 Inter,sans-serif;letter-spacing:.17em;
+  text-transform:uppercase;color:var(--terre);margin-bottom:9px}
+.bloc{margin-top:clamp(20px,2.4vw,28px)}
+.bloc .amorce{margin:0 0 10px;font-size:.95rem;color:var(--plomb);max-width:64ch}
+
+.objets{border-top:1px solid var(--gris-chaud)}
+.obj{display:flex;align-items:center;gap:16px;padding:14px 4px;color:inherit;
+  border-bottom:1px solid var(--gris-chaud);transition:background .25s}
+.obj:hover{background:var(--brume)}
+.obj .vign{flex:none;width:88px;aspect-ratio:16/9;border-radius:6px;
+  background:var(--gris-chaud);overflow:hidden}
+.obj .vign.papier{aspect-ratio:3/4;width:48px;background:var(--sable)}
+.obj .vign img{width:100%;height:100%;object-fit:cover;display:block}
+.obj .corps{min-width:0}
+/* L'ETIQUETTE : le type, puis le poids. Jamais une definition. */
+.etq{display:block;font:500 .73rem/1 Inter,sans-serif;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--terre);margin-bottom:5px}
+.obj h4{margin:0;font-size:1rem;font-weight:600;letter-spacing:-.012em;
+  color:var(--encre);line-height:1.35}
+.vide{padding:15px 4px;border-bottom:1px solid var(--gris-chaud);
+  color:var(--plomb);font-size:.92rem}
+.loin{margin-top:clamp(34px,4.2vw,54px);padding-top:clamp(24px,2.8vw,34px);
+  border-top:2px solid var(--sable);margin-bottom:clamp(48px,5.6vw,80px)}
+
+/* ---- le lecteur video -------------------------------------------- */
+.lecteur{position:fixed;inset:0;z-index:90;background:rgba(12,20,40,.9);
+  display:none;place-items:center;padding:clamp(16px,4vw,40px)}
+.lecteur.on{display:grid}
+.lecteur .boite{width:min(1000px,100%)}
+.lecteur .rap{position:relative;aspect-ratio:16/9;background:#000;
+  border-radius:10px;overflow:hidden}
+.lecteur iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.lecteur .tt{display:flex;align-items:center;justify-content:space-between;
+  gap:18px;flex-wrap:wrap;margin-top:14px}
+.lecteur h3{margin:0;color:#fff;font-size:1.04rem}
+.ferme{background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:999px;
+  padding:11px 20px;cursor:pointer;font:500 .88rem/1 Inter,sans-serif;
+  transition:background .25s}
+.ferme:hover{background:rgba(255,255,255,.26)}
+
+/* ---- l'en-tete et le pied, comme sur l'accueil ------------------ */
+/* L'entete n'est JAMAIS transparente ici : .haut est un aplat de
+   parche avec du texte fonce, et ce texte passait sous le logo et
+   les liens du menu en defilant. Deux etats pleins, pas d'entre-deux. */
+.tete{background:var(--parche)}
+.tete.pose{background:#17223E;border-bottom:1px solid rgba(255,255,255,.16);
+  box-shadow:0 10px 28px rgba(0,0,0,.28)}
+.tete.pose a,.tete.pose b,.tete.pose nav a{color:var(--craie)}
+.tete.pose .logo b span{color:rgba(255,255,255,.62)}
+.tete.pose .burger span,
+.tete.pose .burger span::before,
+.tete.pose .burger span::after{background:var(--craie)}
+.tete{transition:background .4s var(--ease),opacity .35s var(--ease),transform .35s var(--ease)}
+.tete.efface{opacity:0;transform:translateY(-100%);pointer-events:none}
+
+.bt{display:inline-flex;align-items:center;gap:10px;border-radius:999px;
+  padding:15px 26px;font:500 .95rem/1 Inter,sans-serif;white-space:nowrap;
+  transition:transform .3s var(--ease),background .25s,color .25s}
+.bt span{transition:transform .3s var(--ease)}
+.bt:hover span{transform:translateX(4px)}
+.bt-clair{background:var(--craie);color:var(--encre)}
+
+.pied-neuf{background:var(--encre);color:var(--craie);padding:clamp(56px,6vw,88px) 0 30px}
+.appel{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  background:rgba(255,255,255,.07);border-radius:10px;
+  padding:clamp(16px,1.8vw,22px) clamp(18px,2.2vw,28px);margin-bottom:clamp(40px,5vw,66px)}
+.appel p{margin:0;font-size:.98rem;color:rgba(255,255,255,.88);max-width:62ch}
+.appel .bt{padding:13px 22px;font-size:.9rem}
+.corps{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.92fr);
+  gap:clamp(30px,5vw,80px);padding-bottom:clamp(36px,4vw,56px)}
+@media(max-width:860px){.corps{grid-template-columns:1fr}}
+.colonnes{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(20px,3vw,46px)}
+@media(max-width:460px){.colonnes{grid-template-columns:1fr}}
+.colonnes a{display:block;padding:7px 0;font-size:.95rem;color:rgba(255,255,255,.72);
+  transition:color .25s,transform .25s var(--ease)}
+.colonnes a:hover{color:var(--craie);transform:translateX(4px)}
+.lettre p{margin:0 0 16px;font-size:.95rem;line-height:1.6;color:rgba(255,255,255,.76);max-width:44ch}
+.lettre form{display:flex;flex-direction:column;gap:10px;max-width:420px}
+.lettre input{background:rgba(255,255,255,.07);color:var(--craie);
+  border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:15px 18px;
+  font:400 .95rem/1 Inter,sans-serif;outline:0;transition:border-color .3s}
+.lettre input::placeholder{color:rgba(255,255,255,.45)}
+.lettre input:focus{border-color:rgba(255,255,255,.55)}
+.lettre button{border:0;border-radius:6px;padding:15px 18px;cursor:pointer;
+  background:rgba(255,255,255,.14);color:var(--craie);
+  font:500 .95rem/1 Inter,sans-serif;transition:background .25s}
+.lettre button:hover{background:rgba(255,255,255,.24)}
+.lettre .note{margin:12px 0 0;font-size:.79rem;color:rgba(255,255,255,.45)}
+.pied-neuf .bas{padding-top:26px;border-top:1px solid rgba(255,255,255,.14)}
+.reseaux{list-style:none;margin:0 0 20px;padding:0;display:flex;flex-wrap:wrap;gap:18px}
+.reseaux a{display:grid;place-items:center;width:44px;height:44px;
+  margin:-9px;
+  color:rgba(255,255,255,.55);transition:color .25s,transform .25s var(--ease)}
+.reseaux a:hover{color:var(--craie);transform:translateY(-2px)}
+.reseaux svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;
+  stroke-linecap:round;stroke-linejoin:round}
+.droits{margin:0;font-size:.82rem;color:rgba(255,255,255,.45)}
+</style>
+</head>
+<body>
+
+<header class="tete clair" id="entete"></header>
+
+<section class="haut">
+  <div class="wrap">
+    <div class="bande" id="bande" aria-hidden="true"></div>
+    <p class="fil"><a href="collections.html">Collections</a></p>
+    <h1 id="titre"></h1>
+    <p class="accroche" id="accroche"></p>
+  </div>
+</section>
+
+<div class="wrap" id="corps"></div>
+
+<footer class="pied-neuf">
+  <div class="wrap">
+
+    <div class="appel">
+      <p>Tout ce que le ministère publie est en accès libre, et le restera.</p>
+      <a class="bt bt-clair" href="soutenir.html">Soutenir le MIGV <span>&rarr;</span></a>
+    </div>
+
+    <div class="corps">
+      <div class="colonnes">
+        <div>
+        <a href="enseignements.html">Enseignements</a>
+        <a href="traites.html">Traités</a>
+        <a href="livres.html">Livres</a>
+        <a href="collections.html">Collections</a>
+        <a href="dimanche.html">Le dimanche</a>
+        <a href="videos.html">Les vidéos</a>
+        </div>
+        <div>
+        <a href="actualites.html">Actualités</a>
+        <a href="histoire.html">Notre histoire</a>
+        <a href="biographie.html">Le fondateur</a>
+        <a href="contact.html">Nos assemblées</a>
+        <a href="soutenir.html">Nous soutenir</a>
+        <a href="contact.html">Nous écrire</a>
+        </div>
+      </div>
+      <div class="lettre">
+        <p>Recevez le résumé de la prédication du dimanche et son visuel,
+        une fois par semaine. Rien d'autre.</p>
+        <form onsubmit="return inscrire(event)">
+          <input id="courriel" type="email" placeholder="Adresse e-mail" required
+                 aria-label="Votre adresse e-mail">
+          <button type="submit">Abonnez-vous</button>
+        </form>
+        <p class="note" id="note">Formulaire de maquette : rien n'est encore envoyé.</p>
+      </div>
+    </div>
+
+    <div class="bas">
+      <ul class="reseaux">
+      <li><a href="#" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3Z"/><path d="M10 9.2 15 12l-5 2.8Z"/></svg></a></li>
+      <li><a href="#" aria-label="Facebook" title="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 21v-8h2.7l.5-3h-3.2V8.2c0-.9.3-1.5 1.6-1.5h1.7V4a22 22 0 0 0-2.5-.1c-2.5 0-4.2 1.5-4.2 4.3V10H8v3h3.1v8Z"/></svg></a></li>
+      <li><a href="#" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.1" cy="6.9" r=".9" fill="currentColor" stroke="none"/></svg></a></li>
+      <li><a href="#" aria-label="WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 0 0-7.3 12.8L3.5 20.5l4.4-1.1A8.5 8.5 0 1 0 12 3.5Z"/><path d="M9 9.4c.3-.7.6-.7.9-.7.3 0 .6.1.8.6l.5 1.2-.7.8c.5 1 1.3 1.8 2.3 2.3l.8-.7 1.2.5c.5.2.6.5.6.8 0 .3 0 .6-.7.9-.8.3-2 .2-3.5-.8a9 9 0 0 1-2.6-3c-.5-1-.4-1.5-.3-1.9Z"/></svg></a></li>
+      <li><a href="#" aria-label="TikTok" title="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.3 3.2v10.9a3.4 3.4 0 1 1-2.9-3.4"/><path d="M14.3 3.2a4.6 4.6 0 0 0 4.4 4.3"/></svg></a></li>
+      <li><a href="#" aria-label="Podcast" title="Podcast"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9.2" y="2.8" width="5.6" height="10.4" rx="2.8"/><path d="M5.6 11.2a6.4 6.4 0 0 0 12.8 0M12 17.6V21"/></svg></a></li>
+      </ul>
+      <p class="droits">&copy; 2026 Ministère International Grâce et Vérité. Tous droits réservés.</p>
+    </div>
+
+  </div>
+</footer>
+
+<div class="lecteur" id="lecteur"><div class="boite">
+  <div class="rap" id="rap"></div>
+  <div class="tt"><h3 id="ltit"></h3><button class="ferme" id="lferme">Fermer</button></div>
+</div></div>
+
+<script src="donnees.js?v=17"></script>
+<script src="ressources.js?v=1"></script>
+<script src="commun.js?v=19"></script>
+<script>
+/* --- quel sujet ? ------------------------------------------------- */
+var demande=new URLSearchParams(location.search).get('t');
+var sujet=SUJETS.find(s=>s.n===demande) || SUJETS[0];
+
+document.title=sujet.n+' · Collections · MIGV';
+document.getElementById('titre').textContent=sujet.n;
+document.getElementById('accroche').textContent=sujet.ligne;
+
+/* la bande du haut : l'image du sujet, puis les vignettes de ses videos,
+   puis d'autres photographies pour remplir la ligne. */
+(function bande(){
+  var v=VIDS.filter(x=>x.s===sujet.n).map(vignetteVideo);
+  var p=['h-lumiere','h-mains-pages','h-chaises','h-rayonnage','h-carnet','h-brochures']
+        .filter(n=>n!==sujet.img).map(n=>'images/'+n+'.jpg');
+  var src=['images/'+sujet.img+'.jpg'].concat(v).concat(p).slice(0,6);
+  document.getElementById('bande').innerHTML=
+    src.map(u=>'<img loading="lazy" decoding="async" src="'+u+'" alt="">').join('');
+})();
+
+/* --- les objets du sujet, tous types confondus -------------------- */
+var textes=DATA_ENSEIGNEMENTS.filter(d=>d.theme===sujet.n);
+var videos=VIDS.filter(x=>x.s===sujet.n);
+
+function ligneTexte(d){
+  return '<a class="obj" href="enseignements.html#'+encodeURIComponent(d.id)+'">'
+   +'<span class="vign papier"></span><span class="corps">'
+   +'<span class="etq">Enseignement &middot; '+minutesTexte(d.mots)+' min de lecture</span>'
+   +'<h4>'+echapper(d.titre)+'</h4></span></a>';
+}
+function ligneVideo(v){
+  return '<a class="obj" href="#" data-i="'+VIDS.indexOf(v)+'">'
+   +'<span class="vign"><img loading="lazy" decoding="async" src="'+vignetteVideo(v)+'" alt=""></span>'
+   +'<span class="corps"><span class="etq">Vidéo &middot; '+echapper(v.d)+'</span>'
+   +'<h4>'+echapper(v.t)+'</h4></span></a>';
+}
+
+function blocObjets(titre,amorce,lignes){
+  if(!lignes.length) return '';
+  return '<div class="bloc"><h3 class="sous">'+titre+'</h3>'
+   +(amorce?'<p class="amorce aec">'+amorce+'</p>':'')
+   +'<div class="objets">'+lignes.join('')+'</div></div>';
+}
+
+var html='';
+
+/* L'IDEE : un paragraphe du ministere. Il n'existe pas encore, donc on
+   le marque comme tel au lieu d'inventer un resume du sujet. */
+html+='<section class="idee"><h2 class="t2">L\'idée</h2>'
+  +'<p class="intro aec">Un paragraphe du ministère : de quoi parle ce sujet, '
+  +'et pourquoi il compte. À écrire.</p></section>';
+
+if(sujet.parties && sujet.parties.length){
+  /* --- l'affichage en parties, le jour ou les donnees les portent --- */
+  sujet.parties.forEach(function(p,i){
+    html+='<section class="partie"><span class="num">Partie '+(i+1)+'</span>'
+      +'<h2 class="t2">'+echapper(p.titre)+'</h2>'
+      +(p.intro?'<p class="intro">'+echapper(p.intro)+'</p>':'');
+    html+=blocObjets('Enseignements', p.amorceTextes||'',
+      (p.textes||[]).map(id=>textes.find(d=>d.id===id)).filter(Boolean).map(ligneTexte));
+    html+=blocObjets('Vidéos associées', p.amorceVideos||'',
+      (p.videos||[]).map(id=>videos.find(v=>v.id===id)).filter(Boolean).map(ligneVideo));
+    html+='</section>';
+  });
+}else{
+  /* --- le repli : groupe par type, en attendant les parties --------- */
+  html+='<section class="partie">'
+    +'<h2 class="t2">Les ressources de ce sujet</h2>'
+    +'<p class="intro aec">Elles sont rangées par type en attendant que le ministère '
+    +'découpe ce sujet en parties. Quand ce sera fait, elles se mêleront : des textes, '
+    +'puis une vidéo, puis d\'autres textes, selon le parcours voulu.</p>';
+  html+=blocObjets('Enseignements','',textes.map(ligneTexte));
+  html+=blocObjets('Vidéos','',videos.map(ligneVideo));
+  if(!textes.length && !videos.length)
+    html+='<div class="bloc"><div class="objets"><p class="vide">'
+      +'Rien n\'est encore rattaché à ce sujet.</p></div></div>';
+  html+='</section>';
+}
+
+html+='<section class="loin"><h2 class="t2">Pour aller plus loin</h2>'
+  +'<div class="bloc"><div class="objets">'
+  +'<p class="vide">Les traités de ce sujet viendront ici, avec leur étiquette '
+  +'<strong>Traité &middot; N min de lecture</strong>.</p>'
+  +'<p class="vide">Les livres viendront ici, avec l\'étiquette '
+  +'<strong>Livre &middot; N parties</strong>.</p>'
+  +'</div></div></section>';
+
+document.getElementById('corps').innerHTML=html;
+
+/* --- le lecteur video --------------------------------------------- */
+function ouvrir(i){
+  var v=VIDS[i];
+  document.getElementById('rap').innerHTML=
+    '<iframe src="'+lienVideo(v)+'" allow="autoplay; encrypted-media" allowfullscreen'
+    +' title="'+echapper(v.t)+'"></iframe>';
+  document.getElementById('ltit').textContent=v.t;
+  document.getElementById('lecteur').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+document.querySelectorAll('[data-i]').forEach(function(a){
+  a.onclick=function(e){e.preventDefault();ouvrir(+a.dataset.i)};
+});
+function fermer(){
+  document.getElementById('lecteur').classList.remove('on');
+  document.getElementById('rap').innerHTML='';
+  document.body.style.overflow='';
+}
+document.getElementById('lferme').onclick=fermer;
+document.getElementById('lecteur').onclick=function(e){if(e.target.id==='lecteur')fermer()};
+addEventListener('keydown',function(e){if(e.key==='Escape')fermer()});
+
+var tete=document.querySelector('.tete'),
+    pied=document.querySelector('.pied-neuf'),
+    haut=document.querySelector('.haut');
+function poser(){
+  var h=haut.offsetHeight-90;
+  tete.classList.toggle('clair', scrollY < h);
+  tete.classList.toggle('pose',  scrollY >= h);
+}
+addEventListener('scroll', poser, {passive:true});
+addEventListener('resize', poser, {passive:true});
+poser();
+new IntersectionObserver(function(es){
+  tete.classList.toggle('efface', es[0].isIntersecting);
+},{rootMargin:'0px 0px -88% 0px'}).observe(pied);
+
+function inscrire(e){
+  e.preventDefault();
+  document.getElementById('note').textContent=
+    'Merci. Le formulaire sera relié dès la mise en ligne.';
+  return false;
+}
+</script>
+</body>
+</html>

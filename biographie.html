@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<!-- Maquette en relecture. robots.txt demande aux moteurs de ne pas
+     parcourir le site ; cette balise leur demande en plus de ne pas
+     indexer la page, meme s'ils l'atteignent par un lien. A retirer
+     le jour de la vraie mise en ligne. -->
+<title>Le fondateur · MIGV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=18">
+<link rel="stylesheet" href="refonte.css?v=5">
+<style>
+/* ===================================================================
+   LE FONDATEUR.
+
+   Cette page annoncait « Texte a fournir par le ministere ». Ce
+   n'etait plus vrai : la biographie est page 2 du dossier remis. Elle
+   est ici, telle quelle.
+
+   PARTAGE AVEC « NOTRE HISTOIRE ». Les deux pages viennent du meme
+   dossier mais ne racontent pas la meme chose, et ne se repetent pas :
+     histoire.html  l'appel de 1977, la mission de 1984, le recit ;
+     cette page     le parcours, les titres, les fonctions, l'oeuvre.
+   Chacune renvoie a l'autre plutot que de la recopier.
+
+   RESTE A FOURNIR : le portrait officiel. L'emplacement l'annonce
+   plutot que de mettre une silhouette generique a la place.
+   =================================================================== */
+
+/* padding-top seul : .fiche est sur le meme element que .wrap. */
+.fiche{display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);
+  gap:clamp(26px,4vw,64px);align-items:start;
+  padding-top:clamp(36px,4.4vw,56px)}
+@media(max-width:860px){.fiche{grid-template-columns:1fr}}
+
+/* le portrait, tant qu'il n'est pas la */
+.portrait{aspect-ratio:4/5;background:var(--brume);border-radius:12px;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:22px 21px;position:sticky;top:106px}
+@media(max-width:860px){.portrait{position:static;aspect-ratio:3/2}}
+.portrait b{font:500 .73rem/1 Inter,sans-serif;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--terre);margin-bottom:6px}
+.portrait span{font-size:.93rem;line-height:1.4;color:var(--plomb)}
+
+.texte p{margin:0;color:var(--plomb);max-width:62ch}
+.texte p + p{margin-top:15px}
+.texte strong{color:var(--encre2);font-weight:600}
+
+/* --- le parcours ----------------------------------------------------
+   Une ligne par etape, l'intitule a gauche, le lieu a droite.      */
+.parcours{border-top:1px solid rgba(12,20,40,.12);margin-top:clamp(26px,3vw,38px)}
+.pas{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;
+  align-items:baseline;padding:17px 0;border-bottom:1px solid rgba(12,20,40,.12)}
+@media(max-width:560px){.pas{grid-template-columns:1fr;gap:3px}}
+.pas b{font-weight:600;font-size:1.02rem;color:var(--encre)}
+.pas span{font-size:.89rem;color:var(--plomb);text-align:right}
+@media(max-width:560px){.pas span{text-align:left}}
+
+/* --- les fonctions --------------------------------------------------- */
+.fonctions{display:grid;grid-template-columns:repeat(auto-fit,minmax(236px,1fr));
+  gap:clamp(14px,1.8vw,22px)}
+.fo{background:var(--brume);border-radius:12px;padding:21px 20px}
+.fo b{display:block;font-weight:600;font-size:1rem;color:var(--encre);margin-bottom:6px}
+.fo span{font-size:.93rem;color:var(--plomb)}
+
+/* --- l'oeuvre -------------------------------------------------------- */
+.oeuvre{display:grid;grid-template-columns:repeat(auto-fit,minmax(248px,1fr));
+  gap:clamp(14px,1.8vw,22px);margin-bottom:clamp(50px,6vw,90px)}
+.ov{display:flex;flex-direction:column;justify-content:space-between;min-height:158px;
+  background:var(--sable);border-radius:12px;padding:22px 21px;color:inherit;
+  transition:transform .35s var(--ease)}
+.ov:hover{transform:translateY(-4px)}
+.ov .nb{font:600 2rem/1 Inter,sans-serif;letter-spacing:-.03em;color:var(--encre)}
+.ov h3{margin:5px 0 0;font-size:1.04rem;color:var(--encre)}
+.ov p{margin:6px 0 0;font-size:.93rem;color:var(--terre)}
+.ov .go{display:inline-flex;align-items:center;gap:8px;margin-top:16px;
+  font:600 .85rem/1 Inter,sans-serif;color:var(--vert)}
+.ov .go span{transition:transform .3s var(--ease)}
+.ov:hover .go span{transform:translateX(4px)}
+</style>
+</head>
+<body>
+
+<header class="tete clair" id="entete"></header>
+
+<section class="haut">
+  <div class="wrap">
+    <p class="fil"><a href="index.html">Accueil</a> &rsaquo;
+       <a href="histoire.html">Notre histoire</a> &rsaquo; Le fondateur</p>
+    <h1>Docteur Théodore Nettaud GUEU</h1>
+    <p class="accroche">Fondateur et responsable du Ministère International Grâce et Vérité.</p>
+  </div>
+</section>
+
+<div class="wrap fiche">
+  <div class="portrait">
+    <b>Photographie à venir</b>
+    <span>Le portrait officiel sera placé ici dès qu'il nous aura été transmis.</span>
+  </div>
+
+  <div class="texte">
+    <p>Appelé à quatorze ans, en 1977, à l'École Militaire Préparatoire et Technique
+    de Bingerville. Chargé en 1984 d'<strong>écrire des livres pour Dieu, afin
+    d'éclairer les nations à la lumière de l'Évangile</strong> : c'est de cette
+    parole que naît le ministère.
+    <a href="histoire.html" style="color:var(--vert)">Le récit de cet appel &rarr;</a></p>
+
+    <p>Sa formation est double, et cela s'entend dans sa manière d'enseigner : une
+    formation scientifique d'abord, une formation théologique ensuite. Les textes du
+    MIGV argumentent, citent et démontrent plutôt qu'ils n'exhortent.</p>
+
+    <p>Il est marié à <strong>Grace Mercy</strong>, dite Rita, secrétaire de
+    formation, aussi consacrée que lui au Seigneur Jésus.</p>
+
+    <div class="parcours">
+      <div class="pas"><b>Baccalauréat série D</b><span>1984</span></div>
+      <div class="pas"><b>Chimie, biologie et géologie, achevées en biochimie</b>
+        <span>À partir de 1984</span></div>
+      <div class="pas"><b>Théologie systématique et exégétique</b>
+        <span>Université de Théologie Biblique d'Abidjan</span></div>
+      <div class="pas"><b>Institut Biblique All Nations For Christ</b>
+        <span>Nigéria</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap bloc">
+  <h2 class="t2">Ses fonctions</h2>
+  <p class="quoi">Trois responsabilités, en Côte d'Ivoire et au-delà.</p>
+  <div class="fonctions">
+    <div class="fo"><b>Ministère International Grâce et Vérité</b>
+      <span>Il en est le fondateur et le responsable. Huit assemblées en Côte
+      d'Ivoire, d'Abidjan à Danané.</span></div>
+    <div class="fo"><b>Grace International Côte d'Ivoire</b>
+      <span>Il en est le coordonnateur. Le siège international est à Houston,
+      au Texas.</span></div>
+    <div class="fo"><b>Ligue pour la Lecture de la Bible</b>
+      <span>Membre du Conseil National de la LLB, en Côte d'Ivoire.</span></div>
+  </div>
+</div>
+
+<div class="wrap bloc">
+  <h2 class="t2">Son œuvre écrite</h2>
+  <p class="quoi">Tout est en accès libre et gratuit, en ligne et en PDF.</p>
+  <div class="oeuvre" id="oeuvre"></div>
+</div>
+
+<footer class="pied-neuf"></footer>
+
+<script src="ressources.js?v=2"></script>
+<script src="commun.js?v=19"></script>
+<script src="refonte.js?v=2"></script>
+<script>
+/* Les nombres sont comptes sur les listes, jamais ecrits a la main :
+   le jour ou un livre s'ajoute dans ressources.js, cette page se met
+   a jour toute seule. */
+document.getElementById('oeuvre').innerHTML =
+  '<a class="ov" href="livres.html">'
+  + '<div><div class="nb">' + LIVRES.length + '</div><h3>Livres</h3>'
+  + '<p>Une question de fond, traitée sur toute son étendue.</p></div>'
+  + '<span class="go">Voir la bibliographie <span>&rarr;</span></span></a>'
+  + '<a class="ov" href="traites.html">'
+  + '<div><div class="nb">' + TRAITES.length + '</div><h3>Traités</h3>'
+  + '<p>Une brochure courte sur un thème précis, tirée d\'un livre.</p></div>'
+  + '<span class="go">Voir la liste <span>&rarr;</span></span></a>'
+  + '<a class="ov" href="videos.html">'
+  + '<div><div class="nb">' + VIDS.length + '</div><h3>Vidéos</h3>'
+  + '<p>Les enseignements filmés.</p></div>'
+  + '<span class="go">Voir les vidéos <span>&rarr;</span></span></a>';
+</script>
+</body>
+</html>

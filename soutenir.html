@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<!-- Maquette en relecture. robots.txt demande aux moteurs de ne pas
+     parcourir le site ; cette balise leur demande en plus de ne pas
+     indexer la page, meme s'ils l'atteignent par un lien. A retirer
+     le jour de la vraie mise en ligne. -->
+<title>Nous soutenir · MIGV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=18">
+<link rel="stylesheet" href="refonte.css?v=5">
+<style>
+/* ===================================================================
+   NOUS SOUTENIR.
+
+   Le texte d'origine etait juste et il a ete garde presque mot pour
+   mot : il ne reclame rien, il explique. Ce qui a change, c'est la
+   forme : plus de titre coupe en deux par une italique grise, plus de
+   cinq teintes differentes pour quatre encadres, et la palette de
+   l'accueil a la place du bleu.
+
+   RESERVE : le dossier du ministere comporte un titre « NOUS
+   SOUTENIR » sans aucun contenu dessous. Les moyens de paiement
+   decrits ici (Orange Money, MTN MoMo, Wave) n'ont donc PAS ete
+   confirmes par le ministere, et aucun numero n'est affiche. Tant
+   qu'ils ne le sont pas, la page le dit.
+   =================================================================== */
+
+/* --- la position de depart ------------------------------------------
+   Une phrase a gauche, l'explication a droite. La phrase est le pivot
+   de la page : tout le reste en decoule.                            */
+/* padding-top/bottom, jamais le raccourci : .propos est pose sur le
+   meme element que .wrap, et « padding: 36px 0 30px » annulerait le
+   padding lateral de .wrap. Le bloc se decalerait alors vers la
+   gauche par rapport au titre juste au-dessus. */
+.propos{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);
+  gap:clamp(24px,4vw,60px);align-items:start;
+  padding-top:clamp(36px,4.4vw,56px);padding-bottom:clamp(30px,3.6vw,46px)}
+@media(max-width:860px){.propos{grid-template-columns:1fr}}
+.fort{margin:0;font-size:clamp(1.3rem,2.3vw,1.7rem);font-weight:600;
+  line-height:1.28;letter-spacing:-.022em;color:var(--encre);max-width:16ch}
+.propos p + p{margin-top:15px}
+.propos .texte p{margin:0;color:var(--plomb);max-width:62ch}
+.propos .texte p + p{margin-top:15px}
+.propos strong{color:var(--encre2);font-weight:600}
+
+/* --- a quoi cela sert -----------------------------------------------
+   Quatre depenses, quatre teintes. Le filet du haut et le numero
+   portent la couleur ; le fond reste clair, pour que les quatre
+   cartes se distinguent sans crier.                              */
+.usages{display:grid;grid-template-columns:repeat(auto-fit,minmax(222px,1fr));
+  gap:clamp(14px,1.8vw,22px)}
+.us{background:var(--craie2);border-radius:12px;padding:20px 21px 22px;
+  border-top:4px solid var(--c);transition:transform .35s var(--ease)}
+.us:hover{transform:translateY(-4px)}
+.pc{font:700 1.5rem/1 Inter,sans-serif;letter-spacing:-.04em;
+  color:var(--c);margin-bottom:10px}
+.us h3{margin:0 0 7px;font-size:1.05rem;color:var(--encre)}
+.us p{margin:0;font-size:.95rem;color:var(--plomb)}
+
+/* --- les trois manieres ---------------------------------------------
+   Des blocs, pas des boutons : rien ici n'est cliquable tant que les
+   coordonnees ne nous ont pas ete transmises. Un bouton qui ne fait
+   rien est une promesse non tenue.                                  */
+.moyens{display:grid;gap:clamp(12px,1.5vw,18px)}
+.mo{display:grid;grid-template-columns:168px minmax(0,1fr);gap:clamp(16px,2.4vw,34px);
+  background:var(--sable);border-radius:12px;padding:24px 23px;align-items:start}
+@media(max-width:680px){.mo{grid-template-columns:1fr;gap:10px}}
+.mo .ic{font:500 .73rem/1.4 Inter,sans-serif;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--terre)}
+.mo h3{margin:0 0 7px;font-size:1.08rem;color:var(--encre)}
+.mo p{margin:0;font-size:.97rem;color:var(--plomb);max-width:58ch}
+.mo .pas-encore{display:inline-block;margin-top:11px;
+  font:500 .78rem/1 Inter,sans-serif;color:var(--vert)}
+
+/* --- ce que nous ne ferons jamais ------------------------------------
+   C'etait un aplat d'encre, comme le pied juste en dessous : deux
+   grands rectangles bleu nuit l'un sur l'autre, la page finissait
+   dans une seule couleur. Il passe sur la terre, qui le detache du
+   pied sans lui retirer sa gravite.                               */
+.note{background:var(--a2);color:var(--craie);border-radius:12px;
+  padding:clamp(26px,3.4vw,44px);margin:clamp(30px,3.6vw,46px) 0 clamp(50px,6vw,90px)}
+.note h3{margin:0 0 12px;font-size:1.18rem;color:var(--craie)}
+.note p{margin:0;color:rgba(255,255,255,.84);max-width:68ch}
+</style>
+</head>
+<body>
+
+<header class="tete clair" id="entete"></header>
+
+<section class="haut">
+  <div class="wrap">
+    <figure class="banniere">
+      <img src="images/h-brochures.jpg" width="325" height="532"
+           alt="Une pile de traités imprimés posée sur une table">
+    </figure>
+    <p class="fil"><a href="index.html">Accueil</a> &rsaquo; Nous soutenir</p>
+    <h1>Nous soutenir</h1>
+    <p class="accroche">Participer, si vous le souhaitez.</p>
+    <p class="intro">Le Ministère International Grâce et Vérité enseigne, publie et
+    forme sans rien facturer. Ce qui rend cela possible se voit rarement.</p>
+  </div>
+</section>
+
+<div class="wrap propos">
+  <p class="fort">Tout ce que vous lisez ici est gratuit, et le restera.</p>
+  <div class="texte">
+    <p>Les enseignements, les traités, les livres, les résumés du dimanche, les
+    vidéos : rien n'est vendu, rien n'est réservé aux membres. C'est un choix, pas
+    une contrainte. Un texte qui explique l'Écriture ne devrait pas dépendre de la
+    capacité à payer.</p>
+    <p>Ce choix a un coût, modeste mais réel : l'impression des traités qu'on
+    distribue dans les rues, le carburant des déplacements entre les
+    <strong>huit assemblées</strong>, le matériel qui sert à filmer les prédications,
+    l'hébergement de ce site.</p>
+    <p>Nous ne lançons pas d'appel de fonds et nous ne demandons rien à personne.
+    Cette page existe simplement pour ceux qui voudraient participer et se demandent
+    comment.</p>
+  </div>
+</div>
+
+<div class="wrap bloc">
+  <h2 class="t2">À quoi cela sert</h2>
+  <p class="quoi">Quatre dépenses, les seules que le ministère engage pour ce qu'il publie.</p>
+  <div class="usages">
+    <div class="us" style="--c:var(--a1)"><div class="pc">01</div><h3>Imprimer</h3>
+    <p>Les traités sont distribués gratuitement. Chaque impression est un tirage
+    payé d'avance.</p></div>
+    <div class="us" style="--c:var(--a3)"><div class="pc">02</div><h3>Se déplacer</h3>
+    <p>Huit assemblées, d'Abidjan à Danané. Les visites pastorales se font en
+    voiture, sur la route.</p></div>
+    <div class="us" style="--c:var(--a4)"><div class="pc">03</div><h3>Filmer</h3>
+    <p>Un micro, une lumière, un trépied. De quoi rendre les enseignements audibles
+    et regardables.</p></div>
+    <div class="us" style="--c:var(--a5)"><div class="pc">04</div><h3>Publier</h3>
+    <p>Le site, son nom de domaine, et la mise en ligne des textes retrouvés dans
+    les archives.</p></div>
+  </div>
+</div>
+
+<div class="wrap bloc">
+  <h2 class="t2">Trois manières, toutes égales</h2>
+  <p class="quoi">La première ne coûte rien, et c'est celle qui fait le plus.</p>
+  <div class="moyens">
+
+    <div class="mo">
+      <span class="ic">Sans argent</span>
+      <div>
+        <h3>Partager un enseignement</h3>
+        <p>Envoyer un texte à quelqu'un pour qui il compterait. C'est ce qui fait le
+        plus pour le ministère, et cela ne coûte rien.</p>
+      </div>
+    </div>
+
+    <div class="mo">
+      <span class="ic">À distance</span>
+      <div>
+        <h3>Donner ponctuellement</h3>
+        <p>Par mobile money. Le montant n'a aucune importance et n'est jamais rendu
+        public.</p>
+        <span class="pas-encore">Les coordonnées seront publiées ici dès que le
+        ministère nous les aura transmises.</span>
+      </div>
+    </div>
+
+    <div class="mo">
+      <span class="ic">Sur place</span>
+      <div>
+        <h3>Remettre à l'assemblée</h3>
+        <p>Directement au responsable de votre assemblée, le dimanche.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="note">
+    <h3>Ce que nous ne ferons jamais</h3>
+    <p>Aucune somme n'est exigée pour recevoir un enseignement, entrer à un culte,
+    obtenir une prière ou être accueilli dans une assemblée. Personne ne sera relancé,
+    cité en exemple, ni classé selon ce qu'il donne. Si cette page vous met mal à
+    l'aise, refermez-la : le reste du site vous est ouvert exactement de la même façon.</p>
+  </div>
+</div>
+
+<footer class="pied-neuf"></footer>
+
+<script src="commun.js?v=19"></script>
+<script src="refonte.js?v=2"></script>
+</body>
+</html>

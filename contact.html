@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<!-- Maquette en relecture. robots.txt demande aux moteurs de ne pas
+     parcourir le site ; cette balise leur demande en plus de ne pas
+     indexer la page, meme s'ils l'atteignent par un lien. A retirer
+     le jour de la vraie mise en ligne. -->
+<title>Contact · MIGV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=18">
+<link rel="stylesheet" href="refonte.css?v=5">
+<style>
+/* ===================================================================
+   CONTACT ET ASSEMBLEES.
+
+   TROIS CORRECTIONS DE FOND par rapport a la version precedente.
+
+   1. La page proposait de « commander un livre ». Les livres ne sont
+      pas vendus (decision du 3 octobre 2026) : la phrase est fausse.
+
+   2. Les cinq cartes pointaient toutes vers « # », c'est-a-dire nulle
+      part. Elles ont de vrais liens, ou pas de lien du tout.
+
+      Au passage, une verification : l'audit du 28 juillet 2026
+      concluait que le domaine migv.ci n'etait plus enregistre. CE
+      N'EST PLUS VRAI. Au 8 novembre 2026, migv.ci resout vers
+      65.108.155.146, ses serveurs de noms sont ns1 et
+      ns2.safaricloud.africa, et il porte un enregistrement MX : le
+      courrier en @migv.ci est donc route. L'adresse est passee des
+      canaux a venir aux canaux ouverts.
+
+      A CONFIRMER : l'orthographe exacte de l'adresse. « contact@ »
+      vient de la recommandation de l'audit, pas du ministere.
+
+   3. Les canaux sont desormais separes en deux : CE QUI EXISTE, avec
+      les vrais liens, et CE QUI N'EXISTE PAS ENCORE, annonce comme
+      tel. Un visiteur ne doit jamais cliquer dans le vide.
+
+   Les chiffres d'abonnes ne sont pas affiches : ils changent chaque
+   semaine et n'apprennent rien a celui qui cherche a nous joindre.
+   =================================================================== */
+
+/* --- les canaux ouverts ---------------------------------------------
+   Les cartes en eventail de refonte.css (.fan / .fc) : inclinees,
+   chacune sa teinte, redressees et remplies au survol, enfoncees au
+   clic. C'etait la trouvaille de l'ancienne page, et c'est ce qui lui
+   donnait sa vie ; seules les couleurs changent, du bleu vers la
+   palette chaude.                                                  */
+.fan{margin-top:clamp(20px,2.6vw,30px);padding-bottom:16px}
+
+/* les canaux qui n'existent pas encore : meme carte, mais eteinte,
+   sans teinte propre et sans lien. On les montre pour annoncer, pas
+   pour faire croire. Elles ne bougent pas : il n'y a rien a y
+   atteindre.                                                      */
+/* .fixe : une carte qui porte une information, pas un lien. Elle
+   garde sa teinte et son inclinaison, mais elle ne se remplit pas au
+   survol : rien ne doit laisser croire qu'on peut cliquer. */
+.fc.fixe{cursor:default}
+.fc.fixe:hover{transform:rotate(var(--r)) translateY(var(--y));
+  background:var(--craie2);color:inherit;box-shadow:none}
+.fc.fixe:hover h3{color:var(--encre)}
+.fc.fixe:hover p{color:var(--plomb)}
+.fc.fixe:hover .ic,.fc.fixe:hover .go{color:var(--c)}
+.fc.fixe:hover .n{-webkit-text-stroke-color:var(--c)}
+.fc.fixe .go span{display:none}
+
+.fc.bientot{border-color:rgba(12,20,40,.18);background:var(--brume);
+  cursor:default;transform:none}
+.fc.bientot:hover{transform:none;background:var(--brume);color:inherit;box-shadow:none}
+.fc.bientot:hover h3{color:var(--encre)}
+.fc.bientot:hover p{color:var(--plomb)}
+.fc.bientot .ic,.fc.bientot:hover .ic{color:var(--plomb)}
+.fc.bientot .go,.fc.bientot:hover .go{color:var(--plomb);font-weight:500}
+
+/* --- la carte des assemblees -----------------------------------------
+   carteCI() vient de commun.js et dessine un SVG style par style.css,
+   dans les bleus d'origine. Les quelques regles ci-dessous le font
+   passer dans la palette de la refonte, sans toucher au trace.     */
+/* style.css encadre la carte d'un trait bleu electrique de 3 px
+   (--dom). C'est exactement le bleu dont la refonte se debarrasse. */
+.carte-hote{margin:clamp(24px,3vw,36px) 0 clamp(10px,1.4vw,18px);
+  border:1px solid rgba(12,20,40,.12);border-radius:12px;
+  background:var(--craie2);padding:clamp(12px,1.6vw,24px)}
+.carte-ci .pays{fill:var(--brume);stroke:var(--vert);stroke-width:3}
+.carte-ci .pt{fill:var(--vert);stroke:var(--craie)}
+.carte-ci .pt.siege{fill:var(--terre)}
+.carte-ci .halo{stroke:var(--vert)}
+.carte-ci .fleche{stroke:var(--vert)}
+.carte-ci .nom{font-family:Inter,system-ui,sans-serif;font-weight:600;fill:var(--encre)}
+.carte-ci .reg{font-family:Inter,system-ui,sans-serif;font-weight:500;fill:var(--plomb)}
+.carte-ci .past{font-family:Inter,system-ui,sans-serif;fill:var(--terre)}
+.carte-ci .lab:hover .nom,.carte-ci .lab.actif .nom{fill:var(--vert)}
+.carte-ci .lab.actif .reg{fill:var(--vert)}
+
+/* Sous 820 px, carteCI() cache les etiquettes du SVG (illisibles a
+   cette largeur) et affiche a la place des boutons .mb, eux aussi
+   bleus dans style.css. */
+.mb{border:1px solid rgba(12,20,40,.16);border-radius:999px;
+  background:var(--craie);color:var(--encre2);font-weight:500}
+.mb small{color:var(--plomb)}
+.mb em{color:var(--terre)}
+.mb.actif{background:var(--vert);color:var(--craie);border-color:var(--vert)}
+.mb.actif small,.mb.actif em{color:rgba(255,255,255,.75)}
+
+/* --- la liste des assemblees ----------------------------------------- */
+.villes{display:grid;grid-template-columns:repeat(auto-fill,minmax(236px,1fr));
+  gap:0;border-top:1px solid rgba(12,20,40,.12);
+  margin-bottom:clamp(50px,6vw,90px)}
+.vl{padding:19px 22px 19px 0;border-bottom:1px solid rgba(12,20,40,.12)}
+.vl .rg{font:500 .73rem/1 Inter,sans-serif;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--terre);margin-bottom:7px}
+.vl h4{margin:0 0 4px;font-size:1.04rem;color:var(--encre)}
+.vl p{margin:0;font-size:.92rem;color:var(--plomb)}
+</style>
+</head>
+<body>
+
+<header class="tete clair" id="entete"></header>
+
+<section class="haut">
+  <div class="wrap">
+    <figure class="banniere">
+      <img src="images/h-mains-pages.jpg" width="480" height="531"
+           alt="Deux mains tournant les pages d'une Bible ouverte">
+    </figure>
+    <p class="fil"><a href="index.html">Accueil</a> &rsaquo; Contact</p>
+    <h1>Venez comme vous êtes</h1>
+    <p class="accroche">Pour rejoindre une assemblée, ou poser une question.</p>
+    <p class="intro">Tout ce que le ministère publie est en accès libre : il n'y a
+    rien à commander. Écrivez-nous pour trouver l'assemblée la plus proche, demander
+    un enseignement, ou simplement poser une question.</p>
+  </div>
+</section>
+
+<div class="wrap bloc">
+  <h2 class="t2">Où nous trouver</h2>
+  <p class="quoi">Les canaux ouverts aujourd'hui.</p>
+  <div class="fan">
+
+    <a class="fc" style="--c:var(--a1);--r:-2.5deg;--y:8px"
+       href="https://www.facebook.com/people/Minist%C3%A8re-International-Gr%C3%A2ce-et-V%C3%A9rit%C3%A9-MIGV/100071823235173/"
+       target="_blank" rel="noopener">
+      <span class="n">01</span>
+      <span class="ic">Facebook</span>
+      <h3>La page du ministère</h3>
+      <p>Les directs, les annonces et les extraits courts. C'est là que la vie du
+      ministère se suit au jour le jour.</p>
+      <span class="go">Ouvrir la page <span>&rarr;</span></span>
+    </a>
+
+    <a class="fc" style="--c:var(--a4);--r:2deg;--y:0px"
+       href="https://www.youtube.com/@migvci1572" target="_blank" rel="noopener">
+      <span class="n">02</span>
+      <span class="ic">YouTube</span>
+      <h3>MIGV CI</h3>
+      <p>Les enseignements filmés, en accès libre. La chaîne historique du ministère.</p>
+      <span class="go">Voir les vidéos <span>&rarr;</span></span>
+    </a>
+
+    <a class="fc" style="--c:var(--a3);--r:-1.5deg;--y:12px" href="mailto:contact@migv.ci">
+      <span class="n">03</span>
+      <span class="ic">Courriel</span>
+      <h3>contact@migv.ci</h3>
+      <p>Pour une question, une demande d'enseignement, ou pour trouver l'assemblée
+      la plus proche de chez vous.</p>
+      <span class="go">Nous écrire <span>&rarr;</span></span>
+    </a>
+
+    <div class="fc fixe" style="--c:var(--a5);--r:2.5deg;--y:4px">
+      <span class="n">04</span>
+      <span class="ic">Courrier</span>
+      <h3>Par la poste</h3>
+      <p>21 BP 374<br>Abidjan 21<br>Côte d'Ivoire</p>
+      <span class="go">Le siège du ministère</span>
+    </div>
+
+  </div>
+</div>
+
+<div class="wrap bloc">
+  <h2 class="t2">Bientôt</h2>
+  <p class="quoi">Ces canaux sont décidés mais pas encore ouverts. Ils sont annoncés
+  ici pour que personne ne cherche en vain, et ils deviendront cliquables le jour
+  où ils existeront.</p>
+  <div class="fan">
+
+    <div class="fc bientot">
+      <span class="n">05</span>
+      <span class="ic">WhatsApp</span>
+      <h3>La chaîne du ministère</h3>
+      <p>Le résumé du dimanche et les annonces, en diffusion simple. Vous y êtes
+      invisible des autres abonnés.</p>
+      <span class="go">À ouvrir</span>
+    </div>
+
+    <div class="fc bientot">
+      <span class="n">06</span>
+      <span class="ic">TikTok</span>
+      <h3>Les extraits courts</h3>
+      <p>Le compte sera ouvert. En attendant, les extraits paraissent sur la page
+      Facebook.</p>
+      <span class="go">À ouvrir</span>
+    </div>
+
+  </div>
+</div>
+
+<div class="wrap bloc">
+  <h2 class="t2">Huit lieux en Côte d'Ivoire</h2>
+  <p class="quoi">Le siège est à Abidjan. Les sept autres assemblées vont du centre
+  à l'ouest du pays. Passez la souris sur un point pour le situer.</p>
+  <div class="carte-hote" id="pays"></div>
+  <div class="villes" id="villes"></div>
+</div>
+
+<footer class="pied-neuf"></footer>
+
+<script src="ressources.js?v=2"></script>
+<script src="commun.js?v=19"></script>
+<script src="refonte.js?v=2"></script>
+<script>
+/* La carte et la liste lisent la meme source, ASSEMBLEES dans
+   commun.js : impossible qu'un point de la carte n'ait pas sa ligne
+   dans la liste, ou l'inverse. */
+carteCI(document.querySelector('#pays'));
+
+document.querySelector('#villes').innerHTML = ASSEMBLEES.map(function(a){
+  return '<div class="vl">'
+    + '<div class="rg">' + (a.siege ? 'Siège du ministère' : echapper(a.r)) + '</div>'
+    + '<h4>' + echapper(a.n) + '</h4>'
+    + '<p>' + echapper(a.a) + '</p>'
+    + '</div>';
+}).join('');
+</script>
+</body>
+</html>

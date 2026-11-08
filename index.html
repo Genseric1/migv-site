@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<!-- Maquette en relecture. robots.txt demande aux moteurs de ne pas
+     parcourir le site ; cette balise leur demande en plus de ne pas
+     indexer la page, meme s'ils l'atteignent par un lien. A retirer
+     le jour de la vraie mise en ligne. -->
+<title>MIGV · Ministère International Grâce et Vérité</title>
+<meta name="description" content="Ministère International Grâce et Vérité. Enseignements, traités, livres et prédications du Docteur Théodore Nettaud GUEU.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=18">
+<style>
+/* ===================================================================
+   LANDING PAGE : habillage propre, independant du reste du site.
+   Tout ce qui suit ne vit que sur cette page. Les neuf autres pages
+   gardent la charte precedente.
+   =================================================================== */
+:root{
+  /* --dom est la couleur dominante de style.css. Sans valeur, elle
+     retombe sur #0024D8, le bleu electrique d'origine. Il ne se
+     voyait plus qu'a trois endroits, mais il s'y voyait bien :
+     le trait sous le lien actif du menu, la bordure basse du
+     menu mobile ouvert, et les boutons de la carte sous 820 px.
+     Une seule ligne les ramene tous les trois dans la palette. */
+  --dom:#264D54;
+
+  /* valeurs relevees sur bibleproject.com le 25 octobre 2026 */
+  --encre:#0C1428;      /* nuit : couverture et pied */
+  --encre2:#1B1B1B;     /* le noir de leur texte */
+  --parche:#F6EEE2;     /* leur parchemin chaud */
+  --craie2:#FFF9F3;     /* leur blanc chaud */
+  --brume:#EBF3F2;      /* leur vert tres pale */
+  --gris-chaud:#EDECEB;
+  --sable:#EADCC0;
+  --vert:#264D54;       /* leur sarcelle profond */
+  --vert-vif:#3A7781;
+  --terre:#72573A;      /* leur brun */
+  --or:#93CDDD;         /* leur bleu pale, en accent clair */
+  --or-cl:#93CDDD;
+  --craie:#FFFFFF;
+  --plomb:#5B5B5B;
+  --ease:cubic-bezier(.16,1,.3,1);
+}
+body{background:var(--craie);color:var(--encre2);
+  font-family:Inter,system-ui,-apple-system,'Segoe UI',sans-serif}
+/* la feuille partagee met un serif sur h1 et h2 : sur cette page, une
+   seule famille, comme chez eux. */
+h1,h2,h3,h4,h5{font-family:inherit}
+
+/* ---- titres : le serif porte les deux premiers rangs ---- */
+/* leur titre : la meme famille que le texte, graisse 500, chasse serree */
+.ttl{font-weight:500;letter-spacing:-.025em;line-height:1.06;margin:0;text-transform:none}
+.t1{font-size:clamp(2.8rem,7.6vw,5.6rem)}
+.t2{font-size:clamp(2.2rem,5.9vw,3.6rem);font-weight:600;letter-spacing:-.028em}
+/* ils n'opposent pas deux registres : le second membre est seulement plus clair */
+.ital{font-weight:500;opacity:.52}
+.sur{font:600 .82rem/1 Inter,sans-serif;letter-spacing:.17em;text-transform:uppercase;
+  display:inline-flex;align-items:center;gap:12px;margin-bottom:18px}
+.sur::before{content:'';width:30px;height:2px;background:currentColor}
+.txt{font-size:clamp(1.06rem,1.45vw,1.2rem);line-height:1.62;color:var(--plomb);max-width:52ch}
+
+/* ---- un seul bouton par section, deux formes ---- */
+.bt{display:inline-flex;align-items:center;gap:12px;border-radius:999px;
+  font:500 1rem/1 Inter,sans-serif;letter-spacing:0;padding:18px 32px;
+  transition:transform .3s var(--ease),background .3s var(--ease),color .3s var(--ease)}
+.bt span{transition:transform .3s var(--ease)}
+.bt:hover span{transform:translateX(5px)}
+.bt-plein{background:var(--vert);color:var(--craie)}
+.bt-plein:hover{background:var(--encre)}
+.bt-clair{background:var(--craie);color:var(--encre)}
+.bt-clair:hover{background:var(--sable)}
+.bt-fil{border:2px solid currentColor}
+.bt-fil:hover{background:currentColor}
+.bt-fil:hover span,.bt-fil:hover{color:var(--craie)}
+
+/* ===== 1. LA COUVERTURE ============================================ */
+.couv{position:relative;min-height:100svh;display:flex;align-items:flex-end;overflow:hidden}
+.couv>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:64% 46%;animation:derive 48s ease-in-out infinite alternate}
+@keyframes derive{from{transform:scale(1.02)}to{transform:scale(1.1)}}
+.couv::after{content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(92deg,rgba(255,249,243,.95) 0%,rgba(255,249,243,.88) 36%,rgba(255,249,243,.52) 62%,rgba(255,249,243,.08) 88%),
+             linear-gradient(180deg,rgba(255,249,243,.72) 0%,rgba(255,249,243,0) 22%)}
+.couv .dedans{position:relative;z-index:3;width:100%;padding-bottom:clamp(54px,8vw,110px);color:var(--encre2)}
+.couv .t1{color:var(--encre2);max-width:15ch}
+.couv .sous{margin:26px 0 38px;font-size:clamp(1.06rem,1.45vw,1.22rem);line-height:1.6;color:var(--plomb);
+  max-width:46ch}
+.couv .choix{display:flex;gap:14px;flex-wrap:wrap}
+.couv .fleche{position:absolute;left:50%;bottom:26px;z-index:3;transform:translateX(-50%);
+  width:22px;height:34px;border:2px solid rgba(27,27,27,.3);border-radius:999px}
+.couv .fleche::after{content:'';position:absolute;left:50%;top:7px;width:3px;height:7px;border-radius:2px;
+  background:rgba(27,27,27,.55);transform:translateX(-50%);animation:goutte 2.1s ease-in-out infinite}
+@keyframes goutte{0%{opacity:0;transform:translate(-50%,0)}35%{opacity:1}100%{opacity:0;transform:translate(-50%,13px)}}
+
+/* l'entete repose sur la photo, puis se pose en vert une fois depassee */
+#entete .bar{max-width:var(--max);margin:0 auto;padding:18px clamp(24px,4vw,54px);
+  display:flex;align-items:center;gap:26px}
+.tete.clair{background:transparent;border-bottom:1px solid rgba(27,27,27,.12)}
+.tete.clair a,.tete.clair b,.tete.clair nav a{color:var(--encre2)}
+.tete.pose{background:#17223E;border-bottom:1px solid rgba(255,255,255,.16);
+  box-shadow:0 10px 28px rgba(0,0,0,.28)}
+/* l'entete s'efface quand le pied entre a l'ecran : plus de deux bandes
+   sombres qui se touchent, et le pied reprend tout l'ecran */
+.tete{transition:background .4s var(--ease),opacity .35s var(--ease),transform .35s var(--ease)}
+.tete.efface{opacity:0;transform:translateY(-100%);pointer-events:none}
+.tete.pose a,.tete.pose b,.tete.pose nav a{color:var(--craie)}
+#entete nav a{position:relative;opacity:.82}
+#entete nav a:hover,#entete nav a.ici{opacity:1}
+#entete nav a.ici::after{content:'';position:absolute;left:0;right:0;bottom:-7px;height:2px;background:var(--or)}
+.tete.clair .burger span,.tete.clair .burger span::before,.tete.clair .burger span::after{background:var(--encre2)}
+.tete.pose .burger span,.tete.pose .burger span::before,.tete.pose .burger span::after{background:var(--craie)}
+
+/* ===== 2. LES QUATRE PILIERS ======================================= */
+.piliers{background:var(--craie);padding:clamp(76px,9vw,134px) 0}
+.piliers .tete-sec{text-align:center;margin-bottom:clamp(44px,5vw,70px)}
+.piliers .sur{color:var(--vert)}
+.piliers .txt{margin:18px auto 0;text-align:center}
+.quatre{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(18px,2.4vw,36px)}
+@media(max-width:980px){.quatre{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.quatre{grid-template-columns:1fr}}
+.pil{display:block;text-align:center;padding:30px 20px 34px;border-radius:14px;
+  transition:background .35s var(--ease),transform .35s var(--ease)}
+.pil:hover{background:#FAF7F2;transform:translateY(-6px)}
+.pil .emb{width:100%;max-width:210px;height:188px;margin:0 auto 16px;display:block}
+.pil h3{font-weight:600;font-size:1.3rem;letter-spacing:-.015em;text-transform:none;
+  margin:0 0 10px;color:var(--encre2)}
+.pil p{margin:0;font-size:1.04rem;line-height:1.58;color:var(--plomb)}
+/* la tache de couleur respire au survol, le trait ne bouge pas */
+.pil .emb>path:first-child{transform-origin:110px 100px;
+  transition:transform .5s var(--ease)}
+.pil:hover .emb>path:first-child{transform:scale(1.07) rotate(-2deg)}
+
+/* ===== 3. LA PAROLE DU DIMANCHE ==================================== */
+.dim{background:var(--brume);padding:clamp(96px,11vw,168px) 0;overflow:hidden}
+.dim .duo{display:grid;grid-template-columns:minmax(0,.86fr) minmax(0,1fr);
+  gap:clamp(34px,5vw,80px);align-items:center}
+@media(max-width:900px){.dim .duo{grid-template-columns:1fr}}
+.dim .sur{color:var(--terre)}
+.dim .txt{color:#4A5450}
+.dim .act{margin-top:34px;display:flex;gap:14px;flex-wrap:wrap}
+.eventail{display:flex;justify-content:center;gap:0}
+.eventail a{display:block;width:clamp(150px,25vw,290px);border-radius:12px;overflow:hidden;
+  box-shadow:0 18px 44px rgba(19,36,31,.26);background:var(--craie);
+  transition:transform .45s var(--ease),box-shadow .45s var(--ease)}
+.eventail a img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block}
+.eventail a:nth-child(1){transform:rotate(-7deg) translateY(10px)}
+.eventail a:nth-child(2){transform:rotate(1deg) scale(1.07);z-index:2;margin:0 -14px}
+.eventail a:nth-child(3){transform:rotate(7deg) translateY(10px)}
+.eventail a:hover{transform:rotate(0deg) scale(1.1) translateY(-8px);z-index:3;
+  box-shadow:0 26px 60px rgba(19,36,31,.34)}
+/* en dessous de 700 px, trois affiches de 150 px ne tiennent plus :
+   on les reduit et on resserre le chevauchement. */
+@media(max-width:700px){
+  .eventail a{width:clamp(78px,25vw,128px)}
+  .eventail a:nth-child(2){margin:0 -8px}
+}
+
+/* ===== 4. LES COLLECTIONS ========================================== */
+.coll{background:var(--craie);color:var(--encre2);
+  padding:clamp(70px,8vw,120px) 0;overflow:hidden;position:relative}
+/* une seconde couche posee sur le fond blanc, comme sur la reference */
+.couche{background:var(--parche);border-radius:clamp(18px,2.4vw,32px);
+  padding:clamp(34px,4.4vw,72px) clamp(26px,3.6vw,60px)}
+.couche .duo{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.92fr);
+  gap:clamp(30px,4vw,70px);align-items:center}
+@media(max-width:900px){.couche .duo{grid-template-columns:1fr}}
+/* l'illustration de la section, posee simplement */
+.illu{margin:0;display:flex;justify-content:center;align-items:center;
+  padding:clamp(10px,2vw,28px)}
+.illu img{display:block;width:100%;max-width:650px;height:auto;object-fit:contain}
+
+/* ===== 5. L'HISTOIRE =============================================== */
+.hist{background:var(--craie);padding:clamp(76px,9vw,134px) 0}
+.hist .duo{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1fr);
+  gap:clamp(34px,5vw,80px);align-items:center}
+@media(max-width:900px){.hist .duo{grid-template-columns:1fr}}
+.hist .sur{color:var(--vert)}
+/* ---- la mosaique. Six photographies en deux rangees de trois, et
+   jamais deux cadres de la meme largeur dans une rangee : 4, 2 et 3
+   colonnes, puis 3, 4 et 2 pour que le grand cadre change de place.
+   Dans chaque rangee un seul cadre porte son vrai ratio dans --r : c'est
+   lui qui fixe la hauteur, et il n'est donc jamais recadre. Les deux
+   autres s'etirent pour l'atteindre exactement, object-fit:cover absorbe
+   la difference, et les hauteurs tombent juste a toutes les largeurs,
+   gouttiere comprise. ---- */
+.mur{background:var(--parche);border-radius:clamp(16px,2vw,26px);
+  padding:clamp(14px,1.9vw,26px)}
+.mosaique{display:flex;flex-direction:column;gap:clamp(8px,1.1vw,14px)}
+.rang{display:flex;gap:clamp(8px,1.1vw,14px);align-items:stretch}
+.case{position:relative;margin:0;border-radius:8px;overflow:hidden;
+  background:var(--craie);box-shadow:0 1px 3px rgba(27,27,27,.13);
+  transition:transform .45s var(--ease)}
+/* l'image est hors flux : elle ne pese donc pas sur la hauteur de la
+   rangee, qui reste decidee par le seul cadre porteur du ratio. */
+.case img{position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;display:block}
+.case:hover{transform:translateY(-3px)}
+.case.f4{flex:4 1 0}
+.case.f3{flex:3 1 0}
+.case.f2{flex:2 1 0}
+.case.porte{aspect-ratio:var(--r)}   /* le cadre qui fixe la hauteur */
+.case:not(.porte){min-height:0}      /* les autres s'etirent */
+/* au telephone la hauteur n'est plus le probleme, et trois cadres de
+   front donneraient un filet de 65 px. On repasse donc a deux colonnes
+   carrees : les rangees s'effacent, les six cadres se rangent seuls. */
+@media(max-width:620px){
+  .mosaique{display:grid;grid-template-columns:1fr 1fr}
+  .rang{display:contents}
+  .mosaique .case{aspect-ratio:1}
+}
+.faits{display:flex;flex-wrap:wrap;gap:clamp(18px,3vw,44px);margin-top:clamp(26px,3vw,38px);
+  padding-top:clamp(20px,2.4vw,30px);border-top:1px solid rgba(27,27,27,.12)}
+.faits div{min-width:120px}
+.faits b{display:block;font-size:clamp(1.4rem,2.4vw,1.9rem);font-weight:600;
+  letter-spacing:-.02em;line-height:1.1;color:var(--encre2)}
+.faits span{font:500 .74rem/1.4 Inter,sans-serif;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--plomb)}
+
+/* ===== 6. LA CARTE ================================================= */
+.zone-carte{background:var(--craie);padding:clamp(54px,6vw,86px) 0}
+.zone-carte .sur{color:var(--vert)}
+.zone-carte .tete-sec{margin-bottom:clamp(34px,4vw,54px)}
+/* la feuille partagee encadre la carte d'un trait de 3 px : sur
+   l'accueil on l'enleve, la carte respire sur le fond blanc. */
+.zone-carte .carte-hote{border:0;padding:0;background:transparent;
+  max-width:720px;margin:0 auto}
+/* on redefinit ici les variables dont la carte se sert : le trace, les
+   points, les fleches et les etiquettes passent d'un coup aux teintes
+   de cette page, sans toucher a la feuille partagee ni a la page Contact. */
+.zone-carte{--accent:#264D54;--bleu-brume:#EBF3F2;--ambre:#72573A;
+  --texte:#1B1B1B;--gris:#5B5B5B;--creme:#FFFFFF}
+/* la carte dessine dans un cadre de 1240 de large, affiche sur 720 :
+   tout y est reduit de 42 %. On grossit donc les etiquettes d'autant. */
+.zone-carte .carte-ci .nom{font-size:31px}
+.zone-carte .carte-ci .reg{font-size:19px}
+.zone-carte .carte-ci .past{font-size:21px}
+/* chaque ville porte sa propre teinte, posee par le script ci-dessous.
+   Au repos la carte reste unie ; la couleur n'apparait qu'au clic. */
+.zone-carte .carte-ci .g-ville.actif .pt{fill:var(--ville,#72573A)}
+.zone-carte .carte-ci .g-ville.actif .halo{fill:var(--ville,#72573A);opacity:.18}
+.zone-carte .carte-ci .lab.actif .nom{fill:var(--ville,#72573A)}
+.zone-carte .carte-ci .lab.actif .reg{fill:var(--ville,#72573A);opacity:.7}
+.zone-carte .carte-ci .g-ville .pt,.zone-carte .carte-ci .nom,.zone-carte .carte-ci .reg{
+  transition:fill .3s var(--ease)}
+
+/* ===== 7. LE PIED ================================================== */
+.pied-neuf{background:var(--encre);color:var(--craie);padding:clamp(56px,6vw,88px) 0 30px}
+
+/* 1. la barre d'appel, en retrait sur le fond du pied */
+.appel{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  background:rgba(255,255,255,.07);border-radius:10px;
+  padding:clamp(16px,1.8vw,22px) clamp(18px,2.2vw,28px);margin-bottom:clamp(40px,5vw,66px)}
+.appel p{margin:0;font-size:.98rem;color:rgba(255,255,255,.88);max-width:62ch}
+.appel .bt{padding:13px 22px;font-size:.9rem}
+
+/* 2. les colonnes de liens a gauche, la lettre a droite */
+.corps{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.92fr);
+  gap:clamp(30px,5vw,80px);padding-bottom:clamp(36px,4vw,56px)}
+@media(max-width:860px){.corps{grid-template-columns:1fr}}
+.colonnes{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(20px,3vw,46px)}
+@media(max-width:460px){.colonnes{grid-template-columns:1fr}}
+.colonnes a{display:block;padding:7px 0;font-size:.95rem;color:rgba(255,255,255,.72);
+  transition:color .25s,transform .25s var(--ease)}
+.colonnes a:hover{color:var(--craie);transform:translateX(4px)}
+
+.lettre p{margin:0 0 16px;font-size:.95rem;line-height:1.6;color:rgba(255,255,255,.76);max-width:44ch}
+.lettre form{display:flex;flex-direction:column;gap:10px;max-width:420px}
+.lettre input{background:rgba(255,255,255,.07);color:var(--craie);
+  border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:15px 18px;
+  font:400 .95rem/1 Inter,sans-serif;outline:0;transition:border-color .3s}
+.lettre input::placeholder{color:rgba(255,255,255,.45)}
+.lettre input:focus{border-color:rgba(255,255,255,.55)}
+.lettre button{border:0;border-radius:6px;padding:15px 18px;cursor:pointer;
+  background:rgba(255,255,255,.14);color:var(--craie);
+  font:500 .95rem/1 Inter,sans-serif;transition:background .25s}
+.lettre button:hover{background:rgba(255,255,255,.24)}
+.lettre .note{margin:12px 0 0;font-size:.79rem;color:rgba(255,255,255,.45)}
+
+/* 3. la rangee du bas : les icones, puis la mention de droits dessous */
+.pied-neuf .bas{padding-top:26px;border-top:1px solid rgba(255,255,255,.14)}
+.reseaux{list-style:none;margin:0 0 20px;padding:0;display:flex;flex-wrap:wrap;gap:18px}
+.reseaux a{display:grid;place-items:center;width:44px;height:44px;
+  margin:-9px;
+  color:rgba(255,255,255,.55);transition:color .25s,transform .25s var(--ease)}
+.reseaux a:hover{color:var(--craie);transform:translateY(-2px)}
+.reseaux svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;
+  stroke-linecap:round;stroke-linejoin:round}
+.droits{margin:0;font-size:.82rem;color:rgba(255,255,255,.45)}
+
+@media(prefers-reduced-motion:reduce){
+  .couv>img,.couv .fleche::after{animation:none}
+}
+</style>
+</head>
+<body>
+
+<header class="tete clair" id="entete"></header>
+
+<!-- ===== 1. LA COUVERTURE ===== -->
+<section class="couv">
+  <img src="images/heros-croix.jpg" alt="Une croix dressée sur une colline au lever du soleil">
+  <div class="wrap dedans">
+    <div class="sur" style="color:var(--vert)">Ministère International Grâce et Vérité</div>
+    <h1 class="ttl t1">Jusqu'aux <span class="ital">extrémités de la terre</span></h1>
+    <p class="sous">Écrire des livres pour éclairer les nations à la lumière de
+    l'Évangile. C'est la mission reçue en 1984, et elle n'a pas changé.</p>
+    <div class="choix">
+      <a class="bt bt-plein" href="dimanche.html">La parole du dimanche <span>&rarr;</span></a>
+      <a class="bt bt-clair" href="enseignements.html">La bibliothèque <span>&rarr;</span></a>
+    </div>
+  </div>
+  <div class="fleche" aria-hidden="true"></div>
+</section>
+
+<!-- ===== 2. LES QUATRE PILIERS ===== -->
+<section class="piliers">
+  <div class="wrap">
+    <div class="tete-sec rv">
+      <div class="sur">Les quatre piliers</div>
+      <h2 class="ttl t2">Écoutez, lisez, <span class="ital">partagez et gardez.</span></h2>
+      <p class="txt">Quatre rubriques, un seul objectif : rendre l'Écriture
+      accessible, et la rendre durable.</p>
+    </div>
+    <div class="quatre rv">
+
+      <a class="pil" href="enseignements.html">
+        <svg class="emb" viewBox="0 0 220 200" aria-hidden="true"><path d="M36 51Q53 8 108 18T190 65Q215 126 172 163T65 177Q11 153 20 102Z" fill="#f7c875"/><g fill="none" stroke="#0b2938" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M109 71Q76 51 46 69V147Q77 135 109 156Q141 135 174 147V69Q139 51 109 71Z" fill="#fff4d9"/><path d="M109 71V156M69 97h23m-12-12v25m48-14h25m-25 19h25"/><path d="M110 27v17M80 36l-9-12m69 12 9-12"/></g></svg>
+        <h3>Enseignements</h3>
+        <p>Le socle doctrinal du ministère : ses traités et ses livres, réunis au même endroit.</p>
+      </a>
+
+      <a class="pil" href="traites.html">
+        <svg class="emb" viewBox="0 0 220 200" aria-hidden="true"><path d="M30 55Q55 12 115 20T193 72Q209 137 162 170T54 165Q7 133 30 55Z" fill="#bcebd4"/><g fill="none" stroke="#0b2938" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M61 55h92v105H61q-17 0-17-17V72q0-17 17-17Z" fill="#fff7e6"/><path d="M44 73q0-18 17-18t17 18v9H44m34 21h56m-56 20h47m-47 20h30"/><path d="M150 133q4-42 42-61-3 46-42 61Zm-21 30q18-38 45-65" fill="#65b88c"/></g></svg>
+        <h3>Traités</h3>
+        <p>Une brochure courte sur un thème précis, tirée d'un livre. À lire et à faire circuler.</p>
+      </a>
+
+      <a class="pil" href="livres.html">
+        <svg class="emb" viewBox="0 0 220 200" aria-hidden="true"><path d="M29 58Q45 15 109 18T193 65Q211 128 166 165T56 169Q9 139 29 58Z" fill="#b4e0ff"/><g stroke="#0b2938" stroke-width="6" stroke-linejoin="round"><rect x="42" y="71" width="40" height="94" rx="7" fill="#f58b53"/><rect x="79" y="51" width="43" height="114" rx="7" fill="#f5df9b"/><rect x="117" y="43" width="62" height="122" rx="9" fill="#184765"/><path d="M147 75v58m-21-29h42" stroke="white" stroke-linecap="round"/><path d="M52 91h19M90 72h21"/></g></svg>
+        <h3>Livres</h3>
+        <p>Une question de fond sur toute son étendue. En accès libre et gratuit.</p>
+      </a>
+
+      <a class="pil" href="videos.html">
+        <svg class="emb" viewBox="0 0 220 200" aria-hidden="true"><path d="M26 65Q40 18 106 20T194 68Q210 126 167 163T55 170Q10 143 26 65Z" fill="#ffd1c2"/><g stroke="#0b2938" stroke-width="7" stroke-linejoin="round"><rect x="32" y="59" width="156" height="100" rx="13" fill="#fff4ec"/><path d="M32 137h156"/><path d="m94 78 0 44 41-22Z" fill="#ff6a3d" stroke="#ff6a3d"/><circle cx="83" cy="137" r="7" fill="#ff6a3d"/></g></svg>
+        <h3>Vidéos</h3>
+        <p>Les prédications filmées en entier, telles qu'elles ont été données.</p>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3. LA PAROLE DU DIMANCHE ===== -->
+<section class="dim">
+  <div class="wrap duo">
+    <div class="rv">
+      <div class="sur">Chaque dimanche</div>
+      <h2 class="ttl t2">Découvrez l'évangile <span class="ital">du dimanche.</span></h2>
+      <p class="txt" style="margin-top:22px">Après chaque culte, la prédication est résumée
+      en cinq points et accompagnée de son visuel. Rien à chercher : la dernière publiée
+      vous attend en haut de la page.</p>
+      <div class="act">
+        <a class="bt bt-plein" href="dimanche.html">Voir tous les dimanches <span>&rarr;</span></a>
+      </div>
+    </div>
+    <div class="eventail rv" id="eventail"></div>
+  </div>
+</section>
+
+<!-- ===== 4. LES COLLECTIONS ===== -->
+<section class="coll">
+  <div class="wrap">
+   <div class="couche">
+    <div class="duo">
+    <figure class="illu rv">
+      <img src="images/arbre-ressources.png" width="1254" height="1254" decoding="async"
+           alt="Un arbre dont les quatre branches portent les enseignements, les traités, les livres et les vidéos">
+    </figure>
+    <div class="rv">
+      <div class="sur">Collections</div>
+      <h2 class="ttl t2">Un thème, <span class="ital">toutes les ressources.</span></h2>
+      <p class="txt" style="margin-top:22px">Choisissez un sujet. Les textes et les vidéos
+      qui le traitent sont réunis sur une seule page, au lieu d'être dispersés dans
+      trois rubriques. Les traités et les livres les y rejoindront.</p>
+      <div class="act" style="margin-top:32px">
+        <a class="bt bt-plein" href="collections.html">Voir les collections <span>&rarr;</span></a>
+      </div>
+    </div>
+    </div>
+   </div>
+  </div>
+</section>
+
+<!-- ===== 5. L'HISTOIRE ===== -->
+<section class="hist">
+  <div class="wrap duo">
+    <div class="mur rv">
+     <div class="mosaique">
+      <div class="rang">
+      <figure class="case f4 porte" style="--r:1.158"><img src="images/h-chaises.jpg" width="615" height="531" decoding="async" alt="Des chaises alignées face à un pupitre, dans une salle vide"></figure>
+      <figure class="case f2"><img src="images/h-brochures.jpg" width="325" height="532" decoding="async" alt="Une pile de traités imprimés posée sur une table"></figure>
+      <figure class="case f3"><img src="images/h-mains-pages.jpg" width="480" height="531" decoding="async" alt="Deux mains tournant les pages d'une Bible ouverte"></figure>
+      </div>
+      <div class="rang">
+      <figure class="case f3"><img src="images/h-carnet.jpg" width="483" height="540" decoding="async" alt="Un carnet ouvert et un stylo, posés à côté d'un livre"></figure>
+      <figure class="case f4 porte" style="--r:1.139"><img src="images/h-lumiere.jpg" width="615" height="540" decoding="async" alt="La lumière d'une fenêtre posée sur un sol carrelé"></figure>
+      <figure class="case f2"><img src="images/h-rayonnage.jpg" width="325" height="540" decoding="async" alt="Un rayonnage d'ouvrages rangés"></figure>
+      </div>
+     </div>
+    </div>
+    <div class="rv">
+      <div class="sur">Notre histoire</div>
+      <h2 class="ttl t2">Comment le ministère <span class="ital">a commencé.</span></h2>
+      <p class="txt" style="margin-top:22px">Il ne commence pas par une assemblée ni
+      par un bâtiment, mais par une phrase reçue en 1984 : « Tu écriras des livres
+      pour moi. » Le récit de cet appel, et ce qu'il a produit depuis.</p>
+      <div class="act" style="margin-top:30px">
+        <a class="bt bt-plein" href="histoire.html">Lire notre histoire <span>&rarr;</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 6. LA CARTE ===== -->
+<section class="zone-carte">
+  <div class="wrap">
+    <div class="tete-sec rv">
+      <div class="sur">Nos assemblées</div>
+      <h2 class="ttl t2">Nous trouver.</h2>
+    </div>
+    <div class="carte-hote rv" id="ass"></div>
+  </div>
+</section>
+
+<!-- ===== 7. LE PIED ===== -->
+<footer class="pied-neuf">
+  <div class="wrap">
+
+    <div class="appel">
+      <p>Tout ce que le ministère publie est en accès libre, et le restera.</p>
+      <a class="bt bt-clair" href="soutenir.html">Soutenir le MIGV <span>&rarr;</span></a>
+    </div>
+
+    <div class="corps">
+      <div class="colonnes">
+        <div>
+        <a href="enseignements.html">Enseignements</a>
+        <a href="traites.html">Traités</a>
+        <a href="livres.html">Livres</a>
+        <a href="collections.html">Collections</a>
+        <a href="dimanche.html">Le dimanche</a>
+        <a href="videos.html">Les vidéos</a>
+        </div>
+        <div>
+        <a href="actualites.html">Actualités</a>
+        <a href="histoire.html">Notre histoire</a>
+        <a href="biographie.html">Le fondateur</a>
+        <a href="contact.html">Nos assemblées</a>
+        <a href="soutenir.html">Nous soutenir</a>
+        <a href="contact.html">Nous écrire</a>
+        </div>
+      </div>
+      <div class="lettre">
+        <p>Recevez le résumé de la prédication du dimanche et son visuel,
+        une fois par semaine. Rien d'autre.</p>
+        <form onsubmit="return inscrire(event)">
+          <input id="courriel" type="email" placeholder="Adresse e-mail" required
+                 aria-label="Votre adresse e-mail">
+          <button type="submit">Abonnez-vous</button>
+        </form>
+        <p class="note" id="note">Formulaire de maquette : rien n'est encore envoyé.</p>
+      </div>
+    </div>
+
+    <div class="bas">
+      <ul class="reseaux">
+      <li><a href="#" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3Z"/><path d="M10 9.2 15 12l-5 2.8Z"/></svg></a></li>
+      <li><a href="#" aria-label="Facebook" title="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 21v-8h2.7l.5-3h-3.2V8.2c0-.9.3-1.5 1.6-1.5h1.7V4a22 22 0 0 0-2.5-.1c-2.5 0-4.2 1.5-4.2 4.3V10H8v3h3.1v8Z"/></svg></a></li>
+      <li><a href="#" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.1" cy="6.9" r=".9" fill="currentColor" stroke="none"/></svg></a></li>
+      <li><a href="#" aria-label="WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 0 0-7.3 12.8L3.5 20.5l4.4-1.1A8.5 8.5 0 1 0 12 3.5Z"/><path d="M9 9.4c.3-.7.6-.7.9-.7.3 0 .6.1.8.6l.5 1.2-.7.8c.5 1 1.3 1.8 2.3 2.3l.8-.7 1.2.5c.5.2.6.5.6.8 0 .3 0 .6-.7.9-.8.3-2 .2-3.5-.8a7 7 0 0 1-2.4-2.5c-.8-1.4-.9-2.1-.6-2.4Z"/></svg></a></li>
+      <li><a href="#" aria-label="TikTok" title="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 21a4.2 4.2 0 1 1 4.2-4.2V3.2c.3 2.3 2 4 4.3 4.2"/></svg></a></li>
+      <li><a href="#" aria-label="Podcast" title="Podcast"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M7.6 9.6q4.4-1.2 8.8.9M8.1 13q3.6-1 7.1.8M8.7 16q2.7-.8 5.3.6"/></svg></a></li>
+      </ul>
+      <p class="droits">&copy; 2026 Ministère International Grâce et Vérité</p>
+    </div>
+
+  </div>
+</footer>
+
+<script src="commun.js?v=19"></script>
+<script>
+/* ---- 3. les trois derniers dimanches publies, pris dans commun.js ----
+   Une affiche ajoutee la-bas apparait ici toute seule, et la plus
+   recente se place au centre de l'eventail. */
+(function(){
+  var cles = Object.keys(PRED).sort().slice(-3);
+  if(!cles.length) return;
+  var ordre = cles.length === 3 ? [cles[0], cles[2], cles[1]] : cles.slice().reverse();
+  document.getElementById('eventail').innerHTML = ordre.map(function(k){
+    var p = PRED[k], d = new Date(k + 'T00:00:00Z');
+    var joli = d.getUTCDate() + ' ' + MOIS[d.getUTCMonth()].toLowerCase() + ' ' + d.getUTCFullYear();
+    return '<a href="dimanche.html" title="Dimanche ' + joli + '">'
+         + '<img src="' + p.img + '" alt="Visuel de la prédication du dimanche ' + joli + '"></a>';
+  }).join('');
+})();
+
+/* ---- 6. la carte des assemblees ---- */
+carteCI(document.querySelector('#ass'));
+
+/* Une teinte par assemblee, dans la meme famille sourde que la carte.
+   Elle ne se montre qu'au clic, sinon le trace resterait bariole. */
+(function(){
+  /* Huit teintes reparties sur tout le cercle chromatique, et non plus
+     dans une seule famille sourde. Chacune tient au moins 4,8 de contraste
+     sur le blanc, donc l'etiquette reste lisible quand la ville est choisie. */
+  var TEINTES = ['#DB242A','#B35914','#8E6B0B','#1E802B',
+                 '#177B82','#276FCE','#8258CA','#C23898'];
+  var svg = document.querySelector('.zone-carte .carte-ci');
+  if(!svg) return;
+  var villes = svg.querySelectorAll('.g-ville');
+  var labs   = svg.querySelectorAll('.lab');
+  for(var i=0;i<villes.length;i++){
+    var c = TEINTES[i % TEINTES.length];
+    villes[i].style.setProperty('--ville', c);
+    if(labs[i]) labs[i].style.setProperty('--ville', c);
+  }
+})();
+
+/* ---- l'entete : transparente sur la photo, pleine ensuite ---- */
+(function(){
+  var tete = document.querySelector('#entete');
+  var couv = document.querySelector('.couv');
+  var pied = document.querySelector('.pied-neuf');
+
+  addEventListener('scroll', function(){
+    var h = couv.offsetHeight - 90;
+    tete.classList.toggle('clair', scrollY < h);
+    tete.classList.toggle('pose',  scrollY >= h);
+  }, {passive:true});
+
+  /* des que le pied entre a l'ecran, l'entete se retire */
+  if ('IntersectionObserver' in window && pied) {
+    new IntersectionObserver(function(entrees){
+      entrees.forEach(function(e){ tete.classList.toggle('efface', e.isIntersecting); });
+    }, {rootMargin:'0px 0px -88% 0px'}).observe(pied);
+  }
+})();
+
+/* ---- 7. le formulaire de la lettre, en maquette ---- */
+function inscrire(e){
+  e.preventDefault();
+  document.getElementById('note').textContent =
+    "Merci. Le formulaire n'est pas encore relié : il le sera quand le ministère aura choisi son service d'envoi.";
+  return false;
+}
+</script>
+</body>
+</html>

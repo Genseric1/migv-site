@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<!-- Maquette en relecture. robots.txt demande aux moteurs de ne pas
+     parcourir le site ; cette balise leur demande en plus de ne pas
+     indexer la page, meme s'ils l'atteignent par un lien. A retirer
+     le jour de la vraie mise en ligne. -->
+<title>Le dimanche · MIGV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=18">
+<link rel="stylesheet" href="refonte.css?v=5">
+<style>
+/* ===================================================================
+   LE DIMANCHE.
+
+   Trois changements par rapport a la version precedente :
+
+   1. L'illustration vectorielle « Calendar » a ete retiree. Elle
+      venait d'un CDN exterieur (le site ne fonctionnait pas hors
+      connexion), et son trait n'a rien a voir avec les photographies
+      du reste du site.
+   2. Le titre ne se coupe plus en deux moities, dont la seconde en
+      italique grise.
+   3. Le bleu-vert d'origine laisse la place a la palette de l'accueil.
+
+   Les donnees (PRED) et la mecanique du calendrier n'ont pas bouge :
+   elles vivent dans commun.js et sont reprises telles quelles.
+   =================================================================== */
+
+/* --- le calendrier -------------------------------------------------
+   Un mois a la fois, et seulement ses dimanches : les autres jours
+   n'ont rien a montrer ici.                                         */
+.calendrier{background:var(--brume);border-radius:12px;
+  padding:clamp(20px,2.6vw,30px);margin:clamp(30px,3.6vw,46px) 0}
+.mois{display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:18px}
+.mois b{font:600 1.05rem/1 Inter,sans-serif;color:var(--encre);
+  min-width:11ch;text-align:center}
+.fleche{width:36px;height:36px;border-radius:50%;border:1px solid rgba(12,20,40,.18);
+  background:var(--craie);color:var(--encre);cursor:pointer;font-size:1rem;
+  display:grid;place-items:center;transition:background .25s,opacity .25s}
+.fleche:hover:not(:disabled){background:var(--sable)}
+.fleche:disabled{opacity:.3;cursor:default}
+/* 36 px suffit a la souris, pas au doigt : sous 900 px (tablette en
+   portrait comprise) les deux fleches passent a 44, la cible
+   tactile recommandee. flex-shrink:0, sinon la rangee serree leur
+   reprend la largeur qu'on vient de leur donner. */
+@media(max-width:900px){.fleche{width:44px;height:44px;flex:0 0 44px}}
+
+.jours{display:grid;grid-template-columns:repeat(auto-fit,minmax(92px,1fr));gap:10px}
+.jr{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;
+  border:1px solid transparent;border-radius:10px;padding:13px 8px;
+  background:var(--craie);color:var(--encre);
+  font:600 1.22rem/1 Inter,sans-serif;
+  transition:transform .3s var(--ease),border-color .25s,background .25s}
+.jr small{font:500 .68rem/1 Inter,sans-serif;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--vert)}
+.jr.vide{background:transparent;color:var(--plomb);
+  border-color:rgba(12,20,40,.12)}
+.jr.vide small{color:var(--plomb)}
+.jr:hover{transform:translateY(-3px)}
+.jr[aria-pressed="true"]{background:var(--vert);color:var(--craie);border-color:var(--vert)}
+.jr[aria-pressed="true"] small{color:rgba(255,255,255,.75)}
+
+/* --- le dimanche choisi --------------------------------------------
+   L'affiche a gauche, le resume a droite. Sous 900 px l'affiche passe
+   au-dessus : sur un telephone, on veut la voir d'abord.           */
+.contenu{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);
+  gap:clamp(26px,4vw,56px);align-items:start;
+  padding-bottom:clamp(50px,6vw,90px)}
+@media(max-width:900px){.contenu{grid-template-columns:1fr}}
+
+.affiche{border-radius:12px;overflow:hidden;background:var(--gris-chaud);
+  position:sticky;top:106px}
+@media(max-width:900px){.affiche{position:static}}
+.affiche img{width:100%;height:auto;display:block}
+.rien{aspect-ratio:1/1.3;display:grid;place-content:center;gap:8px;
+  text-align:center;padding:30px;background:var(--brume)}
+.rien b{font:600 1.05rem/1.3 Inter,sans-serif;color:var(--encre)}
+.rien span{font-size:.92rem;color:var(--plomb);max-width:24ch}
+
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+
+.date{font:500 .78rem/1 Inter,sans-serif;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--terre);margin-bottom:10px}
+.txt h2{margin:0;font-size:clamp(1.42rem,2.5vw,1.85rem);color:var(--encre)}
+.orateur{margin-top:10px;font-size:.93rem;color:var(--plomb)}
+.orateur b{color:var(--encre2);font-weight:600}
+.cit{margin:22px 0 0;padding-left:18px;border-left:3px solid var(--sable);
+  font-size:1.02rem;line-height:1.65;color:var(--terre)}
+.cit .ref-bib{display:inline-block;margin-top:6px;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--plomb);font-weight:500}
+.chapo{margin:22px 0 0;font-size:1.04rem;color:var(--encre2);max-width:60ch}
+
+/* --- les points du resume ------------------------------------------
+   Une liste numerotee, un point par idee. Le numero est tire du rang
+   dans la liste : rien a renumeroter a la main.                     */
+.points{list-style:none;margin:clamp(26px,3vw,38px) 0 0;padding:0;
+  border-top:1px solid rgba(12,20,40,.1)}
+.pt{display:flex;gap:16px;padding:19px 0;border-bottom:1px solid rgba(12,20,40,.1)}
+.npt{flex:0 0 auto;font:600 .82rem/1.5 Inter,sans-serif;color:var(--terre);
+  padding-top:2px}
+.pt b{display:block;font-weight:600;font-size:1.02rem;color:var(--encre);
+  margin-bottom:5px}
+.xpt{display:block;color:var(--plomb);font-size:.97rem}
+.rpt{display:block;margin-top:7px;font:500 .78rem/1 Inter,sans-serif;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--vert)}
+.meta{margin-top:20px;font-size:.86rem;color:var(--plomb)}
+</style>
+</head>
+<body>
+
+<header class="tete clair" id="entete"></header>
+
+<section class="haut">
+  <div class="wrap">
+    <figure class="banniere">
+      <img src="images/h-chaises.jpg" width="615" height="531"
+           alt="Des chaises alignées face à un pupitre, dans une salle de culte vide">
+    </figure>
+    <p class="fil"><a href="index.html">Accueil</a> &rsaquo; Le dimanche</p>
+    <h1>Le dimanche</h1>
+    <p class="accroche">La prédication de la semaine, résumée et illustrée.</p>
+    <p class="intro">Choisissez une date dans le calendrier. Le visuel du jour s'affiche,
+    avec le thème de la prédication et son résumé point par point. Les dimanches déjà
+    publiés sont marqués ; les autres paraissent après le culte.</p>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="calendrier">
+    <div class="mois">
+      <button class="fleche" id="prec" aria-label="Mois précédent">&larr;</button>
+      <b id="libelle"></b>
+      <button class="fleche" id="suiv" aria-label="Mois suivant">&rarr;</button>
+    </div>
+    <div class="jours" id="jours"></div>
+  </div>
+  <div class="contenu" id="contenu"></div>
+</div>
+
+<footer class="pied-neuf"></footer>
+
+<script src="commun.js?v=19"></script>
+<script src="refonte.js?v=2"></script>
+<script>
+/* ===================================================================
+   LE CALENDRIER.
+
+   Il ne montre que les dimanches, parce que seuls les dimanches
+   portent une predication. dimanchesDu() parcourt le mois jour par
+   jour et retient ceux dont getUTCDay() vaut 0.
+
+   Tout est en UTC : sans cela, un fuseau a l'ouest de Greenwich
+   ferait basculer un dimanche sur le samedi precedent.
+   =================================================================== */
+let choix = dernierDimanche();
+let annee = +choix.slice(0,4), mois = +choix.slice(5,7)-1;
+
+function dimanchesDu(a,m){
+  const out=[]; const d=new Date(Date.UTC(a,m,1));
+  while(d.getUTCMonth()===m){
+    if(d.getUTCDay()===0) out.push(new Date(d));
+    d.setUTCDate(d.getUTCDate()+1);
+  }
+  return out;
+}
+function cle(d){ return d.toISOString().slice(0,10) }
+
+function calendrier(){
+  document.querySelector('#libelle').textContent = MOIS[mois]+' '+annee;
+  const ds = dimanchesDu(annee,mois);
+  document.querySelector('#jours').innerHTML = ds.map(function(d){
+    const k=cle(d), plein=!!PRED[k];
+    return '<button class="jr'+(plein?'':' vide')+'" data-k="'+k+'" '
+         + 'aria-pressed="'+(k===choix)+'">'+d.getUTCDate()
+         + '<small>'+(plein?'publié':'à venir')+'</small></button>';
+  }).join('');
+  document.querySelectorAll('.jr').forEach(function(b){
+    b.onclick = function(){ choix=b.dataset.k; calendrier(); afficher() };
+  });
+  /* Le dernier dimanche connu borne la navigation vers l'avant : il
+     n'y a rien a aller chercher au-dela. */
+  const fin = dernierDimanche();
+  const af = +fin.slice(0,4), mf = +fin.slice(5,7)-1;
+  document.querySelector('#suiv').disabled = (annee>af || (annee===af && mois>=mf));
+}
+
+function afficher(){
+  const p = PRED[choix], C = document.querySelector('#contenu');
+  const d = new Date(choix+'T00:00:00Z');
+  const joli = 'Dimanche '+d.getUTCDate()+' '+MOIS[d.getUTCMonth()].toLowerCase()
+             + ' '+d.getUTCFullYear();
+
+  if(!p){
+    C.innerHTML =
+      '<div class="affiche"><div class="rien"><b>Pas encore publié</b>'
+      + '<span>Le visuel et le résumé de ce dimanche paraîtront après le culte.</span>'
+      + '</div></div>'
+      + '<div class="txt"><div class="date">'+joli+'</div><h2>À venir</h2>'
+      + '<p class="chapo">Revenez après le culte, ou abonnez-vous à la lettre '
+      + 'du dimanche pour être prévenu dès la publication.</p></div>';
+    return;
+  }
+
+  const pts = (p.points||[]).map(function(x,i){
+    return '<li class="pt">'
+      + '<span class="npt">'+String(i+1).padStart(2,'0')+'</span>'
+      + '<span><b>'+x.t+'</b><span class="xpt">'+x.x+'</span>'
+      + '<span class="rpt">'+x.r+'</span></span></li>';
+  }).join('');
+
+  C.innerHTML =
+    '<div>'
+    + '<div class="affiche"><img src="'+p.img+'" alt="Visuel de la prédication du '+joli+'"></div>'
+    + '<div class="actions">'
+    +   '<a class="bt bt-plein" href="'+p.img+'" download>Télécharger le visuel <span>&rarr;</span></a>'
+    + '</div>'
+    + '</div>'
+    + '<div class="txt">'
+    + '<div class="date">'+joli+'</div>'
+    + '<h2>'+p.titre+'</h2>'
+    + (p.orateur ? '<div class="orateur">Orateur : <b>'+p.orateur+'</b></div>' : '')
+    + '<p class="cit">'+p.cit+'<br><span class="ref-bib">'+p.ref+'</span></p>'
+    + (p.chapo ? '<p class="chapo">'+p.chapo+'</p>' : '')
+    + (pts ? '<ol class="points">'+pts+'</ol>' : '')
+    + '<div class="meta">Résumé en '+(p.points?p.points.length:0)+' points. '
+    +   p.min+' minutes de lecture.</div>'
+    + '</div>';
+}
+
+document.querySelector('#prec').onclick=function(){ mois--; if(mois<0){mois=11;annee--} calendrier() };
+document.querySelector('#suiv').onclick=function(){ mois++; if(mois>11){mois=0;annee++} calendrier() };
+calendrier(); afficher();
+
+/* utilise par les verifications automatiques */
+window.__dim={get jours(){return document.querySelectorAll('.jr').length},
+              get choix(){return choix}};
+</script>
+</body>
+</html>

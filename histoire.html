@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<!-- Maquette en relecture. robots.txt demande aux moteurs de ne pas
+     parcourir le site ; cette balise leur demande en plus de ne pas
+     indexer la page, meme s'ils l'atteignent par un lien. A retirer
+     le jour de la vraie mise en ligne. -->
+<title>Notre histoire · MIGV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=18">
+<link rel="stylesheet" href="refonte.css?v=5">
+<style>
+/* ===================================================================
+   NOTRE HISTOIRE.
+
+   D'OU VIENT CE TEXTE. Entierement du dossier remis par le ministere
+   (« MIGV SITE WEB », 45 pages), sections NOTRE MISSION page 1 et
+   BIOGRAPHIE page 2. Les paroles entre guillemets et les phrases en
+   retrait sont celles du dossier, mot pour mot. Rien n'a ete ajoute,
+   rien n'a ete devine.
+
+   Les references bibliques (Isaie 41, 42, 49) ne figurent pas dans le
+   dossier : elles ont ete identifiees a partir du texte cite, et
+   verifiees. Le libelle reste celui du dossier.
+
+   CE QUI MANQUE ENCORE, et que le dossier ne donne pas :
+     - la date de fondation du MIGV lui-meme ;
+     - les dates des sejours a Durban et aux Etats-Unis ;
+     - l'histoire des assemblees ;
+     - les photographies d'archives (elles sont DANS le dossier,
+       pages 13 a 44, mais leur extraction a ete remise a plus tard).
+
+   La page ne comble aucun de ces trous par une approximation. Elle
+   les nomme, a la fin.
+
+   PAS DE PHOTOGRAPHIE EN BANNIERE. Les seules images qui auraient
+   leur place ici sont les archives du ministere. Une photographie de
+   banque d'images en haut d'un recit personnel sonnerait faux. La
+   page s'ouvre donc sur la parole de 1984, qui est son sujet.
+   =================================================================== */
+
+/* ===================================================================
+   LA GAMME DE LA PAGE.
+
+   Douze teintes, et CHACUNE NE SERT QU'UNE SEULE FOIS. C'est la
+   contrainte demandee : aucune couleur deux fois sur cette page.
+
+   Elles n'ont pas ete choisies a l'oeil. Deux conditions ont ete
+   verifiees par le calcul avant de les retenir :
+
+   1. L'ECART DE TEINTE. Deux couleurs separees de quelques degres se
+      lisent comme la meme couleur : la contrainte serait tenue sur le
+      papier et fausse a l'ecran. Les douze teintes sont reparties sur
+      le cercle chromatique avec un ecart minimal de 16 degres, le
+      bleu nuit du pied compris.
+
+   2. LE CONTRASTE. Chacune donne 6,3 pour 1 sur blanc, la ou la
+      norme WCAG AA demande 4,5. Elles restent donc lisibles en
+      texte, et pas seulement decoratives.
+
+   Saturation volontairement sourde (0,52) : la page doit etre
+   variee, pas criarde. La couleur ne porte que des accents, jamais
+   de grands aplats : une date, un filet, une etiquette, un fond
+   dilue a moins de dix pour cent.
+
+   Le bleu nuit n'apparait plus qu'au pied de page, qui est partage
+   avec tout le site.                                               */
+:root{
+  --c1:#8A5142;   /*  12°  brique         1984, la mission         */
+  --c2:#795A38;   /*  32°  terre          les archives             */
+  --c3:#6A6033;   /*  50°  or             1984, la formation       */
+  --c4:#56662C;   /*  76°  olive          repere : le MIGV         */
+  --c5:#416A33;   /* 105°  vert feuille   repere : Grace Intl      */
+  --c6:#366A50;   /* 150°  vert sapin     1977, l'appel            */
+  --c7:#306965;   /* 176°  vert sarcelle  la reserve finale        */
+  --c8:#35667A;   /* 198°  petrole        aujourd'hui              */
+  --c9:#5F4E86;   /* 256°  prune          repere : l'oeuvre ecrite */
+  --c10:#874790;  /* 292°  violet         les passages d'Isaie     */
+  --c11:#924576;  /* 322°  framboise      le foyer                 */
+  --c12:#94485A;  /* 346°  grenat         repere : la LLB          */
+}
+
+/* --- l'ouverture ----------------------------------------------------
+   La parole recue tient toute la hauteur : c'est elle qui fonde le
+   ministere, tout le reste en decoule. Elle est dans l'encre noire
+   du texte courant, et non dans le bleu nuit : le bleu nuit est
+   reserve au pied.                                                 */
+.ouvre{background:var(--parche);padding:clamp(120px,13vw,176px) 0 clamp(50px,6vw,80px)}
+.parole{margin:0;font-size:clamp(2rem,5vw,3.4rem);font-weight:600;line-height:1.1;
+  letter-spacing:-.03em;color:var(--encre2);max-width:14ch}
+.parole-src{margin:22px 0 0;font:500 .82rem/1.5 Inter,sans-serif;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--plomb)}
+.ouvre .intro{margin:26px 0 0;max-width:58ch;font-size:1.08rem;color:var(--plomb)}
+
+/* Le fil d'Ariane est de la navigation, pas du contenu : il reste
+   gris. refonte.css le met sinon dans le vert d'action (#264D54),
+   qui tombe a huit degres du petrole de la section « Aujourd'hui »
+   et se lirait comme la meme couleur. Les douze teintes doivent
+   rester aux douze sections.                                       */
+.ouvre .fil a{color:var(--plomb);text-decoration:underline;
+  text-underline-offset:3px;text-decoration-color:rgba(91,91,91,.4)}
+.ouvre .fil a:hover{color:var(--encre2);text-decoration-color:currentColor}
+
+/* --- le recit -------------------------------------------------------
+   Deux colonnes : la date a gauche, le recit a droite. La colonne des
+   dates se lit seule, de haut en bas, comme une chronologie.
+
+   Chaque episode porte sa teinte dans --c, posee sur l'element dans
+   le HTML. Le CSS ne sait pas combien il y a d'episodes ni dans quel
+   ordre : il se contente de lire --c.
+
+   padding-top seul sur .recit : il est sur le meme element que .wrap,
+   et le raccourci annulerait son padding lateral.                  */
+.recit{padding-top:clamp(40px,5vw,66px)}
+.ep{display:grid;grid-template-columns:132px minmax(0,1fr);gap:clamp(20px,3.4vw,48px);
+  padding:clamp(28px,3.4vw,44px) 0;border-top:1px solid rgba(12,20,40,.1)}
+@media(max-width:760px){.ep{grid-template-columns:1fr;gap:12px}}
+
+/* La date : un filet de la teinte au-dessus, puis l'annee dans cette
+   teinte. C'est ce qui fait lire la colonne de gauche comme une
+   chronologie coloree.                                             */
+.ep .quand{font:600 1.18rem/1.2 Inter,sans-serif;color:var(--c);
+  letter-spacing:-.02em;padding-top:12px;border-top:3px solid var(--c)}
+.ep .quand small{display:block;margin-top:5px;font:500 .74rem/1.4 Inter,sans-serif;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--plomb)}
+@media(max-width:760px){
+  .ep .quand{display:flex;align-items:baseline;gap:10px}
+  .ep .quand small{margin-top:0}
+}
+
+.ep h2{margin:0 0 12px;font-size:clamp(1.22rem,2.1vw,1.5rem);color:var(--c)}
+.ep p{margin:0;color:var(--plomb);max-width:62ch}
+.ep p + p{margin-top:14px}
+.ep strong{color:var(--encre2);font-weight:600}
+
+/* Une parole recue, dans le fil du recit. Le fond est la teinte de
+   l'episode diluee a 9 pour cent : la couleur se devine, le texte
+   reste parfaitement lisible. La premiere declaration de background
+   sert de repli pour un navigateur qui ne connaitrait pas
+   color-mix ; la seconde l'ecrase quand il le connait.             */
+.dit{margin:18px 0;padding:16px 20px;border-radius:10px;
+  border-left:3px solid var(--c);
+  background:var(--craie2);
+  background:color-mix(in srgb, var(--c) 9%, white);
+  font-size:1.06rem;line-height:1.5;color:var(--encre2);max-width:52ch}
+
+/* Les trois passages d'Isaie ont leur propre teinte, parce que ce ne
+   sont pas des paroles du recit mais des Ecritures citees.         */
+.passages{margin:18px 0 0;border-left:3px solid var(--c10);padding-left:20px}
+.pa{margin:0;color:var(--c10);font-size:1rem;line-height:1.6;max-width:58ch}
+.pa + .pa{margin-top:14px}
+.pa cite{display:block;margin-top:5px;font-style:normal;
+  font:500 .76rem/1 Inter,sans-serif;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--plomb)}
+
+/* Le paragraphe qui suit les passages venait se coller a la derniere
+   reference. La regle « .ep p + p » ne le rattrapait pas : son voisin
+   precedent est le bloc .passages, un div, et non un paragraphe. Il
+   lui faut donc sa propre marge, un peu plus large que l'interligne
+   courant pour qu'on voie qu'on sort de la citation.               */
+.ep .passages + p{margin-top:26px}
+
+/* --- les reperes -----------------------------------------------------
+   Quatre cartes, quatre teintes a elles : elles ne relevent d'aucun
+   episode, elles disent ou en est le ministere aujourd'hui.        */
+.reperes{display:grid;grid-template-columns:repeat(auto-fit,minmax(236px,1fr));
+  gap:clamp(14px,1.8vw,22px);margin-top:clamp(22px,2.6vw,32px)}
+.rp{border-radius:12px;padding:19px 20px 21px;border-top:4px solid var(--c);
+  background:var(--craie2);
+  background:color-mix(in srgb, var(--c) 8%, white);
+  transition:transform .35s var(--ease)}
+.rp:hover{transform:translateY(-4px)}
+.rp b{display:block;font-weight:600;font-size:1rem;color:var(--c);margin-bottom:6px}
+.rp span{font-size:.93rem;color:var(--plomb)}
+
+/* --- les archives a venir --------------------------------------------
+   Les douze emplacements portent les legendes du dossier lui-meme.
+   Ils ne sont pas des trous : ils annoncent ce qui viendra, et dans
+   quel ordre. Ils partagent la teinte de leur section, la terre : ce
+   sont douze morceaux d'une meme chose, pas douze sujets.          */
+.archives{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));
+  gap:clamp(10px,1.3vw,16px);margin-top:clamp(22px,2.6vw,32px)}
+.ar{aspect-ratio:1/1.16;border-radius:10px;
+  background:var(--craie2);
+  background:color-mix(in srgb, var(--c2) 10%, white);
+  display:flex;flex-direction:column;justify-content:flex-end;padding:15px 14px}
+.ar b{font:500 .68rem/1 Inter,sans-serif;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--c2);margin-bottom:5px}
+.ar span{font-size:.88rem;line-height:1.35;color:var(--encre2)}
+
+/* --- ce qui manque ----------------------------------------------------
+   Une note en marge, pas une declaration : c'est une reserve de
+   l'auteur sur ses sources. Sa teinte, le vert sarcelle, ne sert
+   qu'ici.                                                           */
+.manque{border-left:4px solid var(--c7);border-radius:0 12px 12px 0;
+  background:var(--craie2);
+  background:color-mix(in srgb, var(--c7) 7%, white);
+  padding:clamp(24px,3vw,38px) clamp(24px,3vw,38px) clamp(24px,3vw,38px) clamp(22px,2.6vw,32px);
+  margin:clamp(34px,4vw,54px) 0 clamp(50px,6vw,90px)}
+.manque h3{margin:0 0 12px;font-size:1.12rem;color:var(--c7)}
+.manque p{margin:0 0 14px;color:var(--plomb);max-width:66ch}
+.manque ul{margin:0;padding-left:20px;color:var(--plomb)}
+.manque li{margin:7px 0;max-width:62ch}
+.manque li strong,.manque p strong{color:var(--encre2);font-weight:600}
+</style>
+</head>
+<body>
+
+<header class="tete clair" id="entete"></header>
+
+<section class="haut ouvre">
+  <div class="wrap">
+    <p class="fil"><a href="index.html">Accueil</a> &rsaquo; Notre histoire</p>
+    <p class="parole">« Tu écriras des livres pour moi. »</p>
+    <p class="parole-src">La parole reçue en 1984</p>
+    <p class="intro">Le Ministère International Grâce et Vérité ne commence pas par
+    une assemblée ni par un bâtiment. Il commence par une phrase, adressée à un
+    garçon de vingt et un ans qui venait d'obtenir son baccalauréat et n'avait jamais
+    songé à écrire un livre.</p>
+  </div>
+</section>
+
+<div class="wrap recit">
+
+  <!-- 150° vert sapin -->
+  <div class="ep" style="--c:var(--c6)">
+    <div class="quand">1977<small>À l'EMPT</small></div>
+    <div>
+      <h2>Un soir, à Bingerville</h2>
+      <p>Un soir de l'année 1977, à l'École Militaire Préparatoire et Technique de
+      Bingerville, quelqu'un parlait du Christ Jésus à l'un de ses amis. Nettaud,
+      qui n'avait que quatorze ans, écoutait. L'Esprit se saisit de lui et lui dit :</p>
+      <p class="dit">« C'est la voie que tu dois suivre. »</p>
+      <p>Il obéit aussitôt. Il se joignit d'abord à un groupe d'étude biblique, puis
+      à une communauté chrétienne évangélique.</p>
+    </div>
+  </div>
+
+  <!-- 12° brique, et 292° violet pour les Écritures citées -->
+  <div class="ep" style="--c:var(--c1)">
+    <div class="quand">1984<small>La mission</small></div>
+    <div>
+      <h2>« Tu écriras des livres pour moi »</h2>
+      <p>Sept ans plus tard, il vient d'obtenir le baccalauréat. Dieu lui dit :</p>
+      <p class="dit">« Tu écriras des livres pour moi. »<br>« Tu me seras entièrement
+      consacré. »</p>
+      <p>Ces paroles le laissèrent perplexe, puisque jamais auparavant il n'avait
+      songé à écrire un livre, encore moins pour Dieu. Les nuits qui suivirent, Dieu
+      se fit plus précis :</p>
+      <div class="passages">
+        <p class="pa">« Toi que j'ai saisi des extrémités de la terre et que j'ai
+        appelé de ses confins. À qui j'ai dit : Tu es mon serviteur, je te choisis
+        et ne te rejette pas ! Sois sans crainte, car je suis avec toi. »
+        <cite>Isaïe 41, 9-10</cite></p>
+        <p class="pa">« Moi, Yahvé, je t'ai appelé pour la justice. Je te prends la
+        main, je te protège et je t'établis pour être la lumière des nations, pour
+        ouvrir les yeux des aveugles, pour faire sortir de prison le captif et de
+        leur cachot les habitants des ténèbres. »
+        <cite>Isaïe 42, 6-7</cite></p>
+        <p class="pa">« Je t'établis pour que mon salut soit manifesté jusqu'aux
+        extrémités de la terre. »
+        <cite>Isaïe 49, 6</cite></p>
+      </div>
+      <p>De toutes ces paroles, le jeune Nettaud comprit que sa vie devait être
+      entièrement consacrée à <strong>écrire des livres pour Dieu, afin d'éclairer
+      les nations à la lumière de l'Évangile</strong>. Telle est la mission première
+      du MIGV.</p>
+    </div>
+  </div>
+
+  <!-- 50° or -->
+  <div class="ep" style="--c:var(--c3)">
+    <div class="quand">1984<small>La formation</small></div>
+    <div>
+      <h2>La science d'abord, la théologie ensuite</h2>
+      <p>La même année, il obtient le baccalauréat série D et entame des études
+      supérieures de chimie, biologie et géologie, qu'il achève en biochimie.</p>
+      <p>Il suit conjointement une formation spécialisée en théologie systématique
+      et exégétique à l'Université de Théologie Biblique d'Abidjan. Plus tard, il
+      fera l'Institut Biblique All Nations For Christ, au Nigéria.</p>
+      <p>Cette double formation explique la manière du ministère : les textes du
+      MIGV argumentent, citent et démontrent plutôt qu'ils n'exhortent.</p>
+    </div>
+  </div>
+
+  <!-- 322° framboise -->
+  <div class="ep" style="--c:var(--c11)">
+    <div class="quand">Puis<small>Le foyer</small></div>
+    <div>
+      <h2>Grace Mercy</h2>
+      <p>Il épouse Grace Mercy, dite Rita, secrétaire de formation, aussi consacrée
+      que lui au Seigneur Jésus.</p>
+    </div>
+  </div>
+
+  <!-- 198° pétrole, et quatre teintes propres pour les quatre repères -->
+  <div class="ep" style="--c:var(--c8)">
+    <div class="quand">Aujourd'hui<small>Le ministère</small></div>
+    <div>
+      <h2>D'Abidjan jusqu'aux nations</h2>
+      <p>Le Docteur Théodore Nettaud GUEU est aujourd'hui le responsable du
+      Ministère International Grâce et Vérité. Le ministère a porté son enseignement
+      à Durban, aux États-Unis et à Abidjan, où se trouve son siège.</p>
+      <div class="reperes">
+        <div class="rp" style="--c:var(--c4)"><b>Le MIGV</b><span>Huit assemblées en
+        Côte d'Ivoire, d'Abidjan à Danané.</span></div>
+        <div class="rp" style="--c:var(--c5)"><b>Grace International Côte d'Ivoire</b>
+        <span>Il en est le coordonnateur. Le siège international est à Houston,
+        Texas.</span></div>
+        <div class="rp" style="--c:var(--c12)"><b>Ligue pour la Lecture de la Bible</b>
+        <span>Il est membre du Conseil National de la LLB, en Côte d'Ivoire.</span></div>
+        <div class="rp" style="--c:var(--c9)"><b>Quinze livres, soixante-douze traités</b>
+        <span>La bibliographie du ministère, écrite depuis 1984.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 32° terre -->
+  <div class="ep" style="--c:var(--c2)">
+    <div class="quand">Les archives<small>À venir</small></div>
+    <div>
+      <h2>Douze moments, en photographies</h2>
+      <p>Le dossier du ministère contient les photographies de cette histoire, de
+      l'enfance jusqu'au ministère d'aujourd'hui. Elles prendront ces douze
+      emplacements, dans cet ordre. Les légendes ci-dessous sont celles du dossier.</p>
+      <div class="archives">
+        <div class="ar"><b>Enfance</b><span>Dans les bras de maman</span></div>
+        <div class="ar"><b>Enfance</b><span>Le Lévite, troisième fils</span></div>
+        <div class="ar"><b>Enfance</b><span>À la veille du CEPE</span></div>
+        <div class="ar"><b>EMPT</b><span>En classe de 6<sup>e</sup></span></div>
+        <div class="ar"><b>EMPT</b><span>En tenue de sortie, 5<sup>e</sup></span></div>
+        <div class="ar"><b>EMPT</b><span>En tenue de combat, 2<sup>de</sup></span></div>
+        <div class="ar"><b>EMPT</b><span>En tenue de cérémonie, 1<sup>re</sup></span></div>
+        <div class="ar"><b>Le foyer</b><span>Le mariage</span></div>
+        <div class="ar"><b>Ministère</b><span>À Durban</span></div>
+        <div class="ar"><b>Ministère</b><span>Aux États-Unis</span></div>
+        <div class="ar"><b>Ministère</b><span>À Abidjan</span></div>
+        <div class="ar"><b>Personnel</b><span>Photos personnelles</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 176° vert sarcelle -->
+  <div class="manque">
+    <h3>Ce que cette page ne dit pas encore</h3>
+    <p>Tout ce qui précède vient du dossier remis par le ministère. Quatre choses
+    n'y figurent pas, et n'ont donc pas été écrites :</p>
+    <ul>
+      <li><strong>La date de fondation du MIGV lui-même.</strong> Le dossier raconte
+      l'appel de 1977 et la mission de 1984, mais pas l'année où le ministère a pris
+      son nom.</li>
+      <li>Les dates des séjours à Durban et aux États-Unis.</li>
+      <li>L'histoire des huit assemblées : quand chacune a ouvert, et qui la porte.</li>
+      <li>Les photographies elles-mêmes, qui sont dans le dossier et restent à
+      en extraire.</li>
+    </ul>
+  </div>
+
+</div>
+
+<footer class="pied-neuf"></footer>
+
+<script src="commun.js?v=19"></script>
+<script src="refonte.js?v=2"></script>
+</body>
+</html>

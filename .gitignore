@@ -1,0 +1,45 @@
+# ===================================================================
+#  CE QUI NE PART PAS EN LIGNE
+#
+#  Tout ce qui est liste ici reste sur le poste de travail. Les
+#  fichiers ne sont pas supprimes : ils sont simplement absents du
+#  depot public.
+# ===================================================================
+
+# --- les brouillons -------------------------------------------------
+# Les fichiers prefixes d'un souligne sont des essais : maquettes
+# intermediaires, variantes abandonnees, bancs d'essai d'animation.
+_*
+
+# --- les sauvegardes ------------------------------------------------
+# Les .bak gardent l'etat d'un fichier avant une refonte. Ils servent
+# a revenir en arriere en local, pas a etre publies.
+*.bak
+
+# --- les pages heritees ---------------------------------------------
+# Six pages de l'ancienne maquette que plus aucun lien du site ne
+# pointe. Les publier reviendrait a exposer du travail abandonne, que
+# personne ne peut atteindre autrement qu'en devinant son adresse.
+accueil.html
+landing.html
+site.html
+theme2.html
+arbre.html
+carte.html
+
+# Leurs donnees et leur bibliotheque : elles ne servaient qu'a elles.
+data.json
+versets.json
+lib/
+
+# --- les images jamais utilisees -------------------------------------
+# 14,7 Mo pour des fichiers qu'aucune page n'affiche. Les garder
+# rendrait le depot deux fois plus lourd a cloner pour rien.
+images/bible-*.png
+images/texte-blanc.png
+images/texte-bleu.png
+
+# --- le systeme -------------------------------------------------------
+Thumbs.db
+desktop.ini
+.DS_Store

@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<!-- Maquette en relecture. robots.txt demande aux moteurs de ne pas
+     parcourir le site ; cette balise leur demande en plus de ne pas
+     indexer la page, meme s'ils l'atteignent par un lien. A retirer
+     le jour de la vraie mise en ligne. -->
+<title>Traités · MIGV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=18">
+<style>
+/* ===================================================================
+   LES TRAITES.
+
+   La liste vient du dossier remis par le ministere. Elle est portee
+   par ressources.js, jamais ecrite ici : la page ne fait que
+   l'afficher, et elle suivra tout ajout sans etre retouchee.
+   =================================================================== */
+:root{
+  /* --dom est la couleur dominante de style.css. Sans valeur, elle
+     retombe sur #0024D8, le bleu electrique d'origine. Il ne se
+     voyait plus qu'a trois endroits, mais il s'y voyait bien :
+     le trait sous le lien actif du menu, la bordure basse du
+     menu mobile ouvert, et les boutons de la carte sous 820 px.
+     Une seule ligne les ramene tous les trois dans la palette. */
+  --dom:#264D54;
+
+  --encre:#0C1428; --encre2:#1B1B1B;
+  --parche:#F6EEE2; --craie:#FFFFFF; --craie2:#FFF9F3;
+  --brume:#EBF3F2; --sable:#EADCC0; --gris-chaud:#EDECEB;
+  --vert:#264D54; --vert-vif:#3A7781; --terre:#72573A;
+  --or:#93CDDD; --plomb:#5B5B5B;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --max:1100px;
+}
+body{background:var(--craie);color:var(--encre2);
+  font-family:Inter,system-ui,sans-serif;font-weight:400;line-height:1.65}
+h1,h2,h3,h4,h5{font-family:inherit;text-transform:none;
+  font-weight:600;letter-spacing:-.022em;line-height:1.2}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 clamp(20px,4vw,48px)}
+.sur{font:600 .8rem/1 Inter,sans-serif;letter-spacing:.17em;text-transform:uppercase;
+  color:var(--vert);display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.sur::before{content:'';width:26px;height:2px;background:currentColor;flex:none}
+
+.banniere{width:100%;aspect-ratio:2.7;border-radius:12px;overflow:hidden;
+  margin:0 0 clamp(22px,2.6vw,32px);background:var(--gris-chaud)}
+.banniere img{width:100%;height:100%;object-fit:cover;display:block}
+@media(max-width:860px){.banniere{aspect-ratio:2.2}}
+@media(max-width:620px){.banniere{aspect-ratio:1.9}}
+
+.haut{background:var(--parche);padding:clamp(96px,10vw,128px) 0 clamp(34px,4.2vw,50px)}
+.fil{margin:0 0 13px;font-size:.88rem;color:var(--plomb)}
+.fil a{color:var(--vert)}
+.haut h1{margin:0;font-size:clamp(1.9rem,3.4vw,2.5rem);color:var(--encre)}
+.haut .accroche{margin:9px 0 0;font-size:1.1rem;color:var(--terre)}
+/* la definition est CELLE DU PASTEUR, citee, pas une reformulation */
+.citation{margin:20px 0 0;padding-left:20px;border-left:3px solid var(--sable);
+  max-width:62ch;color:var(--plomb)}
+.citation i{font-style:italic;color:var(--encre2)}
+.citation small{display:block;margin-top:8px;font-size:.82rem}
+
+h2.t2{margin:0 0 4px;font-size:1.5rem;color:var(--encre)}
+.bloc{padding:clamp(36px,4.4vw,56px) 0 0}
+.bloc .quoi{margin:0 0 clamp(16px,2vw,24px);color:var(--plomb);max-width:64ch}
+
+.barre{display:flex;align-items:center;gap:clamp(12px,1.6vw,20px);flex-wrap:wrap;
+  margin-bottom:clamp(16px,2vw,22px)}
+.rech{display:flex;align-items:center;gap:10px;flex:1 1 260px;
+  background:var(--craie);border:1px solid var(--gris-chaud);border-radius:999px;
+  padding:11px 18px;transition:border-color .25s}
+.rech:focus-within{border-color:var(--vert)}
+.rech input{flex:1;min-width:0;border:0;outline:0;background:transparent;
+  font:400 .97rem/1.4 Inter,sans-serif;color:var(--encre)}
+.rech input::placeholder{color:var(--plomb)}
+.nb{font:500 .8rem/1 Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--plomb);white-space:nowrap}
+.f{border:1px solid var(--gris-chaud);background:var(--craie);color:var(--plomb);
+  border-radius:999px;padding:8px 15px;cursor:pointer;
+  font:500 .84rem/1 Inter,sans-serif;transition:.25s var(--ease)}
+.f:hover{border-color:var(--vert);color:var(--vert)}
+/* Au doigt, une pastille de 31 px de haut se rate une fois sur deux.
+   Les recommandations tactiles demandent 44 px ; sous 760 px on y
+   vient par le padding, sans changer la taille du texte.          */
+/* 900 px et non 760 : une tablette en portrait fait 768 px de
+   large et se touche au doigt comme un telephone. */
+@media(max-width:900px){.f{padding:13px 17px}}
+.f[aria-pressed="true"]{background:var(--vert);border-color:var(--vert);color:var(--craie)}
+
+/* ---- une ligne de traite ---------------------------------------- */
+.liste{border-top:1px solid var(--gris-chaud);margin-bottom:clamp(44px,5vw,70px)}
+.tt{display:flex;align-items:center;gap:16px;width:100%;text-align:left;
+  background:transparent;border:0;padding:13px 4px;color:inherit;
+  border-bottom:1px solid var(--gris-chaud);transition:background .25s;
+  font-family:inherit;cursor:default}
+.tt.lisible{cursor:pointer}
+.tt.lisible:hover{background:var(--brume)}
+.tt .no{flex:none;width:34px;font:500 .84rem/1 Inter,sans-serif;color:var(--plomb);
+  text-align:right}
+.tt .corps{flex:1;min-width:0}
+.etq{display:block;font:500 .73rem/1 Inter,sans-serif;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--terre);margin-bottom:5px}
+.tt h3{margin:0;font-size:1rem;color:var(--encre);line-height:1.35}
+.tt mark{background:var(--sable);color:inherit;border-radius:3px;padding:0 2px}
+.tt .etat{flex:none;font:500 .76rem/1 Inter,sans-serif;border-radius:999px;
+  padding:6px 12px;white-space:nowrap}
+.tt .etat.ok{background:var(--vert);color:var(--craie)}
+.tt .etat.att{background:var(--gris-chaud);color:var(--plomb)}
+@media(max-width:560px){.tt .etat{display:none}}
+.rien{padding:38px 4px;color:var(--plomb)}
+
+/* ---- le livret en PDF -------------------------------------------- */
+.livret{display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+  background:var(--brume);border-radius:12px;padding:clamp(18px,2.2vw,26px);
+  margin-bottom:clamp(44px,5vw,70px)}
+.livret div{flex:1;min-width:200px}
+.livret h3{margin:0 0 5px;font-size:1.08rem;color:var(--encre)}
+.livret p{margin:0;font-size:.92rem;color:var(--plomb)}
+
+/* ---- le lecteur de texte ----------------------------------------- */
+.jauge{position:fixed;top:0;left:0;height:3px;width:0;z-index:120;
+  background:var(--vert);transition:width .15s linear}
+.lect{position:fixed;inset:0;z-index:100;background:var(--craie2);
+  overflow-y:auto;display:none}
+.lect.on{display:block}
+.lbar{position:sticky;top:0;z-index:2;background:var(--craie2);
+  border-bottom:1px solid var(--gris-chaud)}
+.lbar .in{max-width:var(--max);margin:0 auto;padding:14px clamp(20px,4vw,48px);
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.lbar .ti{flex:1;min-width:0;font-weight:600;color:var(--encre);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bt2{border:1px solid var(--vert);background:transparent;color:var(--vert);
+  border-radius:999px;padding:9px 17px;cursor:pointer;
+  font:500 .86rem/1 Inter,sans-serif;transition:background .25s,color .25s}
+.bt2:hover{background:var(--vert);color:var(--craie)}
+.art{--tp:1.22rem;max-width:68ch;margin:0 auto;
+  padding:clamp(30px,4vw,54px) clamp(20px,4vw,48px) clamp(70px,8vw,110px)}
+.art .th{font:500 .78rem/1 Inter,sans-serif;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--terre);margin-bottom:12px}
+.art h2{margin:0;font-size:clamp(1.6rem,3vw,2.1rem);color:var(--encre)}
+.art .sous{margin:10px 0 30px;font-size:.9rem;color:var(--plomb);
+  padding-bottom:22px;border-bottom:1px solid var(--gris-chaud)}
+.art p{font-size:var(--tp);line-height:1.75;margin:0 0 1.15em;color:var(--encre2)}
+.art p.cit{padding-left:20px;border-left:3px solid var(--sable);color:var(--vert)}
+
+/* ---- l'en-tete, le pied, les boutons ---------------------------- */
+/* L'entete n'est JAMAIS transparente ici : .haut est un aplat de
+   parche avec du texte fonce, et ce texte passait sous le logo et
+   les liens du menu en defilant. Deux etats pleins, pas d'entre-deux. */
+.tete{background:var(--parche)}
+.tete.pose{background:#17223E;border-bottom:1px solid rgba(255,255,255,.16);
+  box-shadow:0 10px 28px rgba(0,0,0,.28)}
+.tete.pose a,.tete.pose b,.tete.pose nav a{color:var(--craie)}
+.tete.pose .logo b span{color:rgba(255,255,255,.62)}
+.tete.pose .burger span,
+.tete.pose .burger span::before,
+.tete.pose .burger span::after{background:var(--craie)}
+.tete{transition:background .4s var(--ease),opacity .35s var(--ease),transform .35s var(--ease)}
+.tete.efface{opacity:0;transform:translateY(-100%);pointer-events:none}
+.bt{display:inline-flex;align-items:center;gap:10px;border-radius:999px;
+  padding:14px 24px;font:500 .93rem/1 Inter,sans-serif;white-space:nowrap;
+  transition:transform .3s var(--ease),background .25s,color .25s}
+.bt span{transition:transform .3s var(--ease)}
+.bt:hover span{transform:translateX(4px)}
+.bt-plein{background:var(--vert);color:var(--craie)}
+.bt-plein:hover{background:var(--encre)}
+.bt-clair{background:var(--craie);color:var(--encre)}
+
+.pied-neuf{background:var(--encre);color:var(--craie);padding:clamp(56px,6vw,88px) 0 30px}
+.appel{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  background:rgba(255,255,255,.07);border-radius:10px;
+  padding:clamp(16px,1.8vw,22px) clamp(18px,2.2vw,28px);margin-bottom:clamp(40px,5vw,66px)}
+.appel p{margin:0;font-size:.98rem;color:rgba(255,255,255,.88);max-width:62ch}
+.appel .bt{padding:13px 22px;font-size:.9rem}
+.corps{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.92fr);
+  gap:clamp(30px,5vw,80px);padding-bottom:clamp(36px,4vw,56px)}
+@media(max-width:860px){.corps{grid-template-columns:1fr}}
+.colonnes{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(20px,3vw,46px)}
+@media(max-width:460px){.colonnes{grid-template-columns:1fr}}
+.colonnes a{display:block;padding:7px 0;font-size:.95rem;color:rgba(255,255,255,.72);
+  transition:color .25s,transform .25s var(--ease)}
+.colonnes a:hover{color:var(--craie);transform:translateX(4px)}
+.lettre p{margin:0 0 16px;font-size:.95rem;line-height:1.6;color:rgba(255,255,255,.76);max-width:44ch}
+.lettre form{display:flex;flex-direction:column;gap:10px;max-width:420px}
+.lettre input{background:rgba(255,255,255,.07);color:var(--craie);
+  border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:15px 18px;
+  font:400 .95rem/1 Inter,sans-serif;outline:0;transition:border-color .3s}
+.lettre input::placeholder{color:rgba(255,255,255,.45)}
+.lettre input:focus{border-color:rgba(255,255,255,.55)}
+.lettre button{border:0;border-radius:6px;padding:15px 18px;cursor:pointer;
+  background:rgba(255,255,255,.14);color:var(--craie);
+  font:500 .95rem/1 Inter,sans-serif;transition:background .25s}
+.lettre button:hover{background:rgba(255,255,255,.24)}
+.lettre .note{margin:12px 0 0;font-size:.79rem;color:rgba(255,255,255,.45)}
+.pied-neuf .bas{padding-top:26px;border-top:1px solid rgba(255,255,255,.14)}
+.reseaux{list-style:none;margin:0 0 20px;padding:0;display:flex;flex-wrap:wrap;gap:18px}
+.reseaux a{display:grid;place-items:center;width:44px;height:44px;
+  margin:-9px;
+  color:rgba(255,255,255,.55);transition:color .25s,transform .25s var(--ease)}
+.reseaux a:hover{color:var(--craie);transform:translateY(-2px)}
+.reseaux svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;
+  stroke-linecap:round;stroke-linejoin:round}
+.droits{margin:0;font-size:.82rem;color:rgba(255,255,255,.45)}
+</style>
+</head>
+<body>
+
+<div class="jauge" id="jauge"></div>
+<header class="tete clair" id="entete"></header>
+
+<section class="haut">
+  <div class="wrap">
+    <figure class="banniere">
+      <img src="images/h-brochures.jpg" alt="Une pile de traités imprimés posée sur une table">
+    </figure>
+    <p class="fil"><a href="enseignements.html">Enseignements</a></p>
+    <h1>Les traités</h1>
+    <p class="accroche">À lire, à télécharger, à donner autour de vous.</p>
+    <blockquote class="citation">
+      <i>« Ce sont généralement des extraits de nos livres et quelques fois
+      des résumés de nos prédications. »</i>
+      <small>Docteur Théodore Nettaud GUEU, dossier du ministère</small>
+    </blockquote>
+  </div>
+</section>
+
+<div class="wrap">
+
+  <section class="bloc">
+    <h2 class="t2">La liste du ministère</h2>
+    <p class="quoi">Elle est numérotée par le ministère, et sa numérotation est conservée
+    telle quelle : un traité porte le même numéro ici et sur le papier. Le pasteur précise
+    que cette liste n'est pas exhaustive et qu'elle est donnée à titre indicatif.</p>
+
+    <div class="barre">
+      <label class="rech">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--vert)" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg>
+        <input id="q" type="search" placeholder="La dîme, le salut, le royaume…" autocomplete="off"
+               aria-label="Chercher un traité">
+      </label>
+      <button class="f" id="flisible" aria-pressed="false">Lisibles en ligne</button>
+      <span class="nb" id="nb"></span>
+    </div>
+    <div class="liste" id="liste"></div>
+  </section>
+
+  <section class="bloc" style="padding-top:0">
+    <h2 class="t2">Un livret en PDF</h2>
+    <p class="quoi">Remis à part par le ministère. Il annonce lui-même être l'extrait
+    d'un livre, ce qui est exactement la définition d'un traité.</p>
+    <div class="livret" id="livret"></div>
+  </section>
+
+</div>
+
+<footer class="pied-neuf">
+  <div class="wrap">
+
+    <div class="appel">
+      <p>Tout ce que le ministère publie est en accès libre, et le restera.</p>
+      <a class="bt bt-clair" href="soutenir.html">Soutenir le MIGV <span>&rarr;</span></a>
+    </div>
+
+    <div class="corps">
+      <div class="colonnes">
+        <div>
+        <a href="enseignements.html">Enseignements</a>
+        <a href="traites.html">Traités</a>
+        <a href="livres.html">Livres</a>
+        <a href="collections.html">Collections</a>
+        <a href="dimanche.html">Le dimanche</a>
+        <a href="videos.html">Les vidéos</a>
+        </div>
+        <div>
+        <a href="actualites.html">Actualités</a>
+        <a href="histoire.html">Notre histoire</a>
+        <a href="biographie.html">Le fondateur</a>
+        <a href="contact.html">Nos assemblées</a>
+        <a href="soutenir.html">Nous soutenir</a>
+        <a href="contact.html">Nous écrire</a>
+        </div>
+      </div>
+      <div class="lettre">
+        <p>Recevez le résumé de la prédication du dimanche et son visuel,
+        une fois par semaine. Rien d'autre.</p>
+        <form onsubmit="return inscrire(event)">
+          <input id="courriel" type="email" placeholder="Adresse e-mail" required
+                 aria-label="Votre adresse e-mail">
+          <button type="submit">Abonnez-vous</button>
+        </form>
+        <p class="note" id="note">Formulaire de maquette : rien n'est encore envoyé.</p>
+      </div>
+    </div>
+
+    <div class="bas">
+      <ul class="reseaux">
+      <li><a href="#" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3Z"/><path d="M10 9.2 15 12l-5 2.8Z"/></svg></a></li>
+      <li><a href="#" aria-label="Facebook" title="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 21v-8h2.7l.5-3h-3.2V8.2c0-.9.3-1.5 1.6-1.5h1.7V4a22 22 0 0 0-2.5-.1c-2.5 0-4.2 1.5-4.2 4.3V10H8v3h3.1v8Z"/></svg></a></li>
+      <li><a href="#" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.1" cy="6.9" r=".9" fill="currentColor" stroke="none"/></svg></a></li>
+      <li><a href="#" aria-label="WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 0 0-7.3 12.8L3.5 20.5l4.4-1.1A8.5 8.5 0 1 0 12 3.5Z"/><path d="M9 9.4c.3-.7.6-.7.9-.7.3 0 .6.1.8.6l.5 1.2-.7.8c.5 1 1.3 1.8 2.3 2.3l.8-.7 1.2.5c.5.2.6.5.6.8 0 .3 0 .6-.7.9-.8.3-2 .2-3.5-.8a9 9 0 0 1-2.6-3c-.5-1-.4-1.5-.3-1.9Z"/></svg></a></li>
+      <li><a href="#" aria-label="TikTok" title="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.3 3.2v10.9a3.4 3.4 0 1 1-2.9-3.4"/><path d="M14.3 3.2a4.6 4.6 0 0 0 4.4 4.3"/></svg></a></li>
+      <li><a href="#" aria-label="Podcast" title="Podcast"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9.2" y="2.8" width="5.6" height="10.4" rx="2.8"/><path d="M5.6 11.2a6.4 6.4 0 0 0 12.8 0M12 17.6V21"/></svg></a></li>
+      </ul>
+      <p class="droits">&copy; 2026 Ministère International Grâce et Vérité. Tous droits réservés.</p>
+    </div>
+
+  </div>
+</footer>
+
+<div class="lect" id="lect">
+  <div class="lbar"><div class="in">
+    <button class="bt2" id="fermer">&larr; Retour</button>
+    <span class="ti" id="lti"></span>
+  </div></div>
+  <article class="art" id="lart"></article>
+</div>
+
+<script src="donnees.js?v=17"></script>
+<script src="ressources.js?v=2"></script>
+<script src="commun.js?v=19"></script>
+<script>
+const $=s=>document.querySelector(s);
+var seulLisibles=false;
+const norm=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+function surl(t,q){if(!q||q.length<2)return t;let o=t;
+  q.split(/\s+/).filter(m=>m.length>2).forEach(m=>{
+    o=o.replace(new RegExp('('+m.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<mark>$1</mark>')});
+  return o}
+function texteDe(tr){ return tr.txt ? DATA_ENSEIGNEMENTS.find(d=>d.id===tr.txt) : null; }
+
+function rendre(){
+  const q=norm($('#q').value.trim());
+  let r=TRAITES.filter(t=>!seulLisibles||t.txt);
+  if(q.length>1) r=r.filter(t=>norm(t.t).includes(q));
+  $('#nb').textContent=r.length+(r.length>1?' traités':' traité');
+  if(!r.length){$('#liste').innerHTML='<div class="rien">Aucun traité ne porte ce mot.</div>';return}
+  $('#liste').innerHTML=r.map(t=>{
+    const d=texteDe(t);
+    /* L'ETIQUETTE : le type, puis le poids quand on le connait. Pour un
+       traite dont le texte n'est pas encore arrive, on ne peut pas
+       annoncer un temps de lecture : on dit simplement ce qu'il est. */
+    const etq=d ? 'Traité &middot; '+minutesTexte(d.mots)+' min de lecture' : 'Traité';
+    return '<button class="tt'+(d?' lisible':'')+'"'+(d?' data-id="'+t.txt+'"':' disabled')+'>'
+      +'<span class="no">'+t.n+'</span>'
+      +'<span class="corps"><span class="etq">'+etq+'</span>'
+      +'<h3>'+surl(echapper(t.t),q)+'</h3></span>'
+      +'<span class="etat '+(d?'ok':'att')+'">'+(d?'Lire':'Texte à venir')+'</span>'
+      +'</button>';
+  }).join('');
+  document.querySelectorAll('.tt.lisible').forEach(b=>b.onclick=()=>ouvrir(b.dataset.id));
+}
+$('#q').addEventListener('input',rendre);
+$('#flisible').onclick=function(){
+  seulLisibles=!seulLisibles;
+  this.setAttribute('aria-pressed',seulLisibles);
+  rendre();
+};
+
+/* le livret remis en PDF */
+$('#livret').innerHTML=LIVRETS.map(l=>
+  '<div><h3>'+echapper(l.t)+'</h3>'
+  +'<p>Extrait du livre « '+echapper(l.tire)+' ». PDF, 22 pages.</p></div>'
+  +'<a class="bt bt-plein" href="'+l.pdf+'" target="_blank" rel="noopener">'
+  +'Ouvrir le PDF <span>&rarr;</span></a>').join('');
+
+/* --- le lecteur --------------------------------------------------- */
+const REF=/((?:[1-3]\s?)?(?:Gn|Ex|Lv|Nb|Dt|Jos|Jg|Rt|Sam|Rois|Ch|Esd|Ne|Est|Jb|Ps|Pr|Ec|Ct|Es|Jr|Lm|Ez|Dan|Os|Jl|Am|Ab|Jon|Mi|Na|Ha|So|Ag|Za|Ml|Mt|Mc|Lc|Jn|Ac|Rom|Cor|Gal|Ep|Ph|Col|Th|Tim|Tit|Phm|Hb|Jc|Pi|Jude|Ap|Hé|Héb)\.?\s?\d{1,3}\s?[:.]\s?\d{1,3}(?:\s?-\s?\d{1,3})?)/g;
+function ouvrir(id){
+  const d=DATA_ENSEIGNEMENTS.find(x=>x.id===id); if(!d) return;
+  const t=TRAITES.find(x=>x.txt===id);
+  $('#lti').textContent=d.titre;
+  $('#lart').innerHTML='<div class="th">Traité n° '+t.n+' &middot; '
+    +minutesTexte(d.mots)+' min de lecture</div><h2>'+echapper(d.titre)+'</h2>'
+    +'<div class="sous">Docteur Théodore Nettaud GUEU. '+d.mots+' mots.</div>'
+    +d.paras.map(p=>'<p class="'+(/^[«"\u201c]/.test(p.trim())?'cit':'')+'">'
+      +p.replace(REF,'<span class="vr">$1</span>')+'</p>').join('');
+  $('#lect').classList.add('on'); $('#lect').scrollTop=0;
+  document.body.style.overflow='hidden';
+}
+$('#fermer').onclick=()=>{$('#lect').classList.remove('on');
+  document.body.style.overflow='';$('#jauge').style.width='0'};
+$('#lect').addEventListener('scroll',e=>{const el=e.target,h=el.scrollHeight-el.clientHeight;
+  $('#jauge').style.width=(h>0?el.scrollTop/h*100:0)+'%'});
+addEventListener('keydown',e=>{if(e.key==='Escape')$('#fermer').click()});
+
+rendre();
+
+var tete=document.querySelector('.tete'),
+    pied=document.querySelector('.pied-neuf'),
+    haut=document.querySelector('.haut');
+function poser(){
+  var h=haut.offsetHeight-90;
+  tete.classList.toggle('clair', scrollY < h);
+  tete.classList.toggle('pose',  scrollY >= h);
+}
+addEventListener('scroll', poser, {passive:true});
+addEventListener('resize', poser, {passive:true});
+poser();
+new IntersectionObserver(function(es){
+  tete.classList.toggle('efface', es[0].isIntersecting);
+},{rootMargin:'0px 0px -88% 0px'}).observe(pied);
+
+function inscrire(e){
+  e.preventDefault();
+  document.getElementById('note').textContent=
+    'Merci. Le formulaire sera relié dès la mise en ligne.';
+  return false;
+}
+</script>
+</body>
+</html>

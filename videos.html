@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<!-- Maquette en relecture. robots.txt demande aux moteurs de ne pas
+     parcourir le site ; cette balise leur demande en plus de ne pas
+     indexer la page, meme s'ils l'atteignent par un lien. A retirer
+     le jour de la vraie mise en ligne. -->
+<title>Vidéos · MIGV</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=18">
+<style>
+/* ===================================================================
+   LA PAGE VIDEOS, DANS LE SYSTEME DE L'ACCUEIL.
+
+   Tout ce qui suit est enferme dans ce bloc, exactement comme sur
+   index.html : la feuille partagee n'est pas touchee, les neuf autres
+   pages ne bougent pas. Le jour ou la migration generale se fera, ce
+   bloc remontera dans style.css et disparaitra d'ici.
+
+   Le rangement reprend le principe observe chez BibleProject : on ne
+   deverse jamais tout d'un coup. Une mise en avant, deux rangees
+   courtes, une grille de themes, et la liste complete en dernier,
+   derriere un tri et un bouton.
+   =================================================================== */
+:root{
+  /* --dom est la couleur dominante de style.css. Sans valeur, elle
+     retombe sur #0024D8, le bleu electrique d'origine. Il ne se
+     voyait plus qu'a trois endroits, mais il s'y voyait bien :
+     le trait sous le lien actif du menu, la bordure basse du
+     menu mobile ouvert, et les boutons de la carte sous 820 px.
+     Une seule ligne les ramene tous les trois dans la palette. */
+  --dom:#264D54;
+
+  --encre:#0C1428; --encre2:#1B1B1B;
+  --parche:#F6EEE2; --craie:#FFFFFF; --craie2:#FFF9F3;
+  --brume:#EBF3F2; --sable:#EADCC0; --gris-chaud:#EDECEB;
+  --vert:#264D54; --vert-vif:#3A7781; --terre:#72573A;
+  --or:#93CDDD; --plomb:#5B5B5B;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --max:1240px;
+}
+body{background:var(--craie);color:var(--encre2);
+  font-family:Inter,system-ui,sans-serif;font-weight:400;line-height:1.65}
+/* la feuille partagee met Playfair sur les titres, et surtout elle met
+   TOUS les h3 et h4 en capitales (style.css ligne 94). On neutralise les
+   deux ici, sur cette page seulement : sans cela les titres de vignette
+   s'affichent en majuscules et deviennent illisibles sur deux lignes. */
+h1,h2,h3,h4,h5{font-family:inherit;text-transform:none;
+  font-weight:600;letter-spacing:-.028em;line-height:1.2}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 clamp(20px,4vw,54px)}
+
+.sur{font:600 .82rem/1 Inter,sans-serif;letter-spacing:.17em;
+  text-transform:uppercase;color:var(--vert);display:flex;align-items:center;gap:12px}
+.sur::before{content:'';width:26px;height:2px;background:currentColor;flex:none}
+/* L'ECHELLE D'UNE PAGE DE RANGEMENT, PAS D'UNE PAGE D'ACCUEIL.
+   Mesure prise sur la reference : titre principal 40 px, intertitre de
+   section 24 px, titre de vignette 14 px. La landing monte a 65 et 37 :
+   c'est juste pour une porte d'entree, c'est criard pour un catalogue. */
+.ttl{margin:0;font-weight:600;letter-spacing:-.022em;line-height:1.15;color:var(--encre)}
+.t1{font-size:clamp(1.9rem,3.4vw,2.5rem)}   /* 40 px au-dela de 1176 px */
+.t2{font-size:clamp(1.25rem,2vw,1.5rem)}    /* 24 px */
+.txt{color:var(--plomb);font-size:.97rem;max-width:56ch}
+
+.bt{display:inline-flex;align-items:center;gap:10px;border-radius:999px;
+  padding:15px 26px;font:500 .95rem/1 Inter,sans-serif;white-space:nowrap;
+  transition:transform .3s var(--ease),background .25s,color .25s}
+.bt span{transition:transform .3s var(--ease)}
+.bt:hover span{transform:translateX(4px)}
+.bt-plein{background:var(--vert);color:var(--craie)}
+.bt-plein:hover{background:var(--encre)}
+.bt-clair{background:var(--craie);color:var(--encre)}
+
+/* ---- 1. LA MISE EN AVANT ---------------------------------------- */
+.phare{background:var(--parche);padding:clamp(96px,10vw,128px) 0 clamp(34px,4vw,52px)}
+.phare .duo{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);
+  gap:clamp(30px,5vw,70px);align-items:center}
+@media(max-width:900px){.phare .duo{grid-template-columns:1fr}}
+.phare .ttl{margin-top:14px}
+.meta-phare{margin:10px 0 0;font:500 .86rem/1.5 Inter,sans-serif;
+  letter-spacing:.02em;color:var(--terre)}
+.phare .meta-phare{margin-bottom:26px}
+.affiche{position:relative;display:block;border-radius:14px;overflow:hidden;
+  aspect-ratio:16/9;background:var(--encre);box-shadow:0 18px 44px rgba(12,20,40,.22)}
+.affiche img{width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .7s var(--ease)}
+.affiche:hover img{transform:scale(1.04)}
+.affiche .jouer{position:absolute;inset:0;display:grid;place-items:center}
+.affiche .jouer i{display:grid;place-items:center;width:72px;height:72px;border-radius:50%;
+  background:rgba(255,255,255,.93);transition:transform .35s var(--ease)}
+.affiche:hover .jouer i{transform:scale(1.09)}
+.affiche .jouer svg{width:26px;height:26px;fill:var(--vert);margin-left:3px}
+
+/* ---- 2 et 3. LES DEUX RANGEES ----------------------------------- */
+.rangee{padding:clamp(44px,5vw,70px) 0 0}
+.rangee:last-of-type{padding-bottom:clamp(44px,5vw,70px)}
+.tete-rangee{display:flex;align-items:baseline;justify-content:space-between;
+  gap:20px;flex-wrap:wrap;margin-bottom:clamp(18px,2.2vw,26px)}
+.tete-rangee p{margin:6px 0 0;font-size:.92rem;color:var(--plomb)}
+.tete-rangee a{font:500 .92rem/1 Inter,sans-serif;color:var(--vert);white-space:nowrap}
+.tete-rangee a:hover{color:var(--encre)}
+/* sous 900 px la rangee devient une piste qui glisse au doigt, comme
+   chez eux : cinq cartes ne tiennent pas de front sur un telephone. */
+.piste{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:clamp(12px,1.4vw,18px)}
+@media(max-width:900px){
+  /* La piste doit atteindre les deux bords de l'ecran, alors que son
+     parent .wrap est rentre de son padding. On annule donc ce padding
+     par une marge negative EXACTEMENT egale.
+
+     L'ecriture precedente, « margin:0 calc(50% - 50vw) », debordait de
+     8 px sur telephone : vw compte la barre de defilement verticale,
+     50% ne la compte pas. L'ecart entre les deux, c'est la largeur de
+     la barre, et la piste sortait de l'ecran d'autant.
+
+     En reprenant la meme expression que le padding de .wrap, les deux
+     se compensent au pixel, barre de defilement ou pas.            */
+  .piste{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;
+    padding-bottom:12px;
+    margin-left:calc(-1 * clamp(20px,4vw,54px));
+    margin-right:calc(-1 * clamp(20px,4vw,54px));
+    padding-left:clamp(20px,4vw,54px);
+    padding-right:clamp(20px,4vw,54px);-webkit-overflow-scrolling:touch}
+  .piste::-webkit-scrollbar{height:4px}
+  .piste::-webkit-scrollbar-thumb{background:var(--gris-chaud);border-radius:2px}
+  .piste>*{flex:0 0 min(74vw,280px);scroll-snap-align:start}
+}
+
+/* la carte video : vignette 16/9, duree posee dessus, titre dessous */
+.vd{display:block;color:inherit}
+.vd .cadre{position:relative;display:block;border-radius:10px;overflow:hidden;
+  aspect-ratio:16/9;background:var(--gris-chaud)}
+.vd img{width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .55s var(--ease)}
+.vd:hover img{transform:scale(1.05)}
+.vd .duree{position:absolute;right:8px;bottom:8px;
+  background:rgba(12,20,40,.82);color:#fff;border-radius:4px;
+  padding:3px 7px;font:500 .74rem/1 Inter,sans-serif;letter-spacing:.02em}
+.vd .lire{position:absolute;inset:0;display:grid;place-items:center;opacity:0;
+  background:rgba(12,20,40,.3);transition:opacity .3s var(--ease)}
+.vd:hover .lire,.vd:focus-visible .lire{opacity:1}
+.vd .lire i{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;
+  background:rgba(255,255,255,.95)}
+.vd .lire svg{width:17px;height:17px;fill:var(--vert);margin-left:2px}
+/* 14 px, et deux lignes au maximum : c'est ce qui tient la carte a 156 px
+   de haut. La ligne du theme sous le titre est retiree, elle rallongeait
+   chaque carte de 42 px et donc toute la page. */
+.vd h3{margin:10px 0 0;font-size:.875rem;font-weight:600;line-height:1.35;
+  letter-spacing:-.008em;color:var(--encre);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+  overflow:hidden}
+.vd:hover h3{color:var(--vert)}
+
+/* ---- 4. LA GRILLE DES THEMES ------------------------------------ */
+.themes{background:var(--parche);padding:clamp(54px,6vw,84px) 0}
+.grille-themes{display:grid;grid-template-columns:repeat(auto-fill,minmax(176px,1fr));
+  gap:clamp(12px,1.5vw,20px);margin-top:clamp(22px,2.6vw,32px)}
+.th{position:relative;display:block;border-radius:12px;overflow:hidden;
+  aspect-ratio:3/4;background:var(--encre);color:var(--craie)}
+.th img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  transition:transform .6s var(--ease)}
+.th:hover img{transform:scale(1.06)}
+.th .voile{position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(12,20,40,.12) 0%,rgba(12,20,40,.42) 48%,rgba(12,20,40,.88) 100%)}
+.th .dedans{position:absolute;left:0;right:0;bottom:0;padding:16px 15px 17px}
+.th h3{margin:0;font-size:1.02rem;font-weight:600;line-height:1.25;
+  letter-spacing:-.015em;color:#fff}
+.th .cpt{display:block;margin-top:5px;font:500 .78rem/1 Inter,sans-serif;
+  letter-spacing:.04em;color:rgba(255,255,255,.76)}
+
+/* le lien vers la page de la liste complete */
+.vers-tout{margin:clamp(26px,3vw,36px) 0 0;text-align:center}
+.vers-tout a{display:inline-flex;align-items:center;gap:9px;
+  border:1px solid var(--vert);color:var(--vert);border-radius:999px;
+  padding:13px 28px;font:500 .92rem/1 Inter,sans-serif;
+  transition:background .25s,color .25s}
+.vers-tout a span{transition:transform .3s var(--ease)}
+.vers-tout a:hover{background:var(--vert);color:var(--craie)}
+.vers-tout a:hover span{transform:translateX(4px)}
+
+/* ---- le lecteur ------------------------------------------------- */
+.lecteur{position:fixed;inset:0;z-index:90;background:rgba(12,20,40,.9);
+  display:none;place-items:center;padding:clamp(16px,4vw,40px)}
+.lecteur.on{display:grid}
+.lecteur .boite{width:min(1000px,100%)}
+.lecteur .rap{position:relative;aspect-ratio:16/9;background:#000;
+  border-radius:10px;overflow:hidden}
+.lecteur iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.lecteur .tt{display:flex;align-items:center;justify-content:space-between;
+  gap:18px;flex-wrap:wrap;margin-top:14px}
+.lecteur h3{margin:0;color:#fff;font-size:1.04rem;font-weight:600}
+.ferme{background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:999px;
+  padding:11px 20px;cursor:pointer;font:500 .88rem/1 Inter,sans-serif;
+  transition:background .25s}
+.ferme:hover{background:rgba(255,255,255,.26)}
+
+/* ---- l'en-tete et le pied, comme sur l'accueil ------------------ */
+/* L'entete n'est JAMAIS transparente ici : .haut est un aplat de
+   parche avec du texte fonce, et ce texte passait sous le logo et
+   les liens du menu en defilant. Deux etats pleins, pas d'entre-deux. */
+.tete{background:var(--parche)}
+.tete.pose{background:#17223E;border-bottom:1px solid rgba(255,255,255,.16);
+  box-shadow:0 10px 28px rgba(0,0,0,.28)}
+.tete.pose a,.tete.pose b,.tete.pose nav a{color:var(--craie)}
+.tete.pose .logo b span{color:rgba(255,255,255,.62)}
+.tete.pose .burger span,
+.tete.pose .burger span::before,
+.tete.pose .burger span::after{background:var(--craie)}
+.tete{transition:background .4s var(--ease),opacity .35s var(--ease),transform .35s var(--ease)}
+.tete.efface{opacity:0;transform:translateY(-100%);pointer-events:none}
+
+.pied-neuf{background:var(--encre);color:var(--craie);padding:clamp(56px,6vw,88px) 0 30px}
+.appel{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+  background:rgba(255,255,255,.07);border-radius:10px;
+  padding:clamp(16px,1.8vw,22px) clamp(18px,2.2vw,28px);margin-bottom:clamp(40px,5vw,66px)}
+.appel p{margin:0;font-size:.98rem;color:rgba(255,255,255,.88);max-width:62ch}
+.appel .bt{padding:13px 22px;font-size:.9rem}
+.corps{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.92fr);
+  gap:clamp(30px,5vw,80px);padding-bottom:clamp(36px,4vw,56px)}
+@media(max-width:860px){.corps{grid-template-columns:1fr}}
+.colonnes{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(20px,3vw,46px)}
+@media(max-width:460px){.colonnes{grid-template-columns:1fr}}
+.colonnes a{display:block;padding:7px 0;font-size:.95rem;color:rgba(255,255,255,.72);
+  transition:color .25s,transform .25s var(--ease)}
+.colonnes a:hover{color:var(--craie);transform:translateX(4px)}
+.lettre p{margin:0 0 16px;font-size:.95rem;line-height:1.6;color:rgba(255,255,255,.76);max-width:44ch}
+.lettre form{display:flex;flex-direction:column;gap:10px;max-width:420px}
+.lettre input{background:rgba(255,255,255,.07);color:var(--craie);
+  border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:15px 18px;
+  font:400 .95rem/1 Inter,sans-serif;outline:0;transition:border-color .3s}
+.lettre input::placeholder{color:rgba(255,255,255,.45)}
+.lettre input:focus{border-color:rgba(255,255,255,.55)}
+.lettre button{border:0;border-radius:6px;padding:15px 18px;cursor:pointer;
+  background:rgba(255,255,255,.14);color:var(--craie);
+  font:500 .95rem/1 Inter,sans-serif;transition:background .25s}
+.lettre button:hover{background:rgba(255,255,255,.24)}
+.lettre .note{margin:12px 0 0;font-size:.79rem;color:rgba(255,255,255,.45)}
+.pied-neuf .bas{padding-top:26px;border-top:1px solid rgba(255,255,255,.14)}
+.reseaux{list-style:none;margin:0 0 20px;padding:0;display:flex;flex-wrap:wrap;gap:18px}
+.reseaux a{display:grid;place-items:center;width:44px;height:44px;
+  margin:-9px;
+  color:rgba(255,255,255,.55);transition:color .25s,transform .25s var(--ease)}
+.reseaux a:hover{color:var(--craie);transform:translateY(-2px)}
+.reseaux svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;
+  stroke-linecap:round;stroke-linejoin:round}
+.droits{margin:0;font-size:.82rem;color:rgba(255,255,255,.45)}
+
+/* la revelation au defilement, identique a l'accueil */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.rv.vu{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none}
+  .vd img,.th img,.affiche img{transition:none}
+}
+</style>
+</head>
+<body>
+
+<header class="tete clair" id="entete"></header>
+
+<!-- ===== 1. LA MISE EN AVANT ===== -->
+<section class="phare">
+  <div class="wrap duo">
+    <!-- Le heros met en avant UNE video, il n'annonce pas la page. Le
+         titre affiche ici est celui de la predication, pas celui du
+         site : c'est une recommandation, pas une banniere. -->
+    <div class="rv">
+      <div class="sur">Vidéos</div>
+      <h1 class="ttl t1" id="phare-t"></h1>
+      <p class="meta-phare" id="phare-m"></p>
+      <a class="bt bt-plein" href="#" id="phare-b">Regarder <span>&rarr;</span></a>
+    </div>
+    <a class="affiche rv" href="#" id="phare-a" aria-label="Lancer la vidéo mise en avant">
+      <img id="phare-i" src="" alt="">
+      <span class="jouer"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></i></span>
+    </a>
+  </div>
+</section>
+
+<!-- ===== 2. LES DERNIERES ===== -->
+<section class="rangee">
+  <div class="wrap">
+    <div class="tete-rangee rv">
+      <div>
+        <h2 class="ttl t2">Dernières mises en ligne</h2>
+        <p>Les plus récentes d'abord.</p>
+      </div>
+      <a href="#toutes">Voir toutes les vidéos &rarr;</a>
+    </div>
+    <div class="piste rv" id="recentes"></div>
+  </div>
+</section>
+
+<!-- ===== 3. PAR OU COMMENCER ===== -->
+<section class="rangee">
+  <div class="wrap">
+    <div class="tete-rangee rv">
+      <div>
+        <h2 class="ttl t2">Par où commencer</h2>
+        <p>Une sélection du ministère, pour une première écoute.</p>
+      </div>
+    </div>
+    <div class="piste rv" id="debuter"></div>
+  </div>
+</section>
+
+<!-- ===== 4. LES THEMES ===== -->
+<section class="themes">
+  <div class="wrap">
+    <div class="rv">
+      <div class="sur">Explorer</div>
+      <h2 class="ttl t2" style="margin-top:14px">Par thème</h2>
+      <p class="txt" style="margin-top:12px">Les mêmes thèmes que la bibliothèque
+      écrite. Une vidéo et un enseignement sur un même sujet se retrouvent
+      sous le même nom.</p>
+    </div>
+    <div class="grille-themes rv" id="themes"></div>
+    <!-- Un seul lien vers la liste complete : elle vit sur sa propre
+         page, elle ne se deverse pas au bas de celle-ci. -->
+    <p class="vers-tout rv"><a href="videos-toutes.html">Voir toutes les vidéos <span>&rarr;</span></a></p>
+  </div>
+</section>
+
+<footer class="pied-neuf">
+  <div class="wrap">
+
+    <div class="appel">
+      <p>Tout ce que le ministère publie est en accès libre, et le restera.</p>
+      <a class="bt bt-clair" href="soutenir.html">Soutenir le MIGV <span>&rarr;</span></a>
+    </div>
+
+    <div class="corps">
+      <div class="colonnes">
+        <div>
+        <a href="enseignements.html">Enseignements</a>
+        <a href="traites.html">Traités</a>
+        <a href="livres.html">Livres</a>
+        <a href="collections.html">Collections</a>
+        <a href="dimanche.html">Le dimanche</a>
+        <a href="videos.html">Les vidéos</a>
+        </div>
+        <div>
+        <a href="actualites.html">Actualités</a>
+        <a href="histoire.html">Notre histoire</a>
+        <a href="biographie.html">Le fondateur</a>
+        <a href="contact.html">Nos assemblées</a>
+        <a href="soutenir.html">Nous soutenir</a>
+        <a href="contact.html">Nous écrire</a>
+        </div>
+      </div>
+      <div class="lettre">
+        <p>Recevez le résumé de la prédication du dimanche et son visuel,
+        une fois par semaine. Rien d'autre.</p>
+        <form onsubmit="return inscrire(event)">
+          <input id="courriel" type="email" placeholder="Adresse e-mail" required
+                 aria-label="Votre adresse e-mail">
+          <button type="submit">Abonnez-vous</button>
+        </form>
+        <p class="note" id="note">Formulaire de maquette : rien n'est encore envoyé.</p>
+      </div>
+    </div>
+
+    <div class="bas">
+      <ul class="reseaux">
+      <li><a href="#" aria-label="YouTube" title="YouTube"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3Z"/><path d="M10 9.2 15 12l-5 2.8Z"/></svg></a></li>
+      <li><a href="#" aria-label="Facebook" title="Facebook"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 21v-8h2.7l.5-3h-3.2V8.2c0-.9.3-1.5 1.6-1.5h1.7V4a22 22 0 0 0-2.5-.1c-2.5 0-4.2 1.5-4.2 4.3V10H8v3h3.1v8Z"/></svg></a></li>
+      <li><a href="#" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.1" cy="6.9" r=".9" fill="currentColor" stroke="none"/></svg></a></li>
+      <li><a href="#" aria-label="WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5a8.5 8.5 0 0 0-7.3 12.8L3.5 20.5l4.4-1.1A8.5 8.5 0 1 0 12 3.5Z"/><path d="M9 9.4c.3-.7.6-.7.9-.7.3 0 .6.1.8.6l.5 1.2-.7.8c.5 1 1.3 1.8 2.3 2.3l.8-.7 1.2.5c.5.2.6.5.6.8 0 .3 0 .6-.7.9-.8.3-2 .2-3.5-.8a9 9 0 0 1-2.6-3c-.5-1-.4-1.5-.3-1.9Z"/></svg></a></li>
+      <li><a href="#" aria-label="TikTok" title="TikTok"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.3 3.2v10.9a3.4 3.4 0 1 1-2.9-3.4"/><path d="M14.3 3.2a4.6 4.6 0 0 0 4.4 4.3"/></svg></a></li>
+      <li><a href="#" aria-label="Podcast" title="Podcast"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9.2" y="2.8" width="5.6" height="10.4" rx="2.8"/><path d="M5.6 11.2a6.4 6.4 0 0 0 12.8 0M12 17.6V21"/></svg></a></li>
+      </ul>
+      <p class="droits">&copy; 2026 Ministère International Grâce et Vérité. Tous droits réservés.</p>
+    </div>
+
+  </div>
+</footer>
+
+<div class="lecteur" id="lecteur"><div class="boite">
+  <div class="rap" id="rap"></div>
+  <div class="tt"><h3 id="ltit"></h3><button class="ferme" id="lferme">Fermer</button></div>
+</div></div>
+
+<script src="ressources.js?v=1"></script>
+<script src="commun.js?v=19"></script>
+<script>
+
+
+/* une phrase par theme, affichee sur la page du theme le jour ou elle
+   existera. Les noms sont ceux de la bibliotheque ecrite : une video et
+   un enseignement sur un meme sujet portent la meme etiquette. */
+const THEMES={
+ 'Le salut'      :"Ce qu'il est, comment on y entre, et ce qu'il engage.",
+ 'La grâce'      :"La faveur imméritée, de la justification à la régénération.",
+ 'Le Royaume'    :"Le règne annoncé, inauguré, et encore attendu.",
+ 'Vie chrétienne':"Ce que la foi change dans les jours ordinaires.",
+ 'Alliances'     :"Les deux testaments, leurs promesses et leurs héritiers.",
+ 'Apologétique'  :"Répondre, avec les textes, aux objections courantes."
+};
+
+/* les donnees et les outils viennent de ressources.js */
+const lien=lienVideo;
+const vignette=vignetteVideo;
+const minutes=minutesVideo;
+const ech=echapper;
+
+/* la carte, une seule fonction pour les trois endroits ou elle sert */
+function carte(v){
+  var i=VIDS.indexOf(v);
+  return '<a class="vd" href="#" data-i="'+i+'">'
+   +'<span class="cadre">'
+     +'<img loading="lazy" decoding="async" src="'+vignette(v)+'" alt="">'
+     +'<span class="lire"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg></i></span>'
+     +'<span class="duree">'+ech(v.d)+'</span>'
+   +'</span>'
+   +'<h3>'+ech(v.t)+'</h3></a>';
+}
+
+/* ---- 1. la mise en avant -----------------------------------------
+   C'est la premiere video du tableau qui passe a la une. Le titre
+   affiche est le sien, la ligne sous le titre donne son theme et sa
+   duree. Pas de paragraphe : il n'existe pas encore de phrase propre a
+   chaque video, et celle du theme restait identique quelle que soit la
+   video a la une. Une phrase qui ne change pas quand le contenu change
+   ne dit rien. Le jour ou chaque video aura sa ligne (champ r:), elle
+   se posera ici. */
+(function phare(){
+  var v=VIDS[0];
+  document.getElementById('phare-t').textContent=v.t;
+  document.getElementById('phare-m').textContent=v.s+' · '+v.d;
+  var i=document.getElementById('phare-i');
+  i.src=vignette(v); i.alt='';
+  document.getElementById('phare-a').dataset.i=0;
+  document.getElementById('phare-a').setAttribute('aria-label','Regarder : '+v.t);
+  document.getElementById('phare-b').dataset.i=0;
+})();
+
+/* ---- 2 et 3. les deux rangees, cinq cartes au plus --------------- */
+document.getElementById('recentes').innerHTML=VIDS.slice(0,5).map(carte).join('');
+document.getElementById('debuter').innerHTML=
+  VIDS.filter(function(v){return v.deb}).slice(0,5).map(carte).join('');
+
+/* ---- 4. la grille des themes ------------------------------------ */
+(function themes(){
+  var vus=[],ordre=[];
+  VIDS.forEach(function(v){ if(vus.indexOf(v.s)<0){vus.push(v.s);ordre.push(v)} });
+  document.getElementById('themes').innerHTML=ordre.map(function(v){
+    var n=VIDS.filter(function(x){return x.s===v.s}).length;
+    return '<a class="th" href="#toutes" data-theme="'+ech(v.s)+'">'
+     +'<img loading="lazy" decoding="async" src="'+vignette(v)+'" alt="">'
+     +'<span class="voile"></span>'
+     +'<span class="dedans"><h3>'+ech(v.s)+'</h3>'
+     +'<span class="cpt">'+n+(n>1?' vidéos':' vidéo')+'</span></span></a>';
+  }).join('');
+})();
+
+/* ---- 5. le theme mene a la page de la liste complete ------------
+   Le theme n'est pas un filtre pose sur cette page : il ouvre la liste
+   complete deja filtree. La page d'accueil des videos ne liste jamais
+   tout, c'est le principe de la reference. */
+document.getElementById('themes').onclick=function(e){
+  var a=e.target.closest('.th'); if(!a) return;
+  e.preventDefault();
+  location.href='videos-toutes.html?t='+encodeURIComponent(a.dataset.theme);
+};
+
+/* ---- le lecteur -------------------------------------------------- */
+function ouvrir(i){
+  var v=VIDS[i];
+  document.getElementById('rap').innerHTML=
+    '<iframe src="'+lien(v)+'" allow="autoplay; encrypted-media" allowfullscreen'
+    +' title="'+ech(v.t)+'"></iframe>';
+  document.getElementById('ltit').textContent=v.t;
+  document.getElementById('lecteur').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+function brancher(){
+  document.querySelectorAll('[data-i]').forEach(function(a){
+    a.onclick=function(e){e.preventDefault();ouvrir(+a.dataset.i)};
+  });
+}
+function fermer(){
+  document.getElementById('lecteur').classList.remove('on');
+  document.getElementById('rap').innerHTML='';
+  document.body.style.overflow='';
+}
+document.getElementById('lferme').onclick=fermer;
+document.getElementById('lecteur').onclick=function(e){if(e.target.id==='lecteur')fermer()};
+addEventListener('keydown',function(e){if(e.key==='Escape')fermer()});
+
+brancher();
+
+/* ---- la revelation, et l'en-tete qui se retire sur le pied ------- */
+var obs=new IntersectionObserver(function(es){
+  es.forEach(function(x){ if(x.isIntersecting){x.target.classList.add('vu');obs.unobserve(x.target)} });
+},{rootMargin:'0px 0px -8% 0px'});
+document.querySelectorAll('.rv').forEach(function(e){obs.observe(e)});
+
+/* commun.js saute volontairement un entete marque "clair" : c'est donc a
+   la page de decider quand il se pose. Tant qu'on est sur la bande de
+   parchemin l'entete reste transparent ; des qu'elle est depassee il
+   devient fonce, comme sur l'accueil. */
+var tete=document.querySelector('.tete'),
+    pied=document.querySelector('.pied-neuf'),
+    phare=document.querySelector('.phare');
+function poser(){
+  var h=phare.offsetHeight-90;
+  tete.classList.toggle('clair', scrollY < h);
+  tete.classList.toggle('pose',  scrollY >= h);
+}
+addEventListener('scroll', poser, {passive:true});
+addEventListener('resize', poser, {passive:true});
+poser();
+
+new IntersectionObserver(function(es){
+  tete.classList.toggle('efface', es[0].isIntersecting);
+},{rootMargin:'0px 0px -88% 0px'}).observe(pied);
+
+function inscrire(e){
+  e.preventDefault();
+  document.getElementById('note').textContent=
+    'Merci. Le formulaire sera relié dès la mise en ligne.';
+  return false;
+}
+</script>
+</body>
+</html>
