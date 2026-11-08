@@ -197,7 +197,35 @@ p{margin:0 0 1.1em}
 .mb.actif em{color:var(--ambre-clair)}
 .mb.actif{background:var(--dom);color:var(--creme)}
 .mb.actif small{color:rgba(255,255,255,.72)}
-@media(max-width:820px){.carte-ci .lab,.carte-ci .g-fl{display:none}.mobiles{display:flex}}
+/* --- la carte au doigt ----------------------------------------------
+   L'etiquette compacte et sa hampe, construites par carteCI(). Elles
+   n'existent que sous 820 px : au-dessus, ce sont les etiquettes
+   laterales et leurs fleches qui parlent.
+
+   paint-order:stroke dessine le contour SOUS le texte : le nom reste
+   lisible meme pose sur le trait de cote ou sur un autre point, sans
+   qu'il faille lui peindre un rectangle derriere.                  */
+.carte-ci .nomm{font-family:'Poppins',sans-serif;font-weight:800;font-size:34px;
+  fill:var(--accent);letter-spacing:-.02em;opacity:0;pointer-events:none;
+  paint-order:stroke;stroke:var(--creme);stroke-width:8px;stroke-linejoin:round;
+  transform-origin:center;transition:opacity .3s var(--ease)}
+.carte-ci .nomm.actif{opacity:1}
+.carte-ci .flm{stroke:var(--accent);stroke-width:3.4;fill:none;opacity:0;
+  stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:var(--len);stroke-dashoffset:var(--len);
+  transition:opacity .2s,stroke-dashoffset .5s var(--ease)}
+.carte-ci .flm.on{opacity:1;stroke-dashoffset:0}
+.carte-ci .g-flm,.carte-ci .g-labm{display:none}
+
+@media(max-width:820px){
+  .carte-ci .lab,.carte-ci .g-fl{display:none}
+  .carte-ci .g-flm,.carte-ci .g-labm{display:block}
+  .mobiles{display:flex}
+  /* La carte est recadree sur le pays : le point actif peut grossir
+     davantage sans devenir une tache. */
+  .carte-ci .g-ville.actif .pt{r:17}
+  @keyframes pulseCarte{0%,100%{r:20;opacity:.5}50%{r:34;opacity:0}}
+}
 
 /* =============== PIED =============== */
 .pied{background:var(--bleu-nuit);color:var(--creme);padding:clamp(56px,7vw,100px) 0 44px}

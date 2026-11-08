@@ -86,7 +86,8 @@ function carteCI(hote){
   const GAUCHE=MX-40, DROITE=MX+MW+40;
 
   const trace='M'+CONTOUR.map(p=>px(p[0]).toFixed(1)+' '+py(p[1]).toFixed(1)).join(' L')+' Z';
-  let pts='',labs='',fls='',mbs='';
+  /* labms / flms : la version telephone des etiquettes, voir plus bas. */
+  let pts='',labs='',fls='',mbs='',labms='',flms='';
 
   ASSEMBLEES.forEach((v,i)=>{
     const x=px(v.lon), y=py(v.lat);
@@ -105,6 +106,27 @@ function carteCI(hote){
     const dep=dr?lx-18:lx+18, dx=x-(dr?14:-14), cx=(dep+dx)/2, cy=v.ly-52;
     fls+=`<path class="fleche" data-i="${i}" marker-end="url(#fl-${hote.id})"
         d="M${dep} ${v.ly-9} Q${cx.toFixed(1)} ${cy.toFixed(1)} ${dx.toFixed(1)} ${y.toFixed(1)}"/>`;
+    /* --- l'etiquette compacte, posee contre le point ---------------
+       Sous 820 px les etiquettes laterales et leurs fleches sont
+       cachees : a cette largeur elles sont illisibles. Il ne restait
+       alors, au doigt, que la pastille qui s'allumait SOUS la carte.
+       La carte elle-meme ne repondait pas, et l'animation de la
+       fleche disparaissait.
+
+       Chaque ville recoit donc une seconde etiquette, plantee contre
+       son point comme un petit drapeau, avec sa propre hampe qui se
+       trace. Elle ne sert qu'au telephone, et seule celle de la ville
+       choisie s'affiche : deux voisines ne peuvent pas se chevaucher.
+
+       Le drapeau part vers l'interieur du pays, pour ne pas sortir du
+       cadre quand la ville est sur un bord.                        */
+    const ins = x < MX + MW/2 ? 1 : -1;
+    const hx = x + ins*52, hy = y - 46;
+    flms+=`<path class="flm" data-i="${i}" d="M${x.toFixed(1)} ${(y-10).toFixed(1)}
+        V${hy.toFixed(1)} H${hx.toFixed(1)}"/>`;
+    labms+=`<text class="nomm" data-i="${i}" x="${(hx+ins*7).toFixed(1)}"
+        y="${(hy-11).toFixed(1)}" text-anchor="${ins>0?'start':'end'}">${v.n}</text>`;
+
     mbs+=`<button class="mb" data-i="${i}">${v.n}<small>${v.r}</small>${
       contact?`<em>${contact}</em>`:''}</button>`;
   });
@@ -114,20 +136,41 @@ function carteCI(hote){
     <defs><marker id="fl-${hote.id}" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
       <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)"/></marker></defs>
     <path class="pays" d="${trace}"/>
-    <g class="g-fl">${fls}</g>${pts}${labs}
+    <g class="g-fl">${fls}</g><g class="g-flm">${flms}</g>${pts}${labs}<g class="g-labm">${labms}</g>
   </svg><div class="mobiles">${mbs}</div>`;
 
-  hote.querySelectorAll('.fleche').forEach(f=>f.style.setProperty('--len',f.getTotalLength()));
+  hote.querySelectorAll('.fleche,.flm').forEach(f=>f.style.setProperty('--len',f.getTotalLength()));
+
+  /* --- le cadrage, selon la largeur -------------------------------
+     Le dessin occupe 1240 unites de large, mais le pays n'en occupe
+     que 569 : le reste est la marge ou s'ecrivent les etiquettes
+     laterales. Sur telephone ces etiquettes n'existent pas, et cette
+     marge vide reduisait le pays a la moitie de la largeur
+     disponible. Les points tombaient a 2,5 px : un changement de
+     taille y etait invisible.
+
+     On recadre donc sur le pays seul. A 350 px de large, l'echelle
+     passe de 0,28 a 0,56 : tout double.                           */
+  const svg = hote.querySelector('svg');
+  const LARGE = `0 0 ${VB_W} ${VB_H}`;
+  const SERRE = `${(MX-26).toFixed(0)} ${(MY-30).toFixed(0)} `
+              + `${(MW+52).toFixed(0)} ${(MH+62).toFixed(0)}`;
+  const petit = matchMedia('(max-width:820px)');
+  const cadrer = () => svg.setAttribute('viewBox', petit.matches ? SERRE : LARGE);
+  petit.addEventListener('change', cadrer);
+  cadrer();
 
   let actif=null;
   const eteindre=()=>{actif=null;
-    hote.querySelectorAll('.fleche.on,.lab.actif,.mb.actif,.g-ville.actif,.halo.on')
+    hote.querySelectorAll('.fleche.on,.flm.on,.lab.actif,.nomm.actif,.mb.actif,.g-ville.actif,.halo.on')
       .forEach(e=>e.classList.remove('on','actif'))};
   const choisir=i=>{
     if(actif===i){eteindre();return}
     eteindre(); actif=i;
     hote.querySelector(`.fleche[data-i="${i}"]`).classList.add('on');
     hote.querySelector(`.lab[data-i="${i}"]`).classList.add('actif');
+    hote.querySelector(`.flm[data-i="${i}"]`).classList.add('on');
+    hote.querySelector(`.nomm[data-i="${i}"]`).classList.add('actif');
     hote.querySelector(`.mb[data-i="${i}"]`).classList.add('actif');
     const g=hote.querySelector(`.g-ville[data-i="${i}"]`);
     g.classList.add('actif'); g.querySelector('.halo').classList.add('on');

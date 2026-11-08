@@ -16,20 +16,29 @@
 
 /* --- 1. le pied ----------------------------------------------------
    Les deux colonnes de liens. La premiere colonne suit le menu, la
-   seconde rassemble ce qui n'y est pas.                            */
+   seconde rassemble ce qui n'y est pas.
+
+   CHAQUE COLONNE PORTE UN TITRE. Sur un grand ecran, les deux
+   colonnes cote a cote se lisaient d'elles-memes. Sur un telephone
+   elles s'empilaient, et le pied devenait douze liens d'affilee sans
+   la moindre articulation : « c'est tout droit ». Les titres sont
+   ajoutes ici plutot qu'en CSS parce qu'ils disent quelque chose, et
+   qu'ils servent aussi a la lecture vocale.                       */
 const PIED_COLONNES = [
-  [['enseignements.html','Enseignements'],
+  ['À lire et à voir',
+   [['enseignements.html','Enseignements'],
    ['traites.html','Traités'],
    ['livres.html','Livres'],
    ['collections.html','Collections'],
    ['dimanche.html','Le dimanche'],
-   ['videos.html','Les vidéos']],
-  [['actualites.html','Actualités'],
+   ['videos.html','Les vidéos']]],
+  ['Le ministère',
+   [['actualites.html','Actualités'],
    ['histoire.html','Notre histoire'],
    ['biographie.html','Le fondateur'],
    ['contact.html','Nos assemblées'],
    ['soutenir.html','Nous soutenir'],
-   ['contact.html','Nous écrire']]
+   ['contact.html','Nous écrire']]]
 ];
 
 /* Les icones des reseaux : un trace SVG chacune, sans fichier a
@@ -45,7 +54,7 @@ const PIED_RESEAUX = [
 
 function piedRefonte(){
   const cols = PIED_COLONNES.map(function(c){
-    return '<div>' + c.map(function(l){
+    return '<div><h4>' + c[0] + '</h4>' + c[1].map(function(l){
       return '<a href="' + l[0] + '">' + l[1] + '</a>';
     }).join('') + '</div>';
   }).join('');

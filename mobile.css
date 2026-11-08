@@ -165,3 +165,281 @@
   h2.t2{font-size:1.22rem}
   .fc{padding:15px 14px}
 }
+
+
+/* ===================================================================
+   4. L'ECRAN TACTILE : « hover », ca n'existe pas au doigt.
+
+   C'est la remarque la plus juste qu'on ait faite sur ce site, et
+   elle vaut pour tout ce qui suit.
+
+   Sur un ecran d'ordinateur, une carte se colore quand la souris
+   passe dessus. Le doigt, lui, ne passe pas : il appuie. Et quand la
+   carte est un lien, cet appui ouvre la page. La couleur n'a donc
+   jamais le temps d'etre vue : « il faut cliquer sur le truc pour que
+   ca change de couleur, ce qui envoie directement sur le lien ».
+
+   La reponse n'est pas de rendre le survol tactile, elle est de
+   SUPPRIMER L'ATTENTE : sur un appareil sans survol, l'etat colore
+   devient l'etat normal. Il n'y a plus rien a decouvrir, tout est la.
+
+   (hover:none) ne regarde pas la largeur de l'ecran mais le moyen de
+   pointage. Un telephone et une tablette y repondent ; un ordinateur
+   portable a ecran tactile, non, parce que sa souris sait survoler.
+   =================================================================== */
+@media (hover:none){
+
+  /* --- les cartes en eventail (page Contact) ------------------------
+     Elles portent chacune sa teinte dans --c. Au lieu de l'attendre,
+     on la pose. Le reste du contenu bascule avec elle, sinon le texte
+     fonce resterait sur un aplat fonce.                            */
+  .fc:not(.bientot){background:var(--c,var(--a1));color:var(--craie);
+      border-color:var(--c,var(--a1));
+      box-shadow:0 10px 22px rgba(12,20,40,.14)}
+  .fc:not(.bientot) .n{-webkit-text-stroke-color:rgba(255,255,255,.85)}
+  .fc:not(.bientot) .ic{color:rgba(255,255,255,.92)}
+  .fc:not(.bientot) h3{color:var(--craie)}
+  /* .82 d'opacite sur l'or fonce (#8A5E00) donnait 4,43:1, juste
+     sous le seuil AA de 4,5. A .92 on repasse au-dessus sur les
+     quatre teintes. */
+  .fc:not(.bientot) p{color:rgba(255,255,255,.92)}
+  .fc:not(.bientot) .go{color:var(--craie)}
+
+  /* Le doigt a quand meme droit a une reponse : la carte s'enfonce
+     tant qu'il appuie. Les cartes « Bientot » restent a l'ecart :
+     elles annoncent ce qui n'existe pas encore, elles ne doivent pas
+     avoir l'air cliquables. D'ou le :not(.bientot) partout ci-dessus.
+     Sans lui, leur fond pale (deux classes, donc prioritaire) gardait
+     le dessus pendant que le texte passait au blanc : du blanc sur du
+     presque blanc, 1,13:1.
+
+     La carte s'enfonce C'est le seul etat qu'un ecran tactile sait
+     vraiment rendre. */
+  .fc:active{transform:translateY(0) scale(.975);
+    box-shadow:0 4px 10px rgba(12,20,40,.2)}
+
+  /* --- la fleche des boutons ----------------------------------------
+     « L'animation de la fleche disparait, c'est juste le bouton qui
+     s'allume. » Exact : .bt:hover span ne se declenche jamais au
+     doigt. Deux reponses.
+
+     1. Les boutons pleins, ceux qui portent l'action principale de la
+        page, font avancer leur fleche d'eux-memes, toutes les trois
+        secondes et demie. Assez pour qu'on voie qu'elle mene quelque
+        part, assez rare pour ne pas agacer.
+     2. Tous les boutons, pleins ou non, repondent a l'appui.        */
+  .bt-plein span,.bt-clair span{animation:pousse 3.4s var(--ease) infinite}
+  .bt:active span,.fc:active .go span{animation:none;transform:translateX(6px)}
+  .bt:active{transform:scale(.97)}
+}
+
+/* Une seule poussee par cycle, sur le dernier cinquieme du temps :
+   le reste du temps la fleche est immobile. */
+@keyframes pousse{
+  0%,72%,100%{transform:translateX(0)}
+  84%{transform:translateX(6px)}
+}
+
+/* Et pour qui demande moins de mouvement, rien ne bouge. */
+@media(prefers-reduced-motion:reduce){
+  .bt-plein span,.bt-clair span{animation:none}
+}
+
+
+/* ===================================================================
+   5. LES VIGNETTES : UNE PAR ECRAN, C'ETAIT UNE DE TROP
+
+   « Les photos sont trop grosses, de sorte qu'une photo ou la photo
+   d'une video occupe tout un ecran : en une vue on ne peut pas voir
+   plusieurs videos ou photos a la fois. »
+
+   La cause est arithmetique. Ces grilles sont ecrites en
+   repeat(auto-fill, minmax(N, 1fr)) avec N entre 176 et 248 px. Sur
+   un telephone, la largeur utile est de 350 px : deux colonnes
+   demanderaient 2 x N plus l'espace entre elles, soit 368 px au
+   moins. Il en manque toujours quelques-uns, et la grille retombe
+   sur UNE colonne de 350 px de large. Une couverture au format 3/4
+   fait alors 467 px de haut : plus de la moitie d'un ecran pour un
+   seul titre.
+
+   On force donc deux colonnes. A 167 px de large, une couverture 3/4
+   fait 223 px : quatre tiennent dans un ecran au lieu d'une et demie,
+   et le titre reste lisible.
+   =================================================================== */
+@media(max-width:620px){
+  .grille,          /* Collections, Livres  : couvertures 3/4      */
+  .grille-themes,   /* Videos, par sujet                           */
+  .grille-toutes,   /* Toutes les videos                           */
+  .archives{        /* Notre histoire : photographies d'archives   */
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px}
+
+  /* Le texte pose sur la couverture suit la vignette : a 167 px de
+     large, 1,14 rem de titre deborde en cinq lignes. */
+  .col .dedans{padding:12px 11px 13px}
+  .col h2{font-size:.96rem;line-height:1.2}
+  .col .ligne{margin-top:4px;font-size:.78rem;line-height:1.35}
+  .col .cpt{margin-top:7px;font-size:.68rem}
+}
+
+/* Sous 400 px, deux colonnes de 160 px : on descend encore d'un cran
+   plutot que de revenir a une seule. */
+@media(max-width:400px){
+  .col h2{font-size:.9rem}
+  .col .ligne{display:none}   /* la ligne de resume, illisible ici */
+}
+
+
+/* ===================================================================
+   6. LA CARTE DES ASSEMBLEES AU DOIGT
+
+   Les pastilles sous la carte se rangeaient en flex : la derniere
+   d'une ligne partait seule, les largeurs ne tombaient jamais juste,
+   et l'ensemble faisait un escalier. Deux colonnes egales.
+   =================================================================== */
+@media(max-width:620px){
+  .mobiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .mb{padding:12px 13px;font-size:.88rem}
+  .mb small{font-size:.63rem;margin-top:2px}
+}
+
+
+/* ===================================================================
+   7. LE PIED DE PAGE
+
+   « Je n'aime pas l'organisation du pied de page telephone, c'est
+   laid, c'est tout droit, ca se chevauche, c'est vilain. »
+
+   Trois choses distinctes, et toutes les trois vraies.
+
+   1. TOUT DROIT. Sous 460 px, .colonnes repassait a une seule
+      colonne : les douze liens du menu s'alignaient alors en une
+      colonne de 455 px de haut. Le pied entier mesurait 1051 px,
+      soit plus d'un ecran de telephone pour un bas de page. Les deux
+      colonnes sont retablies, et chacune recoit un titre : sans lui,
+      douze liens d'affilee n'ont aucune articulation.
+
+   2. CA SE CHEVAUCHE. Ce n'etait pas une impression. Les icones de
+      reseaux ont une cible tactile de 44 px ramenee visuellement a
+      26 px par « margin:-9px ». Avec un espacement de 10 px, deux
+      cibles voisines se recouvraient de 8 px : un doigt pose entre
+      deux icones ouvrait l'une ou l'autre au hasard. Et les 9 px qui
+      depassent en haut et en bas mordaient sur la ligne de droits.
+      L'espacement passe a 22 px : les cibles se touchent bord a bord,
+      sans un pixel de recouvrement.
+
+   3. VILAIN. La lettre d'information arrivait sans separation apres
+      les liens. Un filet l'en detache.
+   =================================================================== */
+@media(max-width:620px){
+  .pied-neuf{padding-top:36px;padding-bottom:20px}
+
+  /* le bandeau d'appel : le bouton sous le texte, pleine largeur */
+  .appel{display:block;margin-bottom:28px;padding:16px 17px}
+  .appel p{font-size:.93rem;line-height:1.5}
+  .appel .bt{display:flex;justify-content:center;width:100%;margin-top:13px}
+
+  .corps{gap:26px;padding-bottom:22px}
+
+  /* DEUX colonnes, et non une : voir le point 1 ci-dessus. */
+  .colonnes{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 16px}
+  .colonnes h4{margin:0 0 8px;font:600 .72rem/1 Inter,sans-serif;
+    letter-spacing:.11em;text-transform:uppercase;
+    color:rgba(255,255,255,.42)}
+  .colonnes a{padding:7px 0;font-size:.88rem;line-height:1.25}
+
+  /* la lettre d'information, detachee des liens */
+  .lettre{border-top:1px solid rgba(255,255,255,.14);padding-top:22px}
+  .lettre p{font-size:.89rem;line-height:1.5;margin-bottom:12px}
+  .lettre input,.lettre button{padding:13px 16px;font-size:.92rem}
+
+  .pied-neuf .bas{padding-top:20px}
+  .droits{font-size:.76rem;line-height:1.5}
+}
+
+/* L'espacement des icones ne depend pas de la largeur mais de la
+   taille du doigt : il vaut sur tout ecran. 22 px d'ecart pour des
+   cibles de 44 px reduites de 18 px. */
+.reseaux{gap:22px;align-items:center;min-height:26px}
+@media(max-width:620px){.reseaux{gap:20px;margin-bottom:16px}}
+
+/* Le titre de chaque colonne du pied. Il vit ici, et non dans
+   refonte.css, parce que cinq pages portent encore leur propre copie
+   des regles du pied : mobile.css est le seul fichier charge en
+   dernier par les quatorze. */
+.colonnes h4{margin:0 0 14px;font:600 .74rem/1 Inter,sans-serif;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(255,255,255,.4)}
+
+
+/* ===================================================================
+   8. LA PISTE DE VIDEOS : UNE CARTE PAR ECRAN
+
+   « Une photo, ou la photo d'une video, occupe tout un ecran. »
+
+   La piste qui glisse au doigt donnait a chaque carte
+   « min(74vw, 280px) ». Sur un telephone de 390 px, 74vw font 288 px
+   et la carte en prend 280 : les trois quarts de l'ecran pour une
+   seule video. On en voyait une, et le bord de la suivante.
+
+   A 46vw la carte fait 180 px : deux entieres tiennent dans l'ecran,
+   et la troisieme depasse assez pour qu'on comprenne que la piste
+   continue. La vignette reste au format 16/9, le titre sur deux
+   lignes : rien n'est perdu, on voit simplement trois fois plus.
+   =================================================================== */
+@media(max-width:620px){
+  .piste>*{flex:0 0 min(46vw,230px)}
+  .piste{gap:11px}
+  .vd h3{margin-top:8px;font-size:.82rem;line-height:1.3}
+  .vd .duree{right:6px;bottom:6px;padding:2px 5px;font-size:.68rem}
+}
+
+/* Le rond de lecture ne s'affichait qu'au survol : au doigt, il
+   n'apparaissait jamais, et rien ne disait qu'une vignette etait une
+   video et non une photo. Sur un ecran tactile il est toujours la,
+   en demi-teinte pour ne pas manger l'image. */
+@media (hover:none){
+  .vd .lire{opacity:1;background:transparent}
+  .vd .lire i{width:40px;height:40px;background:rgba(255,255,255,.82);
+    box-shadow:0 2px 10px rgba(12,20,40,.25)}
+  .vd:active .lire{background:rgba(12,20,40,.3)}
+}
+
+
+/* ===================================================================
+   9. LE DIMANCHE : « PAS ASSEZ AERE, TOUFFU POUR RIEN »
+
+   Les interlignes etaient deja larges (1,65). Ce qui manquait n'etait
+   pas de l'air DANS les paragraphes mais ENTRE les blocs : le resume
+   point par point enchainait des pavets de quatre lignes separes par
+   19 px et un filet d'un pixel. Sur un grand ecran la colonne est
+   etroite et chaque point se detache ; sur un telephone ils occupent
+   toute la largeur et se touchent presque.
+
+   Le filet reste : c'est lui qui dit ou un point finit. C'est
+   l'espace autour de lui qui change.
+   =================================================================== */
+@media(max-width:620px){
+  /* l'affiche et le texte, moins serres l'un contre l'autre */
+  .contenu{gap:34px}
+  .actions{gap:9px;margin-top:16px}
+
+  .txt h2{line-height:1.24}
+  .orateur{margin-top:12px}
+  .cit{margin-top:26px;padding-left:16px}
+  .chapo{margin-top:26px}
+
+  /* le resume : un point respire des deux cotes de son filet */
+  .points{margin-top:30px}
+  .pt{gap:13px;padding:23px 0 25px}
+  .pt b{margin-bottom:8px;line-height:1.4}
+  .rpt{margin-top:11px}
+  .npt{padding-top:3px}
+  .meta{margin-top:26px}
+
+  /* le calendrier : les dimanches ne sont pas des cases a cocher */
+  .calendrier{padding:18px 15px;margin:26px 0}
+  .mois{margin-bottom:16px}
+  .jours{gap:9px}
+  .jr{padding:14px 6px}
+}
